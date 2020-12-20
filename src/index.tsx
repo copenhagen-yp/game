@@ -1,5 +1,5 @@
-import React, {Component} from "react";
-import ReactDOM from "react-dom";
+import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 // import Signin from 'pages/signin/signin';
 
 class Signin extends Component {
@@ -12,4 +12,4 @@ class Signin extends Component {
   }
 }
 
-ReactDOM.render(<Signin/>, document.getElementById("root"));
+ReactDOM.render(<Signin />, document.getElementById('root'));
