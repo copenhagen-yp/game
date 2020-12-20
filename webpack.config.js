@@ -44,15 +44,4 @@ module.exports = {
       template: './src/index.html',
     }),
   ],
-  watchOptions: {
-    aggregateTimeout: 200,
-    ignored: /node_modules/,
-  },
-  devServer: {
-    contentBase: path.join(__dirname, 'dist'),
-    compress: true,
-    hot: true,
-    port: 3000,
-    open: true,
-  },
 };
