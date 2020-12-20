@@ -4,7 +4,7 @@ class Signin extends Component {
   render() {
     return (
       <div>
-        <h1>Мой апп.</h1>
+        <h1>Title</h1>
       </div>
     );
   }
