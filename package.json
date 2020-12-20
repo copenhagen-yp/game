@@ -6,7 +6,8 @@
   "scripts": {
     "start": "webpack serve --config webpack.dev.js",
     "build": "webpack --mode production",
-    "pretty": "prettier --write ."
+    "pretty": "prettier --write .",
+    "lint": "eslint --ext .tsx ./src"
   },
   "repository": {
     "type": "git",
@@ -22,9 +23,13 @@
     "@types/react": "17.0.0",
     "@types/react-dom": "17.0.0",
     "@types/react-router-dom": "5.1.6",
+    "@typescript-eslint/eslint-plugin": "4.10.0",
+    "@typescript-eslint/parser": "4.10.0",
     "autoprefixer": "10.1.0",
     "css-loader": "5.0.1",
+    "eslint": "7.16.0",
     "html-webpack-plugin": "4.5.0",
+    "husky": "4.3.6",
     "postcss": "8.2.1",
     "postcss-import": "14.0.0",
     "postcss-loader": "4.1.0",
@@ -42,5 +47,10 @@
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "react-router-dom": "5.2.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint"
+    }
   }
 }
