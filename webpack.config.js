@@ -1,6 +1,5 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const autoprefixer = require('autoprefixer');
 
 module.exports = {
   entry: './src/index.tsx',
@@ -20,22 +19,7 @@ module.exports = {
       },
       {
         test: /\.postcss$/,
-        use: [
-          'style-loader',
-          'css-loader',
-          {
-            loader: 'postcss-loader',
-            options: {
-              postcssOptions: {
-                plugins: [
-                  autoprefixer({
-                    browsers: ['ie >= 8', 'last 4 version'],
-                  }),
-                ],
-              },
-            },
-          },
-        ],
+        use: ['style-loader', 'css-loader', 'postcss-loader'],
       },
     ],
   },
