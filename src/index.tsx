@@ -1,5 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Signin from './pages/signin/signin';
+import { App } from './pages/app';
 
-ReactDOM.render(<Signin />, document.getElementById('root'));
+ReactDOM.render(<App />, document.getElementById('root'));
