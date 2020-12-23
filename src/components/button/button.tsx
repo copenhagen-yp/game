@@ -1,16 +1,24 @@
 import React, { FC } from 'react';
 import styles from './button.pcss';
+import classNames from 'classnames';
+import { Props } from "components/button/types";
 
-type Props = {
-  className?: string;
-  text: string;
-  onClick: () => void;
-};
+export const Button: FC<Props> = ({
+    children ,
+    type,
+    disabled,
+    color,
+    ...restProps
+  }) => {
 
-export const Button: FC<Props> = ({ text, onClick }) => {
+  const classes = classNames(
+    styles[type || 'button'],
+    color && styles[color]
+  )
+
   return (
-    <button className={styles.button} onClick={onClick}>
-      {text}
+    <button className={classes} disabled={disabled} {...restProps}>
+      {children}
     </button>
   );
 };
