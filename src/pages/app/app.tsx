@@ -14,7 +14,7 @@ export class App extends Component {
     return (
       <div>
         <h1>Title</h1>
-        <Button tagType='link' onClick={this.handleClick}>Ok</Button>
+        <Button onClick={this.handleClick}>Ok</Button>
       </div>
     );
   }
