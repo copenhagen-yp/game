@@ -1,24 +1,20 @@
 import React, { FC } from 'react';
+import cn from 'classnames';
+
+import { Props } from 'components/button/types';
+
 import styles from './button.pcss';
-import classNames from 'classnames';
-import { Props } from "components/button/types";
 
 export const Button: FC<Props> = ({
     children ,
-    type,
-    disabled,
-    color,
+    tagType,
     ...restProps
   }) => {
-
-  const classes = classNames(
-    styles[type || 'button'],
-    color && styles[color]
-  )
+  const Tag = tagType === 'link' ? 'a' : 'button';
 
   return (
-    <button className={classes} disabled={disabled} {...restProps}>
+    <Tag className={cn(styles.button, { [styles.link]: tagType === 'link' })} {...restProps}>
       {children}
-    </button>
+    </Tag>
   );
 };

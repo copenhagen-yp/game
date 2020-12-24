@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
-import './app.pcss';
+
 import { Button } from "../../components";
+
+import './app.pcss';
+import 'normalize.css';
 
 export class App extends Component {
   handleClick = () => {
@@ -11,7 +14,7 @@ export class App extends Component {
     return (
       <div>
         <h1>Title</h1>
-        <Button color={'button_blue'} type='button' onClick={this.handleClick}>Ok</Button>
+        <Button tagType='link' onClick={this.handleClick}>Ok</Button>
       </div>
     );
   }
