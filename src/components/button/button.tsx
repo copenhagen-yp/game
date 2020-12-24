@@ -14,7 +14,10 @@ export const Button: FC<Props> = ({
   const Tag = tagType === 'link' ? 'a' : 'button';
 
   return (
-    <Tag className={cn(styles.button, { [styles.link]: tagType === 'link' })} type={type} {...restProps}>
+    <Tag
+      className={cn(styles.button, { [styles.link]: tagType === 'link' })}
+      type={type} {...restProps}
+    >
       {children}
     </Tag>
   );
