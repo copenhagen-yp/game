@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { PrivateLayoutType } from './typex';
+import { PrivateLayoutType } from './types';
 
 export const PrivateLayout = ({ children }: PrivateLayoutType) => {
   return (

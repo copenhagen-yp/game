@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { PublicLayoutType } from './typex';
+import { PublicLayoutType } from './types';
 
 export const PublicLayout = ({ children }: PublicLayoutType) => {
   return (
