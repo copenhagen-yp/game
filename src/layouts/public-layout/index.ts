@@ -1,3 +1,1 @@
-import { PublicLayout } from './public-layout';
-
-export { PublicLayout };
+export { PublicLayout } from './public-layout';

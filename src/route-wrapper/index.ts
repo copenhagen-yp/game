@@ -1,3 +1,1 @@
-import { RouteWrapper } from './route-wrapper';
-
-export { RouteWrapper };
+export { RouteWrapper } from './route-wrapper';

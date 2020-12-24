@@ -1,3 +1,1 @@
-import { PrivateLayout } from './private-layout';
-
-export { PrivateLayout };
+export { PrivateLayout } from './private-layout';
