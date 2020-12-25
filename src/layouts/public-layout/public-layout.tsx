@@ -2,11 +2,12 @@ import React from 'react';
 
 import { PublicLayoutType } from './types';
 
+import styles from './public-layout.pcss';
+
 export const PublicLayout = ({ children }: PublicLayoutType) => {
   return (
-    <div>
-      <h1>PublicLayout</h1>
-      {children}
-    </div>
+  <div className={styles.layout}>
+    {children}
+  </div>
   );
 }
