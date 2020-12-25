@@ -18,8 +18,17 @@ module.exports = {
         exclude: /node_modules/,
       },
       {
-        test: /\.postcss$/,
-        use: ['style-loader', 'css-loader', 'postcss-loader'],
+        test: /\.pcss$/,
+        use: [
+          'style-loader',
+          {
+            loader: 'css-loader',
+            options: {
+              modules: true,
+            },
+          },
+          'postcss-loader',
+        ],
       },
     ],
   },
