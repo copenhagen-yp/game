@@ -18,7 +18,7 @@ module.exports = merge(mainConfig, {
     open: true,
     historyApiFallback: {
       index: 'index.html'
-    },
+    }
   },
   plugins: [new webpack.HotModuleReplacementPlugin()],
 });

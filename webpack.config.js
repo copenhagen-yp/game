@@ -6,6 +6,7 @@ module.exports = {
   output: {
     path: path.join(__dirname, '/dist'),
     filename: 'bundle.js',
+    publicPath: "/",
   },
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],
@@ -18,7 +19,7 @@ module.exports = {
         exclude: /node_modules/,
       },
       {
-        test: /\.pcss$/,
+        test: /(\.css|\.pcss)$/,
         use: [
           'style-loader',
           {
@@ -27,7 +28,7 @@ module.exports = {
               modules: true,
             },
           },
-          'postcss-loader',
+          'postcss-loader'
         ],
       },
     ],
