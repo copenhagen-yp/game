@@ -7,7 +7,8 @@
     "start": "webpack serve --config webpack.dev.js",
     "build": "webpack --mode production",
     "pretty": "prettier --write .",
-    "lint": "eslint --ext .tsx ./src"
+    "lint": "eslint --ext .tsx,.ts ./src",
+    "lint:fix": "eslint --ext .tsx,.ts ./src --fix"
   },
   "repository": {
     "type": "git",
