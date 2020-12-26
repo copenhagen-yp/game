@@ -5,7 +5,11 @@ export const Game = () => {
   return (
     <main className={styles.game}>
       <h1>Game</h1>
-      <canvas/>
+      <div className={styles.container}>
+        <div className={styles.canvasWrapper}>
+          <canvas className={styles.canvas} />
+        </div>
+      </div>
     </main>
   );
 }

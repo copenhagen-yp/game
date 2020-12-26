@@ -9,6 +9,13 @@ export const routes = {
     layout: PublicLayout,
     exact: true,
   },
+  game: {
+    name: 'game',
+    path: '/play',
+    component: Game,
+    layout: PrivateLayout,
+    exact: true,
+  },
   home: {
     name: 'home',
     path: '/',
@@ -16,11 +23,4 @@ export const routes = {
     layout: PrivateLayout,
     exact: true,
   },
-  game: {
-    name: 'game',
-    path: '/play',
-    component: Game,
-    layout: PrivateLayout,
-    exact: true,
-  }
 }
