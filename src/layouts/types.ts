@@ -1,5 +1,5 @@
 import React from 'react';
 
-export type PublicLayoutType = {
+export type LayoutType = {
   children?: React.ReactNode,
 }
