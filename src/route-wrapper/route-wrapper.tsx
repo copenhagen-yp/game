@@ -8,13 +8,10 @@ export const RouteWrapper = ({
                                layout: Layout,
                                ...rest
                              }: RouteWrapperType) => {
-  // @ts-ignore
-  // @ts-ignore
   return (
     <Route
       {...rest}
       render={(props) =>
-        // @ts-ignore
         <Layout {...props}>
           <Component {...props} />
         </Layout>
