@@ -18,7 +18,7 @@ module.exports = {
         exclude: /node_modules/,
       },
       {
-        test: /(\.css|\.pcss)$/,
+        test: /\.pcss$/,
         use: [
           'style-loader',
           {
@@ -27,7 +27,7 @@ module.exports = {
               modules: true,
             },
           },
-          'postcss-loader'
+          'postcss-loader',
         ],
       },
     ],
