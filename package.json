@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/copenhagen-yp/game#readme",
   "devDependencies": {
+    "@types/classnames": "2.2.11",
     "@types/react": "17.0.0",
     "@types/react-dom": "17.0.0",
     "@types/react-router-dom": "5.1.6",
@@ -30,6 +31,7 @@
     "eslint": "7.16.0",
     "html-webpack-plugin": "4.5.0",
     "husky": "4.3.6",
+    "normalize.css": "8.0.1",
     "postcss": "8.2.1",
     "postcss-import": "14.0.0",
     "postcss-loader": "4.1.0",
@@ -44,6 +46,7 @@
     "webpack-merge": "5.7.2"
   },
   "dependencies": {
+    "classnames": "2.2.6",
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "react-router-dom": "5.2.0"
