@@ -1,4 +1,4 @@
-import { SignIn, Home } from './pages';
+import { SignIn, Home, Game } from './pages';
 import { PublicLayout, PrivateLayout } from './layouts';
 
 export const routes = {
@@ -16,4 +16,11 @@ export const routes = {
     layout: PublicLayout,
     exact: true,
   },
+  game: {
+    name: 'game',
+    path: '/play',
+    component: Game,
+    layout: PrivateLayout,
+    exact: true,
+  }
 }

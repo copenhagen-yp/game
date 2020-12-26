@@ -57,7 +57,7 @@
     }
   },
   "browserslist": [
-    "ie >= 8",
+    "ie >= 11",
     "last 4 version"
   ]
 }

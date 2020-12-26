@@ -6,6 +6,7 @@ const { merge } = require('webpack-merge');
 module.exports = merge(mainConfig, {
   mode: 'development',
   devtool: 'inline-source-map',
+  target: 'web',
   watchOptions: {
     aggregateTimeout: 200,
     ignored: /node_modules/,
@@ -15,6 +16,9 @@ module.exports = merge(mainConfig, {
     hot: true,
     port: 4000,
     open: true,
+    historyApiFallback: {
+      index: 'index.html'
+    },
   },
   plugins: [new webpack.HotModuleReplacementPlugin()],
 });
