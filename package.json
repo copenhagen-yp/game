@@ -47,10 +47,12 @@
     "webpack-merge": "5.7.2"
   },
   "dependencies": {
+    "@types/react-toast-notifications": "2.4.0",
     "classnames": "2.2.6",
     "react": "17.0.1",
     "react-dom": "17.0.1",
-    "react-router-dom": "5.2.0"
+    "react-router-dom": "5.2.0",
+    "react-toast-notifications": "2.4.0"
   },
   "husky": {
     "hooks": {

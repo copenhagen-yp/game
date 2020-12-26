@@ -1,3 +1,7 @@
 import { Button } from './button';
+import { Toast } from './toast';
 
-export { Button };
+export {
+  Button,
+  Toast,
+};

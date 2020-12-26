@@ -1,4 +1,4 @@
-import React from 'react';
+import { ReactNode } from 'react';
 
 export type Props = {
     className?: string;
@@ -6,5 +6,5 @@ export type Props = {
     disabled?: boolean;
     viewType?: string;
     onClick: () => void;
-    children: React.ReactNode;
+    children: ReactNode;
 };
