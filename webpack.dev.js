@@ -15,6 +15,9 @@ module.exports = merge(mainConfig, {
     hot: true,
     port: 4000,
     open: true,
+    historyApiFallback: {
+      index: 'index.html'
+    }
   },
   plugins: [new webpack.HotModuleReplacementPlugin()],
 });

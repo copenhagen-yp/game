@@ -1,5 +1,8 @@
 import React from 'react';
-import { BrowserRouter, Link, Switch } from 'react-router-dom';
+import { BrowserRouter, Switch } from 'react-router-dom';
+import 'normalize.css';
+
+import './styles/common.pcss';
 
 import { RouteWrapper } from './route-wrapper'
 import { routes } from './routes';
@@ -7,11 +10,6 @@ import { routes } from './routes';
 const App = () => {
   return (
     <BrowserRouter>
-      <ul>
-        <li><Link to="/sign-in">SignIn</Link></li>
-        <li><Link to="/home">Home</Link></li>
-      </ul>
-
       <Switch>
         {Object.values(routes).map((route) => (
           <RouteWrapper
