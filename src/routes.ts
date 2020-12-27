@@ -1,4 +1,4 @@
-import { SignIn, Home, Game } from './pages';
+import { SignIn, Home, Game, Leaderboard } from './pages';
 import { PublicLayout, PrivateLayout } from './layouts';
 
 export const routes = {
@@ -13,6 +13,13 @@ export const routes = {
     name: 'game',
     path: '/play',
     component: Game,
+    layout: PrivateLayout,
+    exact: true,
+  },
+  leaderboard: {
+    name: 'leaderboard',
+    path: '/leaderboard',
+    component: Leaderboard,
     layout: PrivateLayout,
     exact: true,
   },
