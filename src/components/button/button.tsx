@@ -9,12 +9,17 @@ export const Button: FC<Props> = (props) => {
   const {
     children,
     viewType,
+    className,
     ...restProps
   } = props;
 
   return (
     <button
-      className={cn(styles.button, viewType && styles[viewType])}
+      className={cn(
+        styles.button,
+        viewType && styles[viewType],
+        className,
+      )}
       {...restProps}
     >
       {children}
