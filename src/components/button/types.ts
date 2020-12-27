@@ -4,7 +4,7 @@ export type Props = {
     className?: string;
     type?: 'submit' | 'button' | 'reset';
     disabled?: boolean;
-    viewType?: string;
+    viewType?: 'link' | 'icon' | 'button' ;
     onClick: () => void;
     children: ReactNode;
 };

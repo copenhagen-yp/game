@@ -3,6 +3,8 @@ import cn from 'classnames';
 
 import { ToastProps } from 'react-toast-notifications';
 
+import { Button } from '../../components';
+
 import styles from './toast.pcss';
 
 export const Toast = ({ appearance, children, onDismiss }: ToastProps) => {
@@ -13,13 +15,15 @@ export const Toast = ({ appearance, children, onDismiss }: ToastProps) => {
   return (
     <div className={cn(styles.toast, styles[`toast_${appearance}`])}>
       {children}
-      <button
+      <Button
+        type='button'
+        viewType='icon'
         className={styles.closeButton}
         onClick={handleClickClose}
       >
         {/*ToDO: change to icon*/}
         x
-      </button>
+      </Button>
     </div>
   );
 }
