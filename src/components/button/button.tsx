@@ -1,7 +1,7 @@
-import React, {FC} from 'react';
+import React, { FC } from 'react';
 import cn from 'classnames';
 
-import {Props} from 'components/button/types';
+import { Props } from 'components/button/types';
 
 import styles from './button.pcss';
 

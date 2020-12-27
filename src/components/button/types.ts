@@ -5,6 +5,6 @@ export type Props = {
     type?: 'submit' | 'button' | 'reset';
     disabled?: boolean;
     viewType?: string;
-    onClick: (e: React.MouseEvent) => void;
+    onClick: () => void;
     children: React.ReactNode;
 };

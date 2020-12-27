@@ -6,8 +6,8 @@ import styles from './layout.pcss';
 
 export const PublicLayout = ({ children }: LayoutType) => {
   return (
-  <div className={styles.layout}>
-    {children}
-  </div>
+    <div className={styles.layout}>
+      {children}
+    </div>
   );
 }

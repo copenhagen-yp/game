@@ -11,7 +11,11 @@
     "sourceType": "module"
   },
   "plugins": ["@typescript-eslint"],
-  "rules": {},
+  "rules": {
+    "quotes": [2, "single", "avoid-escape"],
+    "indent": ["error", 2, { "SwitchCase": 1 }],
+    "object-curly-spacing": ["error", "always"]
+  },
   "settings": {
     "import/resolver": {
       "node": {
