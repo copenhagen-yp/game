@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 export enum APP_TEXT {
     ENTER = 'Вход',
     AUTH_TEXT = 'Авторизоваться'
