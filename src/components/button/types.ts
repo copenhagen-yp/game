@@ -5,6 +5,6 @@ export type Props = {
     type?: 'submit' | 'button' | 'reset';
     disabled?: boolean;
     viewType?: 'link' | 'icon' | 'button' ;
-    onClick: () => void;
+    onClick?: () => void;
     children: ReactNode;
 };
