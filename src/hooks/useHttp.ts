@@ -1,27 +1,33 @@
 import { useCallback, useState } from 'react';
+import { useToasts } from 'react-toast-notifications';
 
 import { API_URL } from '../constants';
 import { Options } from './types';
 
 export const useHttp = (url: string) => {
   const [errors, setErrors] = useState<string[]>([]);
+  const { addToast } = useToasts();
   const headers = new Headers();
   headers.append('Content-Type', 'application/json');
 
   const requestAuth = useCallback(
-    (options?: Options ) => {
-      fetch(`${API_URL.DOMEN}${url}`, { ...options, headers })
-        .then(resp => resp.json().then((json) => {
-          if (resp.status >= 300) {
-            return Promise.reject(json);
-          } else {
-            return json;
-          }
-        }))
-        .catch(({ reason }: {[index: string]: string}) => {
-          setErrors(prevState => [...prevState, reason]);
-        });
+    async(options?: Options) => {
+      try {
+        const response = await fetch(`${API_URL.DOMAIN}${url}`, { ...options, headers });
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw data;
+        }
+
+        return data;
+
+      } catch ({ reason }) {
+        setErrors(prevState => [...prevState, reason]);
+        addToast(reason, { appearance: 'error' });
+      }
     },[]);
+
   return {
     requestAuth,
     errors

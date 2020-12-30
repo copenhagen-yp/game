@@ -1,23 +1,29 @@
 import { useCallback, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 
-import { Options } from './types';
+import { Options, Fields, Error } from './types';
 
+export const useForm = (request: (options: Options)=>Promise<any>, requiredFields: string[]) => {
+  const [fields, setFields] = useState<Fields>({});
+  const [error, setError] = useState<Error>(requiredFields.reduce((a,e)=>({ ...a, [e]: false }),{}));
+  let history = useHistory();
 
-// eslint-disable-next-line no-unused-vars
-export const useForm = (request: (options: Options)=>void, requiredFields: string[]) => {
-  const [fields, setFields] = useState<{[index:string]:string}>({});
-  const [error, setError] = useState<{[index:string]:boolean}>(requiredFields.reduce((a,e)=>({ ...a, [e]: false }),{}));
   const handleSubmit = useCallback((e) => {
     e.preventDefault();
     if (Object.values(fields).length >= Object.keys(error).length) {
-      request({ method: 'POST', body: JSON.stringify(fields) });
+      request({ method: 'POST', body: JSON.stringify(fields) })
+        .then(response => {
+          if (response) {
+            history.push('/');
+          }
+        });
     } else {
       const form = e.target.elements;
       for (const key in form) {
         if (Object.prototype.hasOwnProperty.call(form, key)) {
           const element = form[key];
           if (element.name && !element.value) {
-            setError(prevProps => ({ ...prevProps, [element.name]: true }));  
+            setError((prevProps: any) => ({ ...prevProps, [element.name]: true }));  
           }
         }
       }
@@ -26,16 +32,16 @@ export const useForm = (request: (options: Options)=>void, requiredFields: strin
 
   const handleChange = useCallback((e) => {
     if (error[e.target.name]) {
-      setError(prevProps => ({ ...prevProps, [e.target.name]: false }));
+      setError((prevProps: any) => ({ ...prevProps, [e.target.name]: false }));
     }
-    setFields(prevState => ({ ...prevState, [e.target.name]: e.target.value }));
+    setFields((prevState: any) => ({ ...prevState, [e.target.name]: e.target.value }));
   },[error]);
 
   const handleBlur = useCallback((e) => {
     if (!e.target.value && e.target.name in error) {
-      setError(prevProps => ({ ...prevProps, [e.target.name]: true }));
+      setError((prevProps: any) => ({ ...prevProps, [e.target.name]: true }));
     } else {
-      setError(prevProps => ({ ...prevProps, [e.target.name]: false }));  
+      setError((prevProps: any) => ({ ...prevProps, [e.target.name]: false }));  
     }
   },[]);
 

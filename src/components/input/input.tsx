@@ -6,9 +6,9 @@ import styles from './input.pcss';
 
 
 export const Input: FC<Props> = (props) => {
-  const { isError } = props;
+  const { isError, ...restProps } = props;
 
   return (<input 
     className={classNames(styles.input, isError && styles.input_type_error)} 
-    {...props}/>);
+    {...restProps}/>);
 };
