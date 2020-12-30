@@ -1,32 +1,32 @@
 import { useCallback, useState } from 'react';
 
+import { API_URL } from '../constants';
 import { Options } from './types';
-
-const _DOMEN = 'https://ya-praktikum.tech/api/v2/';
 
 export const useHttp = (url: string) => {
   const [errors, setErrors] = useState<string[]>([]);
   const headers = new Headers();
 
-  headers.append('Content-Type', 'application/json')
+  headers.append('Content-Type', 'application/json');
+
   const request = useCallback(
-    (options?: Options ) => {
-      return fetch(`${_DOMEN}${url}`, { ...options, credentials: 'include', headers })
-        .then(resp => {
-          if (resp.status >= 300) {
-            return Promise.reject();
-          } else {
-            return resp.json();
-          }
-        })
-        .then(json => json)
-        .catch((err: string) => {
-          setErrors(prevState => [...prevState, err]);
-        });
+    async(options?: Options) => {
+      try {
+        const response = await fetch(`${API_URL.DOMAIN}${url}`, { ...options, credentials: 'include', headers });
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw data;
+        }
+
+        return data;
+      } catch ({ reason }) {
+        setErrors(prevState => [...prevState, reason]);
+      }
     },[]);
 
   return {
     request,
     errors
   };
-}
+};
