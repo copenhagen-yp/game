@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { response } from 'pages/leaderboard/types';
 import { useHttp } from '../../hooks/useHttp';
 import { API_URL } from '../../constants';
-import { leaderboardApi } from '../../api/leaderboard-api';
+import { leaderboardApi } from '../../api';
 import styles from './leaderboard.pcss';
 
 export const Leaderboard = () => {
