@@ -1,1 +1,1 @@
-export type response = [{ data: { name: string, points: string } }];
+export type response = [{ data: { name: string, points: string, id: number } }];
