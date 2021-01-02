@@ -8,12 +8,12 @@ import styles from './sign-in.pcss';
 export const Signin = () => {
   const requiredFields = ['login', 'password'];
   const successResult = '/';
-  const { requestAuth } = useHttp(API_URL.SIGN_IN);
+  const { request } = useHttp(API_URL.SIGN_IN);
   const { 
     handleSubmit, 
     handleChange, 
     handleBlur,
-    error } = useForm(requestAuth, requiredFields, successResult);
+    error } = useForm(request, requiredFields, successResult);
   
   return (
     <div className={styles.form__wrapper}>

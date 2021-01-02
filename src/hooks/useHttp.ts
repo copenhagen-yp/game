@@ -10,7 +10,7 @@ export const useHttp = (url: string) => {
   const headers = new Headers();
   headers.append('Content-Type', 'application/json');
 
-  const requestAuth = useCallback(
+  const request = useCallback(
     async(options?: Options) => {
       try {
         const response = await fetch(`${API_URL.DOMAIN}${url}`, { ...options, headers });
@@ -36,7 +36,7 @@ export const useHttp = (url: string) => {
     },[]);
 
   return {
-    requestAuth,
+    request,
     errors
   };
 };
