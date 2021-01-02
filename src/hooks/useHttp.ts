@@ -14,7 +14,14 @@ export const useHttp = (url: string) => {
     async(options?: Options) => {
       try {
         const response = await fetch(`${API_URL.DOMAIN}${url}`, { ...options, headers });
-        const data = await response.json();
+        let data;
+
+        const contentType = response.headers.get('content-type');
+        if (contentType && contentType.includes('application/json')) {
+          data = await response.json();
+        } else {
+          data = await response.text();
+        }
 
         if (!response.ok) {
           throw data;

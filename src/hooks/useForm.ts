@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 
 import { Options, Fields, Error } from './types';
 
-export const useForm = (request: (options: Options)=>Promise<any>, requiredFields: string[]) => {
+export const useForm = (request: (options: Options)=>Promise<any>, requiredFields: string[], successResult: string) => {
   const [fields, setFields] = useState<Fields>({});
   const [error, setError] = useState<Error>(requiredFields.reduce((a,e)=>({ ...a, [e]: false }),{}));
   let history = useHistory();
@@ -14,7 +14,7 @@ export const useForm = (request: (options: Options)=>Promise<any>, requiredField
       request({ method: 'POST', body: JSON.stringify(fields) })
         .then(response => {
           if (response) {
-            history.push('/');
+            history.push(successResult);
           }
         });
     } else {
