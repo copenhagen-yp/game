@@ -36,12 +36,16 @@ export const Leaderboard = () => {
               </tr>
             </thead>
             <tbody>
-              {playersData.map((player, index) => (
-                <tr key={player.data.id || index}>
-                  <td className={styles.leaderboard__cell}>{player.data.name || 'Неизвестный'}</td>
-                  <td className={cn(styles.leaderboard__cell, styles.leaderboard__cell_textRight)}>{player.data.points}</td>
-                </tr>
-              ))}
+              {playersData
+                .filter((player) => {
+                  return !!(player.data.name && player.data.points && player.data.id);
+                })
+                .map((player) => (
+                  <tr key={player.data.id}>
+                    <td className={styles.leaderboard__cell}>{player.data.name}</td>
+                    <td className={cn(styles.leaderboard__cell, styles.leaderboard__cell_textRight)}>{player.data.points}</td>
+                  </tr>
+                ))}
             </tbody>
           </table>}
       </div>
