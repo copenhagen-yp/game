@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 
-import { response } from 'pages/leaderboard/types';
+import { GetLeadersResponseType } from './types';
 import { useHttp } from '../../hooks/useHttp';
 import { API_URL } from '../../constants';
 import { leaderboardApi } from '../../api';
+import cn from 'classnames';
 import styles from './leaderboard.pcss';
 
 export const Leaderboard = () => {
@@ -14,7 +15,7 @@ export const Leaderboard = () => {
 
   useEffect(function () {
     getLeaderboard()
-      .then((res: response) => {
+      .then((res: GetLeadersResponseType) => {
         if (res) {
           setPlayersData(res);
           setLoading(false);
@@ -31,14 +32,14 @@ export const Leaderboard = () => {
             <thead>
               <tr>
                 <th className={styles.leaderboard__cell}>Имя</th>
-                <th className={`${styles.leaderboard__cell} ${styles.leaderboard__cell_textRight}`}>Очки</th>
+                <th className={cn(styles.leaderboard__cell, styles.leaderboard__cell_textRight)}>Очки</th>
               </tr>
             </thead>
             <tbody>
               {playersData.map((player, index) => (
                 <tr key={player.data.id || index}>
                   <td className={styles.leaderboard__cell}>{player.data.name || 'Неизвестный'}</td>
-                  <td className={`${styles.leaderboard__cell} ${styles.leaderboard__cell_textRight}`}>{player.data.points}</td>
+                  <td className={cn(styles.leaderboard__cell, styles.leaderboard__cell_textRight)}>{player.data.points}</td>
                 </tr>
               ))}
             </tbody>

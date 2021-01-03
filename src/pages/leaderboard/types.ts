@@ -1,1 +1,10 @@
-export type response = [{ data: { name: string, points: string, id: number } }];
+export type GetLeadersResponseType = [
+  {
+    data:
+      {
+        name: string,
+        points: string,
+        id: number
+      }
+  }
+];
