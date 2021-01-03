@@ -1,6 +1,8 @@
 export type Options = {
     method?: string,
     headers?: Headers,
-    data?: {[index: string]: string | number},
-    body?: string,
-}
+    body?: string
+};
+
+export type Fields = {[index:string]:string};
+export type Error = {[index:string]:boolean};
