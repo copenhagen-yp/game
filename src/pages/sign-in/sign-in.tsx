@@ -3,11 +3,12 @@ import React from 'react';
 import { APP_TEXT, API_URL } from '../../constants';
 import { Field, Input, Button } from '../../components';
 import { useHttp, useForm } from '../../hooks';
+import { routes } from '../../routes';
 import styles from './sign-in.pcss';
 
-export const Signin = () => {
+export const SignIn = () => {
   const requiredFields = ['login', 'password'];
-  const successResult = '/';
+  const successResult = routes.home.path;
   const { request } = useHttp(API_URL.SIGN_IN);
   const { 
     handleSubmit, 

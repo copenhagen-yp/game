@@ -1,11 +1,11 @@
-import { Signin, Home, Game } from './pages';
+import { SignIn, Home, Game } from './pages';
 import { PublicLayout, PrivateLayout } from './layouts';
 
 export const routes = {
   signIn: {
     name: 'signIn',
     path: '/sign-in',
-    component: Signin,
+    component: SignIn,
     layout: PublicLayout,
     exact: true,
   },

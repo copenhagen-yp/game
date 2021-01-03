@@ -5,8 +5,8 @@ import { Options, Fields, Error } from './types';
 
 export const useForm = (request: (options: Options)=>Promise<any>, requiredFields: string[], successResult: string) => {
   const [fields, setFields] = useState<Fields>({});
-  const [error, setError] = useState<Error>(requiredFields.reduce((a,e)=>({ ...a, [e]: false }),{}));
-  let history = useHistory();
+  const [error, setError] = useState<Error>(requiredFields.reduce((accumulate, nameField)=>({ ...accumulate, [nameField]: false }),{}));
+  const history = useHistory();
 
   const handleSubmit = useCallback((e) => {
     e.preventDefault();
