@@ -23,22 +23,22 @@ export const SignIn = () => {
           <h3>{APP_TEXT.ENTER}</h3>
         </div>
         <div className={styles.form__body}>
-          <Field className={styles.form__item} label='Логин' isError={error.login}>
+          <Field className={styles.form__item} label='Логин' error={error.login}>
             <Input 
               type='text'
               name='login'
               onChange={handleChange}
               onBlur={handleBlur}
-              isError={error.login}
+              error={error.login}
             />
           </Field>
-          <Field className={styles.form__item} label='Пароль' isError={error.password}>
+          <Field className={styles.form__item} label='Пароль' error={error.password}>
             <Input 
               name='password'
               type='password' 
               onChange={handleChange} 
               onBlur={handleBlur}
-              isError={error.password}
+              error={error.password}
             />
           </Field>
         </div>

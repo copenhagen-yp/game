@@ -5,4 +5,4 @@ export type Options = {
 };
 
 export type Fields = {[index:string]:string};
-export type Error = {[index:string]:boolean};
+export type Error = {[index:string]:{value: boolean, text: string}};
