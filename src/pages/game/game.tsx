@@ -17,6 +17,7 @@ export const Game = () => {
     if (canvasObj) {
       const ctx = canvasObj.getContext('2d');
       const playGroundObj = new PlayGround(canvasObj, ctx);
+
       setPlayGround(playGroundObj);
     }
   }, []);

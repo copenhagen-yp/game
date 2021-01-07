@@ -112,6 +112,7 @@ export class MainCharacter {
 
   determineSteps () {
     const direction = this.getDirection();
+
     this.directionX = direction.x;
     this.directionY = direction.y;
 
@@ -194,6 +195,7 @@ export class MainCharacter {
       }
 
       const position = this.normalizePosition(x, y);
+
       this.setEndPosition(position.x, position.y);
 
       this.determineSteps();
@@ -216,6 +218,7 @@ export class MainCharacter {
     const y = event.clientY - this.canvasBoundingRect.top - this.height / 2;
 
     const position = this.normalizePosition(x, y);
+
     this.setEndPosition(position.x, position.y);
     this.determineSteps();
   }
