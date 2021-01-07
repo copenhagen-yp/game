@@ -8,7 +8,7 @@ import cn from 'classnames';
 import styles from './leaderboard.pcss';
 
 export const Leaderboard = () => {
-  const [playersData, setPlayersData] = useState([{ data: { name: 'download', points: 'download', id: 0 } }]);
+  const [playersData, setPlayersData] = useState<GetLeadersResponseType>([]);
   const [loading, setLoading] = useState(true);
   const { request } = useHttp(API_URL.LEADERBOARD_ALL);
   const { getLeaderboard } = leaderboardApi(request);
