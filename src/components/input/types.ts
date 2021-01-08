@@ -1,12 +1,12 @@
 import { ChangeEvent, FocusEvent } from 'react';
 
 export type Props = {
-    name?: string,
+    name: string,
     placeholder?: string,
     value?: string | number,
-    onChange?: (event: ChangeEvent<HTMLInputElement>) => void,
-    onBlur?: (event: FocusEvent<any>) => void,
+    onChange?: (event: ChangeEvent<HTMLInputElement> | null) => void,
+    onBlur?: (event: FocusEvent<HTMLInputElement> | null) => void,
     className?: string,
     type?: string,
-    isError?: boolean
+    error?: {value: boolean, text: string} 
 }
