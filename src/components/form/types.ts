@@ -1,4 +1,5 @@
 import { ChangeEvent, FormEvent, FocusEvent } from 'react';
+import { formFieldsType } from '../../pages/profile/types';
 
 export type formProps = {
   handleSubmit: (e: FormEvent<EventTarget>) => void;
@@ -7,9 +8,7 @@ export type formProps = {
   error: {
     [key: string]: boolean;
   };
-  fields: {
-    [key: string]: string;
-  }[];
+  fields: formFieldsType;
   title: string;
   submitButtonText: string;
 };

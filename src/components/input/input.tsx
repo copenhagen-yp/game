@@ -9,8 +9,8 @@ export const Input: FC<Props> = (props) => {
   const { isError, ...restProps } = props;
 
   return (
-    <input 
-      className={cn(styles.input, isError && styles.input_type_error)} 
+    <input
+      className={cn(styles.input, isError && styles.input_type_error)}
       {...restProps}
     />);
 };
