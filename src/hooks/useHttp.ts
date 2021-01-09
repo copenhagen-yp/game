@@ -4,7 +4,7 @@ import { useToasts } from 'react-toast-notifications';
 import { API_URL } from '../constants';
 import { Options } from './types';
 
-export const useHttp = (url: string) => {
+export const useHttp = (url: string, method: string) => {
   const [errors, setErrors] = useState<string[]>([]);
   const { addToast } = useToasts();
   const headers = new Headers();
@@ -14,7 +14,7 @@ export const useHttp = (url: string) => {
   const request = useCallback(
     async(options?: Options) => {
       try {
-        const response = await fetch(`${API_URL.DOMAIN}${url}`, { ...options, credentials: 'include', headers });
+        const response = await fetch(`${API_URL.DOMAIN}${url}`, { ...options, credentials: 'include', method: method, headers });
         let data;
 
         const contentType = response.headers.get('content-type');

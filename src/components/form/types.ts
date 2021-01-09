@@ -11,4 +11,7 @@ export type formProps = {
   fields: formFieldsType;
   title: string;
   submitButtonText: string;
+  fieldsValues: {
+    [key: string]: string;
+  };
 };

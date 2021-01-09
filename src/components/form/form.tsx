@@ -13,6 +13,7 @@ export const Form: FC<formProps> = (props) => {
     error,
     submitButtonText,
     fields,
+    fieldsValues,
   } = props;
 
   return (
@@ -35,6 +36,7 @@ export const Form: FC<formProps> = (props) => {
                 onChange={handleChange}
                 onBlur={handleBlur}
                 isError={error[field.name]}
+                value={fieldsValues[field.name] || ''}
               />
             </Field>
           ))}

@@ -7,7 +7,6 @@ const limit = 10;
 export const leaderboardApi = (request: { (options?: Options): Promise<any> }) => {
   const addUser = (name: string, id: number, points: number) => {
     return request({
-      method: 'POST',
       body: JSON.stringify({
         'data': {
           name,
@@ -21,7 +20,6 @@ export const leaderboardApi = (request: { (options?: Options): Promise<any> }) =
 
   const getLeaderboard = () => {
     return request({
-      method: 'POST',
       body: JSON.stringify({
         ratingFieldName,
         cursor,

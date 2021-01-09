@@ -11,8 +11,10 @@ export const useForm = (request: (options: Options)=>Promise<any>, requiredField
   const handleSubmit = useCallback((e) => {
     e.preventDefault();
 
-    if (Object.values(fields).length >= Object.keys(error).length) {
-      request({ method: 'PUT', body: JSON.stringify(fields) })
+    const validFieldValues = Object.values(fields).filter((field) => !!field);
+
+    if (validFieldValues.length >= Object.keys(error).length) {
+      request({ body: JSON.stringify(fields) })
         .then(response => {
           if (response && successResult) {
             history.push(successResult);
@@ -54,6 +56,7 @@ export const useForm = (request: (options: Options)=>Promise<any>, requiredField
     handleChange,
     handleBlur,
     fields,
-    error
+    error,
+    setFields
   };
 };

@@ -10,4 +10,12 @@ export enum API_URL {
   SIGN_IN = 'auth/signin',
   LEADERBOARD_ALL = 'leaderboard/all',
   EDIT_PROFILE = 'user/profile',
+  GET_USER_INFO = 'auth/user',
+}
+
+export enum REQUEST_METHOD {
+  GET = 'GET',
+  PUT = 'PUT',
+  POST = 'POST',
+  DELETE = 'DELETE',
 }
