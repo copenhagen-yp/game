@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import cn from 'classnames';
 
 import { formProps } from './types';
 import styles from './form.pcss';
@@ -6,6 +7,7 @@ import { Button, Field, Input } from '../../components';
 
 export const Form: FC<formProps> = (props) => {
   const {
+    wrapperClassName,
     handleSubmit,
     handleChange,
     handleBlur,
@@ -17,7 +19,7 @@ export const Form: FC<formProps> = (props) => {
   } = props;
 
   return (
-    <div className={styles.form__wrapper}>
+    <div className={cn(styles.form__wrapper, wrapperClassName && wrapperClassName)}>
       <form onSubmit={handleSubmit} className={styles.form}>
         <div className={styles.form__header}>
           <h3>{title}</h3>

@@ -4,6 +4,7 @@ import { API_URL, APP_TEXT, REQUEST_METHOD } from '../../constants';
 import { useForm, useHttp } from '../../hooks';
 import { formFieldsType } from './types';
 import { userInfoApi } from '../../api';
+import styles from './profile.pcss';
 
 const profileFields: formFieldsType = [
   {
@@ -69,6 +70,7 @@ export const Profile = () => {
   return (
     <main>
       <Form
+        wrapperClassName={styles.profile__formWrapper}
         error={error}
         handleBlur={handleBlur}
         handleSubmit={handleSubmit}
