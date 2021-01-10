@@ -3,20 +3,16 @@ import cn from 'classnames';
 
 import { formProps } from './types';
 import styles from './form.pcss';
-import { Button, Field, Input } from '../../components';
+import { Button } from '../../components';
 
 export const Form: FC<formProps> = (props) => {
   const {
+    children,
     wrapperClassName,
     formClassName,
     handleSubmit,
-    handleChange,
-    handleBlur,
     title,
-    error,
     submitButtonText,
-    fields,
-    fieldsValues,
   } = props;
 
   return (
@@ -26,23 +22,7 @@ export const Form: FC<formProps> = (props) => {
           <h3>{title}</h3>
         </div>
         <div className={styles.form__body}>
-          {fields.map((field) => (
-            <Field
-              key={field.name}
-              className={styles.form__item}
-              label={field.label}
-              isError={error[field.name]}
-            >
-              <Input
-                type={field.type}
-                name={field.name}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                isError={error[field.name]}
-                value={fieldsValues[field.name] || ''}
-              />
-            </Field>
-          ))}
+          {children}
         </div>
         <div className={styles.form__footer}>
           <Button>{submitButtonText}</Button>

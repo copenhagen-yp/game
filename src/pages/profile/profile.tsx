@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { Form } from '../../components';
+import { Field, Form, Input } from '../../components';
 import { API_URL, APP_TEXT, REQUEST_METHOD } from '../../constants';
 import { useForm, useHttp } from '../../hooks';
 import { formFieldsType } from './types';
@@ -114,15 +114,27 @@ export const Profile = () => {
         <Form
           wrapperClassName={styles.profile__formWrapper}
           formClassName={styles.profile__form}
-          error={errorProfile}
-          handleBlur={handleBlurProfile}
           handleSubmit={handleSubmitProfile}
-          handleChange={handleChangeProfile}
           submitButtonText={APP_TEXT.PROFILE_SUBMIT_BUTTON_TEXT}
           title={APP_TEXT.PROFILE_FORM_TITLE}
-          fields={profileFields}
-          fieldsValues={profileFieldsValues}
-        />
+        >
+          {profileFields.map((field) => (
+            <Field
+              key={field.name}
+              label={field.label}
+              isError={errorProfile[field.name]}
+            >
+              <Input
+                type={field.type}
+                name={field.name}
+                onChange={handleChangeProfile}
+                onBlur={handleBlurProfile}
+                isError={errorProfile[field.name]}
+                value={profileFieldsValues[field.name] || ''}
+              />
+            </Field>
+          ))}
+        </Form>
         <div className={styles.profile__rightBlock}>
           <label>
             <div className={styles.profile__avatarWrapper}>
@@ -134,15 +146,28 @@ export const Profile = () => {
           <Form
             wrapperClassName={styles.profile__formWrapper}
             formClassName={styles.profile__form}
-            error={passwordError}
-            handleBlur={handleBlurPassword}
             handleSubmit={handleSubmitPassword}
-            handleChange={handleChangePassword}
             submitButtonText={APP_TEXT.PROFILE_SUBMIT_BUTTON_TEXT}
             title={APP_TEXT.PASSWORD_FORM_TITLE}
-            fields={passwordFields}
-            fieldsValues={passwordFieldsValues}
-          />
+          >
+            {passwordFields.map((field) => (
+              <Field
+                key={field.name}
+                className={styles.form__item}
+                label={field.label}
+                isError={passwordError[field.name]}
+              >
+                <Input
+                  type={field.type}
+                  name={field.name}
+                  onChange={handleChangePassword}
+                  onBlur={handleBlurPassword}
+                  isError={passwordError[field.name]}
+                  value={passwordFieldsValues[field.name] || ''}
+                />
+              </Field>
+            ))}
+          </Form>
         </div>
       </div>
     </main>

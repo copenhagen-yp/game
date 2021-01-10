@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { APP_TEXT, API_URL, REQUEST_METHOD } from '../../constants';
-import { Form } from '../../components';
+import { Field, Form, Input } from '../../components';
 import { useHttp, useForm } from '../../hooks';
 import { routes } from '../../routes';
 
@@ -32,14 +32,26 @@ export const SignIn = () => {
 
   return (
     <Form
-      error={error}
-      handleBlur={handleBlur}
       handleSubmit={handleSubmit}
-      handleChange={handleChange}
       submitButtonText={APP_TEXT.AUTH_TEXT}
       title={APP_TEXT.ENTER}
-      fields={signInFields}
-      fieldsValues={fieldsValues}
-    />
+    >
+      {signInFields.map((field) => (
+        <Field
+          key={field.name}
+          label={field.label}
+          isError={error[field.name]}
+        >
+          <Input
+            type={field.type}
+            name={field.name}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            isError={error[field.name]}
+            value={fieldsValues[field.name] || ''}
+          />
+        </Field>
+      ))}
+    </Form>
   )
 };
