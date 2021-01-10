@@ -126,7 +126,7 @@ export const Profile = () => {
         <div className={styles.profile__rightBlock}>
           <label>
             <div className={styles.profile__avatarWrapper}>
-              <img className={styles.profile__avatarImage} src={avatarPath} alt="avatar"/>
+              <img className={styles.profile__avatarImage} src={avatarPath || APP_TEXT.DEFAULT_AVATAR} alt="avatar"/>
               <span className={styles.profile__avatarTextLayer}>Изменить аватар</span>
             </div>
             <input onChange={handleChangeAvatar} className={styles.profile__avatarInput} type="file"/>

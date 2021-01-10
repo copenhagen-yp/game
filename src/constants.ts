@@ -4,6 +4,7 @@ export enum APP_TEXT {
   PROFILE_FORM_TITLE = 'Профиль',
   PROFILE_SUBMIT_BUTTON_TEXT = 'Изменить',
   PASSWORD_FORM_TITLE = 'Изменение пароля',
+  DEFAULT_AVATAR = '/images/default_avatar.png',
 }
 
 export enum API_URL {
