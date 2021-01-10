@@ -39,23 +39,47 @@ const profileFields: formFieldsType = [
     label: 'Телефон',
   },
 ];
-const requiredFields = ['first_name', 'second_name', 'display_name', 'login', 'email', 'phone'];
+const requiredProfileFields = ['first_name', 'second_name', 'display_name', 'login', 'email', 'phone'];
+const passwordFields: formFieldsType = [
+  {
+    type: 'password',
+    name: 'oldPassword',
+    label: 'Старый пароль',
+  },
+  {
+    type: 'password',
+    name: 'newPassword',
+    label: 'Новый пароль',
+  },
+];
+const requiredPasswordFields = ['oldPassword', 'newPassword'];
 
 export const Profile = () => {
   const { request: putUserInfoRequest } = useHttp(API_URL.EDIT_PROFILE, REQUEST_METHOD.PUT);
   const { request: getUserInfoRequest } = useHttp(API_URL.GET_USER_INFO, REQUEST_METHOD.GET);
-  const { request: updateUserAvatarRequest } = useHttp(API_URL.UPDATE_AVATAR, REQUEST_METHOD.PUT, true)
+  const { request: updateUserAvatarRequest } = useHttp(API_URL.UPDATE_AVATAR, REQUEST_METHOD.PUT, true);
+  const { request: changePasswordRequest } = useHttp(API_URL.CHANGE_PASSWORD, REQUEST_METHOD.PUT);
+
   const {
-    handleSubmit,
-    handleChange,
-    handleBlur,
-    error,
-    fields: fieldsValues,
-    setFields,
-  } = useForm(putUserInfoRequest, requiredFields);
+    handleSubmit: handleSubmitProfile,
+    handleChange: handleChangeProfile,
+    handleBlur: handleBlurProfile,
+    error: errorProfile,
+    fields: profileFieldsValues,
+    setFields: setFieldsProfile,
+  } = useForm(putUserInfoRequest, requiredProfileFields);
+
   const { getInfo } = userInfoApi(getUserInfoRequest);
   const { updateUserAvatar } = userInfoApi(updateUserAvatarRequest);
   const [avatarPath, setAvatarPath] = useState('');
+
+  const {
+    handleSubmit: handleSubmitPassword,
+    handleChange: handleChangePassword,
+    handleBlur: handleBlurPassword,
+    error: passwordError,
+    fields: passwordFieldsValues,
+  } = useForm(changePasswordRequest, requiredPasswordFields);
 
   const handleChangeAvatar = (event: any) => {
     updateUserAvatar(event.target.files[0])
@@ -78,29 +102,49 @@ export const Profile = () => {
         }
 
         const currentFieldValues = Object.keys(userFieldValues)
-          .reduce((acc, key) => (requiredFields.includes(key) ? { ...acc, [key]: userFieldValues[key] } : acc), {});
+          .reduce((acc, key) => (requiredProfileFields.includes(key) ? { ...acc, [key]: userFieldValues[key] } : acc), {});
 
-        setFields((prevState: any) => ({ ...prevState, ...currentFieldValues }));
+        setFieldsProfile((prevState: any) => ({ ...prevState, ...currentFieldValues }));
       })
   }, []);
 
   return (
     <main className={styles.profile}>
-      <label>
-        <img className={styles.profile__avatarImage} src={avatarPath} alt="avatar"/>
-        <input onChange={handleChangeAvatar} className={styles.profile__avatarInput} type="file"/>
-      </label>
-      <Form
-        wrapperClassName={styles.profile__formWrapper}
-        error={error}
-        handleBlur={handleBlur}
-        handleSubmit={handleSubmit}
-        handleChange={handleChange}
-        submitButtonText={APP_TEXT.PROFILE_SUBMIT_BUTTON_TEXT}
-        title={APP_TEXT.PROFILE_TITLE}
-        fields={profileFields}
-        fieldsValues={fieldsValues}
-      />
+      <div className={styles.profile__formsWrapper}>
+        <Form
+          wrapperClassName={styles.profile__formWrapper}
+          formClassName={styles.profile__form}
+          error={errorProfile}
+          handleBlur={handleBlurProfile}
+          handleSubmit={handleSubmitProfile}
+          handleChange={handleChangeProfile}
+          submitButtonText={APP_TEXT.PROFILE_SUBMIT_BUTTON_TEXT}
+          title={APP_TEXT.PROFILE_FORM_TITLE}
+          fields={profileFields}
+          fieldsValues={profileFieldsValues}
+        />
+        <div className={styles.profile__rightBlock}>
+          <label>
+            <div className={styles.profile__avatarWrapper}>
+              <img className={styles.profile__avatarImage} src={avatarPath} alt="avatar"/>
+              <span className={styles.profile__avatarTextLayer}>Изменить аватар</span>
+            </div>
+            <input onChange={handleChangeAvatar} className={styles.profile__avatarInput} type="file"/>
+          </label>
+          <Form
+            wrapperClassName={styles.profile__formWrapper}
+            formClassName={styles.profile__form}
+            error={passwordError}
+            handleBlur={handleBlurPassword}
+            handleSubmit={handleSubmitPassword}
+            handleChange={handleChangePassword}
+            submitButtonText={APP_TEXT.PROFILE_SUBMIT_BUTTON_TEXT}
+            title={APP_TEXT.PASSWORD_FORM_TITLE}
+            fields={passwordFields}
+            fieldsValues={passwordFieldsValues}
+          />
+        </div>
+      </div>
     </main>
   );
 }

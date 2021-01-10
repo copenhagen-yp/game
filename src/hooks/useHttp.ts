@@ -32,9 +32,16 @@ export const useHttp = (url: string, method: string, withoutHeaders?: boolean) =
         }
 
         return data;
-      } catch ({ reason }) {
-        setErrors(prevState => [...prevState, reason]);
-        addToast(reason, { appearance: 'error' });
+      } catch (error) {
+        if (error.reason) {
+          setErrors(prevState => [...prevState, error.reason]);
+          addToast(error.reason, { appearance: 'error' });
+        } else if (typeof error === 'string') {
+          setErrors(prevState => [...prevState, error]);
+          addToast(error, { appearance: 'error' });
+        } else {
+          addToast('Что-то пошло не так', { appearance: 'error' });
+        }
       }
     },[]);
 

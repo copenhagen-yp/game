@@ -3,6 +3,7 @@ import { formFieldsType } from '../../pages/profile/types';
 
 export type formProps = {
   wrapperClassName?: string;
+  formClassName?: string;
   handleSubmit: (e: FormEvent<EventTarget>) => void;
   handleChange: (e: ChangeEvent<HTMLInputElement>) => void;
   handleBlur: (e: FocusEvent<any>) => void;

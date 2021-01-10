@@ -8,6 +8,7 @@ import { Button, Field, Input } from '../../components';
 export const Form: FC<formProps> = (props) => {
   const {
     wrapperClassName,
+    formClassName,
     handleSubmit,
     handleChange,
     handleBlur,
@@ -20,7 +21,7 @@ export const Form: FC<formProps> = (props) => {
 
   return (
     <div className={cn(styles.form__wrapper, wrapperClassName && wrapperClassName)}>
-      <form onSubmit={handleSubmit} className={styles.form}>
+      <form onSubmit={handleSubmit} className={cn(styles.form, formClassName && formClassName)}>
         <div className={styles.form__header}>
           <h3>{title}</h3>
         </div>
