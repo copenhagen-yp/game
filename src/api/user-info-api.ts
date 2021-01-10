@@ -8,7 +8,19 @@ export const userInfoApi = (request: { (options?: Options): Promise<any> }) => {
     })
   }
 
+  const updateUserAvatar = (image: any) => {
+    const formData = new FormData();
+
+    formData.append('avatar', image);
+
+    return request({
+      method: REQUEST_METHOD.PUT,
+      body: formData,
+    })
+  }
+
   return {
     getInfo,
+    updateUserAvatar,
   }
 };
