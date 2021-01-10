@@ -11,6 +11,7 @@ export const Navigation = () => {
       <li><Link to={routes.home.path}>Home</Link></li>
       <li><Link to={routes.game.path}>Game</Link></li>
       <li><Link to={routes.leaderboard.path}>Leaderboard</Link></li>
+      <li><Link to={routes.forums.path}>Forums</Link></li>
     </ul>
   );
 };

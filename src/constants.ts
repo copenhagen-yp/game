@@ -7,7 +7,10 @@ export enum APP_TEXT {
   DEFAULT_AVATAR = '/images/default_avatar.png',
   REGISTRATION = 'Регистрация',
   REGISTRATION_BTN_TEXT = 'Зарегистрироваться',
-  ERROR_EMAIL = 'Не корректный email'
+  ERROR_EMAIL = 'Не корректный email',
+  COMMENT_TITLE = 'Оставить комментарий',
+  BTN_SEND = 'Отправить',
+  FORUM_TITLE = 'Задать вопрос',
 }
 
 export enum API_URL {

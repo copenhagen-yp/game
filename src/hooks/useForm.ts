@@ -29,7 +29,7 @@ export const useForm = (request: (options: Options)=>Promise<any>, requiredField
           const element = form[key];
 
           if (element.name && !element.value) {
-            setError((prevProps: any) => ({ ...prevProps, [element.name]: { value: true, text: '' } }));
+            setError((prevProps: any) => ({ ...prevProps, [element.name]: { value: true, text: '' } }));  
           }
         }
       }
@@ -52,7 +52,7 @@ export const useForm = (request: (options: Options)=>Promise<any>, requiredField
     if (!e.target.value && e.target.name in error) {
       setError((prevProps: any) => ({ ...prevProps, [e.target.name]: { value: true, text: '' } }));
     } else {
-      setError((prevProps: any) => ({ ...prevProps, [e.target.name]: { value: false, text: '' } }));
+      setError((prevProps: any) => ({ ...prevProps, [e.target.name]: { value: false, text: '' } }));  
     }
   },[]);
 
