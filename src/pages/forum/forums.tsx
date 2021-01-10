@@ -19,8 +19,8 @@ export const Forums = () => {
         {
           forums.map(item => {
             return (
-              <Link to={`${routes.forums.path}/${item.id}`}>
-                <li key={item.id} className={styles.forum__item}>
+              <Link key={item.id} to={`${routes.forums.path}/${item.id}`}>
+                <li className={styles.forum__item}>
                   <h3>{item.name}</h3>
                   <p>{item.description}</p>
                 </li>
