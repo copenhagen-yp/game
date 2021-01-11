@@ -122,14 +122,14 @@ export const Profile = () => {
             <Field
               key={field.name}
               label={field.label}
-              isError={errorProfile[field.name]}
+              error={errorProfile[field.name]}
             >
               <Input
                 type={field.type}
                 name={field.name}
                 onChange={handleChangeProfile}
                 onBlur={handleBlurProfile}
-                isError={errorProfile[field.name]}
+                error={errorProfile[field.name]}
                 value={profileFieldsValues[field.name] || ''}
               />
             </Field>
@@ -155,14 +155,14 @@ export const Profile = () => {
                 key={field.name}
                 className={styles.form__item}
                 label={field.label}
-                isError={passwordError[field.name]}
+                error={passwordError[field.name]}
               >
                 <Input
                   type={field.type}
                   name={field.name}
                   onChange={handleChangePassword}
                   onBlur={handleBlurPassword}
-                  isError={passwordError[field.name]}
+                  error={passwordError[field.name]}
                   value={passwordFieldsValues[field.name] || ''}
                 />
               </Field>

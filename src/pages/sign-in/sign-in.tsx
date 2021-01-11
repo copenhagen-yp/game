@@ -16,7 +16,7 @@ const signInFields = [
     name: 'password',
     label: 'Пароль',
   },
-]
+];
 
 export const SignIn = () => {
   const requiredFields = ['login', 'password'];
