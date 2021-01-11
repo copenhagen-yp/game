@@ -1,7 +1,21 @@
-import { SignIn, SignUp, Home, Game, Leaderboard, Profile } from './pages';
+import { SignIn, SignUp, Home, Game, Leaderboard, Topic, Forum, Profile } from './pages';
 import { PublicLayout, PrivateLayout } from './layouts';
 
 export const routes = {
+  forum: {
+    name: 'topic',
+    path: '/forum/:id',
+    component: Topic,
+    layout: PrivateLayout,
+    exact: true,
+  },
+  forums: {
+    name: 'forum',
+    path: '/forum',
+    component: Forum,
+    layout: PrivateLayout,
+    exact: true,
+  },
   signIn: {
     name: 'signIn',
     path: '/sign-in',
