@@ -5,7 +5,7 @@ import { Game } from './game';
 import { Leaderboard } from './leaderboard';
 import { Profile } from './profile';
 import { NoMatch } from './no-match';
-import { Forum, Forums } from './forum'; 
+import { Forum, Topic } from './forum'; 
 
 export {
   SignIn,
@@ -16,5 +16,5 @@ export {
   NoMatch,
   Profile,
   Forum,
-  Forums
+  Topic
 };

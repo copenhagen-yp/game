@@ -1,2 +1,2 @@
+export * from './topic';
 export * from './forum';
-export * from './forums';

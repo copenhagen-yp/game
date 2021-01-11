@@ -1,34 +1,49 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
-import { useForum, useHttp, useForm } from '../../hooks';
-import { Input, Button, Field } from '../../components';
+import { useForum, useForm, useHttp } from '../../hooks';
 import { APP_TEXT } from '../../constants';
+import { routes } from '../../routes';
+import { Field, Input, Button } from '../../components';
 import styles from './forum.pcss';
 
 export const Forum = () => {
-  const requiredFields = ['comment'];
+  const requiredFields = ['question_name', 'question_description'];
   const { request } = useHttp('');
   const { handleChange, handleBlur, fields, error } = useForm(request, requiredFields);
-  const { currentForum, currentComments, handleSubmitComments } = useForum(fields);
-  
+  const { forums, handleSubmitQuestion } = useForum(fields);  
+
   return (
     <div className={styles.container}>
-      <h3>{currentForum?.name}</h3>
-      <p>{currentForum?.description}</p>
-      <ul>
-        {currentComments.map(item => {
-          return (
-            <li key={item.id} className={styles.comments}>{item.comment}</li>
-          )
-        })}
+      <ul className={styles.forum}>
+        {
+          forums.map(item => {
+            return (
+              <Link key={item.id} to={`${routes.forums.path}/${item.id}`}>
+                <li className={styles.forum__item}>
+                  <h3>{item.name}</h3>
+                  <p>{item.description}</p>
+                </li>
+              </Link>
+            )
+          })
+        }
       </ul>
-      <form onSubmit={handleSubmitComments} className={styles.forum__form}>
-        <h3>{APP_TEXT.COMMENT_TITLE}</h3>
-        <Field label="Комментарий" error={error.comment}>
+      <form onSubmit={handleSubmitQuestion} className={styles.forum__form}>
+        <h3>{APP_TEXT.FORUM_TITLE}</h3>
+        <Field label="Тема" error={error.name}>
           <Input 
-            name="comment" 
+            name="name" 
             type="text"
-            error={error.comment}
+            error={error.name}
+            onChange={handleChange}
+            onBlur={handleBlur} />
+        </Field>
+        <Field label="Описание" error={error.description}>
+          <Input 
+            name="description" 
+            type="text"
+            error={error.description}
             onChange={handleChange}
             onBlur={handleBlur} />
         </Field>
