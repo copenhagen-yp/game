@@ -3,6 +3,6 @@ import { ReactNode } from 'react';
 export type Props = {
     children: ReactNode,
     label?: string,
-    isError?: boolean,
+    error?: {value: boolean, text: string},
     className?: string
 };

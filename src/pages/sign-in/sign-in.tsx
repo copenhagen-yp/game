@@ -40,14 +40,14 @@ export const SignIn = () => {
         <Field
           key={field.name}
           label={field.label}
-          isError={error[field.name]}
+          error={error[field.name]}
         >
           <Input
             type={field.type}
             name={field.name}
             onChange={handleChange}
             onBlur={handleBlur}
-            isError={error[field.name]}
+            error={error[field.name]}
             value={fieldsValues[field.name] || ''}
           />
         </Field>

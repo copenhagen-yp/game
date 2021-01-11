@@ -6,10 +6,12 @@ import { RouteWrapperType } from './types';
 export const RouteWrapper = ({
   component: Component,
   layout: Layout,
+  exact,
   ...rest
 }: RouteWrapperType) => {
   return (
     <Route
+      exact={exact}
       {...rest}
       render={(props) =>
         <Layout {...props}>

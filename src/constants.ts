@@ -5,6 +5,9 @@ export enum APP_TEXT {
   PROFILE_SUBMIT_BUTTON_TEXT = 'Изменить',
   PASSWORD_FORM_TITLE = 'Изменение пароля',
   DEFAULT_AVATAR = '/images/default_avatar.png',
+  REGISTRATION = 'Регистрация',
+  REGISTRATION_BTN_TEXT = 'Зарегистрироваться',
+  ERROR_EMAIL = 'Не корректный email'
 }
 
 export enum API_URL {
@@ -16,6 +19,7 @@ export enum API_URL {
   GET_USER_INFO = 'auth/user',
   UPDATE_AVATAR = 'user/profile/avatar',
   CHANGE_PASSWORD = 'user/password',
+  SIGN_UP = 'auth/signup',
 }
 
 export enum REQUEST_METHOD {
@@ -23,3 +27,7 @@ export enum REQUEST_METHOD {
   PUT = 'PUT',
   POST = 'POST',
 }
+
+export const APP_REGULAR = {
+  VALID_EMAIL: /^([\w-.*]+@([\w-]+\.)+[\w-]{2,4})?$/
+};

@@ -6,11 +6,17 @@ import styles from './input.pcss';
 
 
 export const Input: FC<Props> = (props) => {
-  const { isError, ...restProps } = props;
+  const { error, name, placeholder, value, className, type, onChange, onBlur, ...restProps } = props;
 
   return (
     <input
-      className={cn(styles.input, isError && styles.input_type_error)}
+      name={name}
+      type={type}
+      placeholder={placeholder}
+      value={value}
+      onChange={onChange}
+      onBlur={onBlur}
+      className={cn(styles.input, error?.value && styles.input_type_error, className)}
       {...restProps}
     />);
 };
