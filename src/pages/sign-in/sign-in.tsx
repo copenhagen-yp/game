@@ -1,51 +1,57 @@
 import React from 'react';
 
-import { APP_TEXT, API_URL } from '../../constants';
-import { Field, Input, Button } from '../../components';
+import { APP_TEXT, API_URL, REQUEST_METHOD } from '../../constants';
+import { Field, Form, Input } from '../../components';
 import { useHttp, useForm } from '../../hooks';
 import { routes } from '../../routes';
-import styles from './sign-in.pcss';
+
+const signInFields = [
+  {
+    type: 'text',
+    name: 'login',
+    label: 'Логин',
+  },
+  {
+    type: 'password',
+    name: 'password',
+    label: 'Пароль',
+  },
+];
 
 export const SignIn = () => {
   const requiredFields = ['login', 'password'];
   const successResult = routes.home.path;
-  const { request } = useHttp(API_URL.SIGN_IN);
-  const { 
-    handleSubmit, 
-    handleChange, 
+  const { request } = useHttp(API_URL.SIGN_IN, REQUEST_METHOD.POST);
+  const {
+    handleSubmit,
+    handleChange,
     handleBlur,
-    error } = useForm(request, requiredFields, successResult);
-  
+    error,
+    fields: fieldsValues,
+  } = useForm(request, requiredFields, successResult);
+
   return (
-    <div className={styles.form__wrapper}>
-      <form onSubmit={handleSubmit} className={styles.form}>
-        <div className={styles.form__header}>
-          <h3>{APP_TEXT.ENTER}</h3>
-        </div>
-        <div className={styles.form__body}>
-          <Field className={styles.form__item} label='Логин' error={error.login}>
-            <Input 
-              type='text'
-              name='login'
-              onChange={handleChange}
-              onBlur={handleBlur}
-              error={error.login}
-            />
-          </Field>
-          <Field className={styles.form__item} label='Пароль' error={error.password}>
-            <Input 
-              name='password'
-              type='password' 
-              onChange={handleChange} 
-              onBlur={handleBlur}
-              error={error.password}
-            />
-          </Field>
-        </div>
-        <div className={styles.form__footer}>
-          <Button >{APP_TEXT.AUTH_TEXT}</Button>
-        </div>
-      </form>
-    </div>
+    <Form
+      handleSubmit={handleSubmit}
+      submitButtonText={APP_TEXT.AUTH_TEXT}
+      title={APP_TEXT.ENTER}
+    >
+      {signInFields.map((field) => (
+        <Field
+          key={field.name}
+          label={field.label}
+          error={error[field.name]}
+        >
+          <Input
+            type={field.type}
+            name={field.name}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            error={error[field.name]}
+            value={fieldsValues[field.name] || ''}
+          />
+        </Field>
+      ))}
+    </Form>
   )
 };

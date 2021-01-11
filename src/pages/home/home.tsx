@@ -4,7 +4,7 @@ import { useToasts } from 'react-toast-notifications';
 import { Button } from '../../components';
 
 export const Home = () => {
-  const { addToast } = useToasts()
+  const { addToast } = useToasts();
 
   const handleClickToast = () => {
     addToast('success', { appearance: 'success' });

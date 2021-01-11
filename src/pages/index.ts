@@ -3,6 +3,7 @@ import { SignUp } from './sign-up';
 import { Home } from './home';
 import { Game } from './game';
 import { Leaderboard } from './leaderboard';
+import { Profile } from './profile';
 import { NoMatch } from './no-match';
 
 export {
@@ -12,4 +13,5 @@ export {
   Game,
   Leaderboard,
   NoMatch,
+  Profile,
 };

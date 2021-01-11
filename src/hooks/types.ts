@@ -1,7 +1,7 @@
 export type Options = {
     method?: string,
     headers?: Headers,
-    body?: string
+    body?: any
 };
 
 export type Fields = {[index:string]:string};
