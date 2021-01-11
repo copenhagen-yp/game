@@ -5,4 +5,5 @@ export type RouteWrapperType = {
   component: ComponentType<RouteProps>,
   layout: ComponentType<RouteProps>,
   path: string,
+  exact?: boolean,
 }

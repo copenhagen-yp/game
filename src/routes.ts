@@ -37,4 +37,4 @@ export const routes = {
     layout: PrivateLayout,
     exact: true,
   },
-}
+};
