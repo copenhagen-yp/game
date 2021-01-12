@@ -1,10 +1,10 @@
 import { useCallback, useState } from 'react';
 import { useToasts } from 'react-toast-notifications';
 
-import { API_URL } from '../constants';
+import { API_URL, REQUEST_METHOD } from '../constants';
 import { Options } from './types';
 
-export const useHttp = (url: string, method: string, withoutHeaders?: boolean) => {
+export const useHttp = (url: string, method: string = REQUEST_METHOD.GET, withoutHeaders?: boolean) => {
   const [errors, setErrors] = useState<string[]>([]);
   const { addToast } = useToasts();
   const headers = new Headers();
