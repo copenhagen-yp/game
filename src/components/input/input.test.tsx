@@ -7,7 +7,7 @@ test('Input renders correctly', () => {
     .create(<
       Input
       name='password'
-      type="text"
+      type='text'
     />)
     .toJSON();
 
