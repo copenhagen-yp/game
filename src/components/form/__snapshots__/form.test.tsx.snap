@@ -1,0 +1,61 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Form renders correctly 1`] = `
+<div
+  className="form__wrapper"
+>
+  <form
+    className="form"
+    onSubmit={[Function]}
+  >
+    <div
+      className="form__header"
+    >
+      <h3>
+        Авторизация
+      </h3>
+    </div>
+    <div
+      className="form__body"
+    >
+      <div
+        className="field"
+      >
+        <label
+          className="field__label"
+        >
+          Логин
+        </label>
+        <input
+          className="input"
+          name="login"
+          type="text"
+        />
+      </div>
+      <div
+        className="field"
+      >
+        <label
+          className="field__label"
+        >
+          Пароль
+        </label>
+        <input
+          className="input"
+          name="password"
+          type="password"
+        />
+      </div>
+    </div>
+    <div
+      className="form__footer"
+    >
+      <button
+        className="button"
+      >
+        Сохранить
+      </button>
+    </div>
+  </form>
+</div>
+`;
