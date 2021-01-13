@@ -1,17 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import { useForum, useForm, useHttp } from '../../hooks';
-import { APP_TEXT, REQUEST_METHOD } from '../../constants';
+import { useForum, useForm } from '../../hooks';
+import { APP_TEXT } from '../../constants';
 import { routes } from '../../routes';
 import { Field, Input, Button } from '../../components';
 import styles from './forum.pcss';
 
 export const Forum = () => {
   const requiredFields = ['question_name', 'question_description'];
-  const { request } = useHttp('', REQUEST_METHOD.POST);
-  const { handleChange, handleBlur, fields, error } = useForm(request, requiredFields);
-  const { forums, handleSubmitQuestion } = useForum(fields);
+  const { handleChange, handleBlur, fields, error } = useForm(requiredFields);
+  const { forums, handleSubmitQuestion } = useForum(fields);  
 
   return (
     <div className={styles.container}>

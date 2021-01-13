@@ -1,31 +1,38 @@
+import { API_URL, REQUEST_METHOD } from './../constants';
 import { Options } from '../hooks/types';
 
 const ratingFieldName = 'points';
 const cursor = 0;
 const limit = 10;
 
-export const leaderboardApi = (request: { (options?: Options): Promise<any> }) => {
+export const leaderboardApi = (request: { (url: string, options?: Options): Promise<any> }) => {
   const addUser = (name: string, id: number, points: number) => {
-    return request({
-      body: JSON.stringify({
-        'data': {
-          name,
-          id,
-          points,
-        },
-        ratingFieldName
-      }),
-    })
+    return request(
+      API_URL.LEADERBOARD_ALL,
+      {
+        body: JSON.stringify({
+          'data': {
+            name,
+            id,
+            points,
+          },
+          ratingFieldName
+        }),
+        method: REQUEST_METHOD.POST
+      })
   };
 
   const getLeaderboard = () => {
-    return request({
-      body: JSON.stringify({
-        ratingFieldName,
-        cursor,
-        limit,
-      }),
-    })
+    return request(
+      API_URL.LEADERBOARD_ALL,
+      {
+        body: JSON.stringify({
+          ratingFieldName,
+          cursor,
+          limit,
+        }),
+        method: REQUEST_METHOD.POST
+      })
   };
 
   return { addUser, getLeaderboard };

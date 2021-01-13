@@ -1,21 +1,67 @@
+import { API_URL } from './../constants';
 import { useCallback, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 
-import { Options, Fields, Error } from './types';
-import { APP_REGULAR, APP_TEXT } from '../constants';
+import { Fields, Error } from './types';
+import { useHttp } from './useHttp';
+import { actionUserFailed, actionUserSuccess, actionUserSetUserItem } from '../store';
+import { APP_REGULAR, APP_TEXT, REQUEST_METHOD } from '../constants';
 
-export const useForm = (request: (options: Options)=>Promise<any>, requiredFields: string[], successResult?: string) => {
+
+export const useForm = (requiredFields: string[], successResult?: string, url?: string) => {
+  const { request } = useHttp();
   const [fields, setFields] = useState<Fields>({});
   const [error, setError] = useState<Error>(requiredFields.reduce((accumulate, nameField)=>({ ...accumulate, [nameField]: { value: false, text: '' } }),{}));
+  
   const history = useHistory();
+  const dispatch = useDispatch();
+
+  const handleSubmitSign = useCallback((e) => {
+    e.preventDefault();
+    const countError = Object.values(error).filter(err => err.value === true);
+    const validFieldValues = Object.values(fields).filter((field) => !!field);
+
+    if (validFieldValues.length >= Object.keys(error).length && !countError.length && url) {
+      request(url, { body: JSON.stringify(fields), method: REQUEST_METHOD.POST })
+        .then(response => {
+          if (response && successResult) {
+            
+            dispatch(actionUserSuccess());
+            console.log(fields.login);
+            request(API_URL.USER_SEARCH ,{ body: JSON.stringify({ login: fields.login }), method: REQUEST_METHOD.POST })
+              .then((resp) => {
+                console.log(resp);
+                dispatch(actionUserSetUserItem(resp));
+              })
+            history.push(successResult);
+          }
+        })
+        .catch(() => dispatch(actionUserFailed()));
+      
+    } else {
+      const form = e.target.elements;
+
+      for (const key in form) {
+        if (Object.prototype.hasOwnProperty.call(form, key)) {
+          const element = form[key];
+
+          if (element.name && !element.value) {
+            setError((prevProps: any) => ({ ...prevProps, [element.name]: { value: true, text: '' } }));  
+          }
+        }
+      }
+    }
+  },[fields]);
 
   const handleSubmit = useCallback((e) => {
     e.preventDefault();
     const countError = Object.values(error).filter(err => err.value === true);
     const validFieldValues = Object.values(fields).filter((field) => !!field);
 
-    if (validFieldValues.length >= Object.keys(error).length && !countError.length) {
-      request({ body: JSON.stringify(fields) })
+    if (validFieldValues.length >= Object.keys(error).length && !countError.length && url) {
+
+      request(url, { body: JSON.stringify(fields) })
         .then(response => {
           if (response && successResult) {
             history.push(successResult);
@@ -58,6 +104,7 @@ export const useForm = (request: (options: Options)=>Promise<any>, requiredField
 
   return {
     handleSubmit,
+    handleSubmitSign,
     handleChange,
     handleBlur,
     fields,
