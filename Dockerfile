@@ -2,6 +2,7 @@ FROM node:lts-alpine as builder
 
 ARG PORT
 RUN echo $PORT
+EXPOSE $PORT
 
 WORKDIR /app
 
