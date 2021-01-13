@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/copenhagen-yp/game#readme",
   "devDependencies": {
+    "@testing-library/react": "11.2.3",
     "@types/classnames": "2.2.11",
     "@types/jest": "26.0.20",
     "@types/react": "17.0.0",
