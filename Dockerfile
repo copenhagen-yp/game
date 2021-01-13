@@ -1,6 +1,6 @@
 FROM node:lts-alpine as builder
 
-ARG PORT
+ARG PORT=8080
 RUN echo $PORT
 EXPOSE $PORT
 
