@@ -14,6 +14,7 @@ export const userInfoApi = (request: { (url:string, options?: Options): Promise<
     }
 
     const formData = new FormData();
+    const headers = new Headers();
 
     formData.append('avatar', image);
 
@@ -21,7 +22,8 @@ export const userInfoApi = (request: { (url:string, options?: Options): Promise<
       API_URL.UPDATE_AVATAR,
       {
         method: REQUEST_METHOD.PUT,
-        body: formData,
+        headers,
+        body: formData
       })
   }
 

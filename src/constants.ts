@@ -23,7 +23,7 @@ export enum API_URL {
   UPDATE_AVATAR = 'user/profile/avatar',
   CHANGE_PASSWORD = 'user/password',
   SIGN_UP = 'auth/signup',
-  USER_SEARCH = 'user/search'
+  AUTH_USER = '/auth/user'
 }
 
 export enum REQUEST_METHOD {

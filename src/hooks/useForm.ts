@@ -28,10 +28,9 @@ export const useForm = (requiredFields: string[], successResult?: string, url?: 
           if (response && successResult) {
             
             dispatch(actionUserSuccess());
-            console.log(fields.login);
-            request(API_URL.USER_SEARCH ,{ body: JSON.stringify({ login: fields.login }), method: REQUEST_METHOD.POST })
+            
+            request(API_URL.AUTH_USER)
               .then((resp) => {
-                console.log(resp);
                 dispatch(actionUserSetUserItem(resp));
               })
             history.push(successResult);

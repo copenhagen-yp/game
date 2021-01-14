@@ -15,7 +15,7 @@ export const useHttp = () => {
       if (!options?.headers) {
         headers.append('Content-Type', 'application/json');
       }
-      
+
       try {
         const response = await fetch(`${API_URL.API_DOMAIN}${url}`, { ...options, credentials: 'include', headers });
         let data;
