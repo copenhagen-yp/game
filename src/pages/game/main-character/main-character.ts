@@ -5,12 +5,16 @@ const KEY_CODES = {
   right: 39
 }
 
-const STEP = 6;
+const STEP = 5;
 
 const DIRECTIONS_MAP = {
   ASCENDING : 1,
   DESCENDING: -1,
 };
+
+const CHARACTER_IMAGE = new Image();
+
+CHARACTER_IMAGE.src = '/images/boy.png';
 
 export class MainCharacter {
   private x: number;
@@ -39,13 +43,23 @@ export class MainCharacter {
   private upKeyPressed: boolean;
   private downKeyPressed: boolean;
 
+  private readonly characterImage: HTMLImageElement;
+  private readonly characterNumberOfFrames: number;
+  private readonly ticksPerFrame: number;
+  private frameIndex: number;
+  private tickCount: number;
+  private readonly cropPointX: number;
+  private readonly cropPointY: number;
+  private readonly cropWidthX: number;
+  private readonly cropWidthY: number;
+
   constructor (context: any) {
     this.context = context;
     this.canvas = context.canvas;
     this.canvasBoundingRect = this.canvas.getBoundingClientRect();
 
-    this.width = 50;
-    this.height = 50;
+    this.width = 40;
+    this.height = this.width * 1.212;
 
     this.x = 0;
     this.y = 0;
@@ -65,6 +79,16 @@ export class MainCharacter {
     this.leftKeyPressed = false;
     this.upKeyPressed = false;
     this.downKeyPressed = false;
+
+    this.characterImage = CHARACTER_IMAGE;
+    this.characterNumberOfFrames = 4;
+    this.ticksPerFrame = 6;
+    this.frameIndex = 0;
+    this.tickCount = 0;
+    this.cropPointX = 241;
+    this.cropPointY = 283;
+    this.cropWidthX = 234;
+    this.cropWidthY = 283;
   }
 
   init () {
@@ -92,10 +116,19 @@ export class MainCharacter {
   }
 
   draw () {
-    this.context.fillStyle = 'red';
-    this.context.fillRect(this.x, this.y, this.width, this.height);
-    this.context.save();
-    this.context.restore();
+    this.calculateFrameIndex();
+
+    this.context.drawImage(
+      this.characterImage,
+      this.cropPointX * this.frameIndex,
+      this.cropPointY * 0,
+      this.cropWidthX,
+      this.cropWidthY,
+      this.x,
+      this.y,
+      this.width,
+      this.height,
+    )
   }
 
   setPosition (x: number, y: number) {
@@ -103,6 +136,20 @@ export class MainCharacter {
     this.y = y;
 
     this.setEndPosition(x, y);
+  }
+
+  calculateFrameIndex () {
+    this.tickCount++;
+
+    if (this.tickCount > this.ticksPerFrame) {
+      this.tickCount = 0;
+
+      if (this.frameIndex < this.characterNumberOfFrames - 1) {
+        this.frameIndex++;
+      } else {
+        this.frameIndex = 0;
+      }
+    }
   }
 
   setEndPosition (x: number, y: number) {
