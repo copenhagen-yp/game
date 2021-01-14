@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import { Field, Form, Input } from '../../components';
-import { API_URL, APP_TEXT } from '../../constants';
+import { API_URL, APP_TEXT, REQUEST_METHOD } from '../../constants';
 import { useForm, useHttp } from '../../hooks';
 import { formFieldsType } from './types';
 import { userInfoApi } from '../../api';
@@ -65,7 +65,7 @@ export const Profile = () => {
     error: errorProfile,
     fields: profileFieldsValues,
     setFields: setFieldsProfile,
-  } = useForm(requiredProfileFields, undefined, API_URL.EDIT_PROFILE);
+  } = useForm(requiredProfileFields, undefined, API_URL.EDIT_PROFILE, REQUEST_METHOD.PUT);
 
   const { getInfo } = userInfoApi(getUserInfoRequest);
   const { updateUserAvatar } = userInfoApi(updateUserAvatarRequest);
@@ -77,7 +77,7 @@ export const Profile = () => {
     handleBlur: handleBlurPassword,
     error: passwordError,
     fields: passwordFieldsValues,
-  } = useForm(requiredPasswordFields, undefined, API_URL.CHANGE_PASSWORD);
+  } = useForm(requiredPasswordFields, undefined, API_URL.CHANGE_PASSWORD, REQUEST_METHOD.PUT);
 
   const handleChangeAvatar = (event: any) => {
     updateUserAvatar(event.target.files[0])

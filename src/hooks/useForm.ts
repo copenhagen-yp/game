@@ -9,7 +9,7 @@ import { actionUserFailed, actionUserSuccess, actionUserSetUserItem } from '../s
 import { APP_REGULAR, APP_TEXT, REQUEST_METHOD } from '../constants';
 
 
-export const useForm = (requiredFields: string[], successResult?: string, url?: string) => {
+export const useForm = (requiredFields: string[], successResult?: string, url?: string, method?: string) => {
   const { request } = useHttp();
   const [fields, setFields] = useState<Fields>({});
   const [error, setError] = useState<Error>(requiredFields.reduce((accumulate, nameField)=>({ ...accumulate, [nameField]: { value: false, text: '' } }),{}));
@@ -23,7 +23,7 @@ export const useForm = (requiredFields: string[], successResult?: string, url?: 
     const validFieldValues = Object.values(fields).filter((field) => !!field);
 
     if (validFieldValues.length >= Object.keys(error).length && !countError.length && url) {
-      request(url, { body: JSON.stringify(fields), method: REQUEST_METHOD.POST })
+      request(url, { body: JSON.stringify(fields), method: method || REQUEST_METHOD.POST })
         .then(response => {
           if (response && successResult) {
             
@@ -61,7 +61,7 @@ export const useForm = (requiredFields: string[], successResult?: string, url?: 
 
     if (validFieldValues.length >= Object.keys(error).length && !countError.length && url) {
 
-      request(url, { body: JSON.stringify(fields) })
+      request(url, { body: JSON.stringify(fields), method: method || REQUEST_METHOD.POST })
         .then(response => {
           if (response && successResult) {
             history.push(successResult);
