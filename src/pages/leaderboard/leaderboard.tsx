@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 
 import { GetLeadersResponseType } from './types';
 import { useHttp } from '../../hooks/useHttp';
-import { API_URL, REQUEST_METHOD } from '../../constants';
 import { leaderboardApi } from '../../api';
 import cn from 'classnames';
 import styles from './leaderboard.pcss';
@@ -10,7 +9,7 @@ import styles from './leaderboard.pcss';
 export const Leaderboard = () => {
   const [playersData, setPlayersData] = useState<GetLeadersResponseType>([]);
   const [loading, setLoading] = useState(true);
-  const { request } = useHttp(API_URL.LEADERBOARD_ALL, REQUEST_METHOD.POST);
+  const { request } = useHttp();
   const { getLeaderboard } = leaderboardApi(request);
 
   useEffect(function () {

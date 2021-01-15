@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { APP_TEXT, API_URL, REQUEST_METHOD } from '../../constants';
+import { APP_TEXT, API_URL } from '../../constants';
 import { Field, Input, Form } from '../../components';
-import { useHttp, useForm } from '../../hooks';
+import { useForm } from '../../hooks';
 import { routes } from '../../routes';
 
 const signUpFields = [
@@ -41,18 +41,17 @@ const signUpFields = [
 export const SignUp = () => {
   const requiredFields = ['first_name', 'second_name', 'login', 'email', 'password', 'phone'];
   const successResult = routes.home.path;
-  const { request } = useHttp(API_URL.SIGN_UP, REQUEST_METHOD.POST);
   const {
-    handleSubmit,
+    handleSubmitSign,
     handleChange,
     handleBlur,
     error,
     fields: fieldsValues,
-  } = useForm(request, requiredFields, successResult);
+  } = useForm(requiredFields, successResult, API_URL.SIGN_UP);
 
   return (
     <Form
-      handleSubmit={handleSubmit}
+      handleSubmit={handleSubmitSign}
       submitButtonText={APP_TEXT.REGISTRATION_BTN_TEXT}
       title={APP_TEXT.REGISTRATION}
     >

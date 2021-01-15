@@ -1,14 +1,13 @@
 import React from 'react';
 
-import { useForum, useHttp, useForm } from '../../hooks';
+import { useForum, useForm } from '../../hooks';
 import { Input, Button, Field } from '../../components';
-import { APP_TEXT, REQUEST_METHOD } from '../../constants';
+import { APP_TEXT } from '../../constants';
 import styles from './forum.pcss';
 
 export const Topic = () => {
   const requiredFields = ['comment'];
-  const { request } = useHttp('', REQUEST_METHOD.POST);
-  const { handleChange, handleBlur, fields, error } = useForm(request, requiredFields);
+  const { handleChange, handleBlur, fields, error } = useForm(requiredFields);
   const { currentForum, currentComments, handleSubmitComments } = useForum(fields);
 
   return (

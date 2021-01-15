@@ -1,11 +1,11 @@
 import { Options } from '../hooks/types';
-import { REQUEST_METHOD } from '../constants';
+import { API_URL, REQUEST_METHOD } from '../constants';
 
-export const userInfoApi = (request: { (options?: Options): Promise<any> }) => {
+export const userInfoApi = (request: { (url:string, options?: Options): Promise<any> }) => {
   const getInfo = () => {
-    return request({
-      method: REQUEST_METHOD.GET,
-    })
+    return request(
+      API_URL.GET_USER_INFO,
+      { method: REQUEST_METHOD.GET })
   }
 
   const updateUserAvatar = (image: any) => {
@@ -14,13 +14,17 @@ export const userInfoApi = (request: { (options?: Options): Promise<any> }) => {
     }
 
     const formData = new FormData();
+    const headers = new Headers();
 
     formData.append('avatar', image);
 
-    return request({
-      method: REQUEST_METHOD.PUT,
-      body: formData,
-    })
+    return request(
+      API_URL.UPDATE_AVATAR,
+      {
+        method: REQUEST_METHOD.PUT,
+        headers,
+        body: formData
+      })
   }
 
   return {

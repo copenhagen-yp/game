@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { APP_TEXT, API_URL, REQUEST_METHOD } from '../../constants';
+import { APP_TEXT, API_URL } from '../../constants';
 import { Field, Form, Input } from '../../components';
-import { useHttp, useForm } from '../../hooks';
+import { useForm } from '../../hooks';
 import { routes } from '../../routes';
 
 const signInFields = [
@@ -21,18 +21,17 @@ const signInFields = [
 export const SignIn = () => {
   const requiredFields = ['login', 'password'];
   const successResult = routes.home.path;
-  const { request } = useHttp(API_URL.SIGN_IN, REQUEST_METHOD.POST);
   const {
-    handleSubmit,
+    handleSubmitSign,
     handleChange,
     handleBlur,
     error,
     fields: fieldsValues,
-  } = useForm(request, requiredFields, successResult);
+  } = useForm(requiredFields, successResult, API_URL.SIGN_IN);
 
   return (
     <Form
-      handleSubmit={handleSubmit}
+      handleSubmit={handleSubmitSign}
       submitButtonText={APP_TEXT.AUTH_TEXT}
       title={APP_TEXT.ENTER}
     >

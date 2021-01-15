@@ -55,10 +55,8 @@ const passwordFields: formFieldsType = [
 const requiredPasswordFields = ['oldPassword', 'newPassword'];
 
 export const Profile = () => {
-  const { request: putUserInfoRequest } = useHttp(API_URL.EDIT_PROFILE, REQUEST_METHOD.PUT);
-  const { request: getUserInfoRequest } = useHttp(API_URL.GET_USER_INFO, REQUEST_METHOD.GET);
-  const { request: updateUserAvatarRequest } = useHttp(API_URL.UPDATE_AVATAR, REQUEST_METHOD.PUT, true);
-  const { request: changePasswordRequest } = useHttp(API_URL.CHANGE_PASSWORD, REQUEST_METHOD.PUT);
+  const { request: getUserInfoRequest } = useHttp();
+  const { request: updateUserAvatarRequest } = useHttp();
 
   const {
     handleSubmit: handleSubmitProfile,
@@ -67,7 +65,7 @@ export const Profile = () => {
     error: errorProfile,
     fields: profileFieldsValues,
     setFields: setFieldsProfile,
-  } = useForm(putUserInfoRequest, requiredProfileFields);
+  } = useForm(requiredProfileFields, undefined, API_URL.EDIT_PROFILE, REQUEST_METHOD.PUT);
 
   const { getInfo } = userInfoApi(getUserInfoRequest);
   const { updateUserAvatar } = userInfoApi(updateUserAvatarRequest);
@@ -79,7 +77,7 @@ export const Profile = () => {
     handleBlur: handleBlurPassword,
     error: passwordError,
     fields: passwordFieldsValues,
-  } = useForm(changePasswordRequest, requiredPasswordFields);
+  } = useForm(requiredPasswordFields, undefined, API_URL.CHANGE_PASSWORD, REQUEST_METHOD.PUT);
 
   const handleChangeAvatar = (event: any) => {
     updateUserAvatar(event.target.files[0])
