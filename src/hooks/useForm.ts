@@ -29,7 +29,7 @@ export const useForm = (requiredFields: string[], successResult?: string, url?: 
             
             dispatch(actionUserSuccess());
             
-            request(API_URL.AUTH_USER)
+            request(API_URL.GET_USER_INFO)
               .then((resp) => {
                 dispatch(actionUserSetUserItem(resp));
               })
