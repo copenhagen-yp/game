@@ -1,5 +1,7 @@
 # game
 
+DEMO - https://copenhagen-game.herokuapp.com/
+
 ### Механика игры
 2d игра, вид сверху, фон статический, многоуровневая
 
