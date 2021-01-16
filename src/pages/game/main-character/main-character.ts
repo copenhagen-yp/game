@@ -12,7 +12,7 @@ const DIRECTIONS_MAP = {
   DESCENDING: -1,
 };
 
-const MOVEMENT_DIRECTIONS_CODE = {
+const MOVEMENT_DIRECTION_CODE = {
   DOWN: 0,
   UP: 1,
   LEFT: 2,
@@ -53,7 +53,8 @@ export class MainCharacter {
   private readonly characterImage: HTMLImageElement;
   private readonly characterNumberOfFrames: number;
   private readonly ticksPerFrame: number;
-  private frameIndex: number;
+  private frameIndexX: number;
+  private frameIndexY: number;
   private tickCount: number;
   private readonly cropPointX: number;
   private readonly cropPointY: number;
@@ -68,7 +69,7 @@ export class MainCharacter {
     this.canvas = context.canvas;
     this.canvasBoundingRect = this.canvas.getBoundingClientRect();
 
-    this.width = 40;
+    this.width = 45;
     this.height = this.width * 1.212;
 
     this.x = 0;
@@ -93,15 +94,16 @@ export class MainCharacter {
     this.characterImage = CHARACTER_IMAGE;
     this.characterNumberOfFrames = 4;
     this.ticksPerFrame = 6;
-    this.frameIndex = 0;
+    this.frameIndexX = 0;
+    this.frameIndexY = 0;
     this.tickCount = 0;
     this.cropPointX = 241;
-    this.cropPointY = 283;
+    this.cropPointY = 285;
     this.cropWidthX = 234;
     this.cropWidthY = 283;
     this.previousPositionX = this.x;
     this.previousPositionY = this.y;
-    this.previousDirectionsCode = MOVEMENT_DIRECTIONS_CODE.DOWN;
+    this.previousDirectionsCode = MOVEMENT_DIRECTION_CODE.DOWN;
   }
 
   init () {
@@ -129,14 +131,12 @@ export class MainCharacter {
   }
 
   draw () {
-    const { isMoving, frame } = this.getFramesInfo();
-
-    this.calculateFrameIndex(isMoving);
+    this.handleAnimation();
 
     this.context.drawImage(
       this.characterImage,
-      this.cropPointX * this.frameIndex,
-      this.cropPointY * frame,
+      this.cropPointX * this.frameIndexX,
+      this.cropPointY * this.frameIndexY,
       this.cropWidthX,
       this.cropWidthY,
       this.x,
@@ -147,77 +147,80 @@ export class MainCharacter {
   }
 
   setPosition (x: number, y: number) {
-    this.x = x;
-    this.y = y;
+    this.previousPositionX = this.x = x;
+    this.previousPositionY = this.y = y;
 
     this.setEndPosition(x, y);
   }
 
-  calculateFrameIndex (isMoving: boolean) {
+  handleAnimation () {
+    const isMoving = this.previousPositionX !== this.x || this.previousPositionY !== this.y;
+
+    this.calculateFrameIndexY(isMoving);
+    this.calculateFrameIndexX(isMoving);
+
+    this.previousPositionX = this.x;
+    this.previousPositionY = this.y;
+  }
+
+  calculateFrameIndexX (isMoving: boolean) {
     this.tickCount++;
 
     if (this.tickCount > this.ticksPerFrame) {
       this.tickCount = 0;
 
       if (
-        this.frameIndex < this.characterNumberOfFrames - 1 && isMoving
+        this.frameIndexX < this.characterNumberOfFrames - 1 && isMoving
       ) {
-        this.frameIndex++;
+        this.frameIndexX++;
       } else {
-        this.frameIndex = 0;
+        this.frameIndexX = 0;
       }
     }
   }
 
-  calculateMovementAngle (isMoving: boolean) {
-    if (!isMoving) {
-      return false;
-    }
-
+  calculateMovementAngle () {
     return Math.atan2(this.y - this.previousPositionY, this.x - this.previousPositionX) * 180 / Math.PI;
   }
 
-  getFrameByAngle (angle: number | boolean) {
-    if (typeof angle === 'boolean' && !angle) {
-      return this.previousDirectionsCode;
-    }
-
+  getFrameByAngle (angle: number) {
     if (angle >= -135 && angle <= -45) {
-      this.previousDirectionsCode = MOVEMENT_DIRECTIONS_CODE.UP;
+      this.previousDirectionsCode = MOVEMENT_DIRECTION_CODE.UP;
 
-      return MOVEMENT_DIRECTIONS_CODE.UP;
+      return MOVEMENT_DIRECTION_CODE.UP;
     }
 
     if (angle <= 135 && angle >= 45) {
-      this.previousDirectionsCode = MOVEMENT_DIRECTIONS_CODE.DOWN;
+      this.previousDirectionsCode = MOVEMENT_DIRECTION_CODE.DOWN;
 
-      return MOVEMENT_DIRECTIONS_CODE.DOWN;
+      return MOVEMENT_DIRECTION_CODE.DOWN;
     }
 
     if (angle > -45 && angle < 45) {
-      this.previousDirectionsCode = MOVEMENT_DIRECTIONS_CODE.RIGHT;
+      this.previousDirectionsCode = MOVEMENT_DIRECTION_CODE.RIGHT;
 
-      return MOVEMENT_DIRECTIONS_CODE.RIGHT;
+      return MOVEMENT_DIRECTION_CODE.RIGHT;
     }
 
     if (angle > 135 || angle < -135) {
-      this.previousDirectionsCode = MOVEMENT_DIRECTIONS_CODE.LEFT;
+      this.previousDirectionsCode = MOVEMENT_DIRECTION_CODE.LEFT;
 
-      return MOVEMENT_DIRECTIONS_CODE.LEFT;
+      return MOVEMENT_DIRECTION_CODE.LEFT;
     }
 
     return this.previousDirectionsCode;
   }
 
-  getFramesInfo () {
-    const isMoving = this.previousPositionX !== this.x || this.previousPositionY !== this.y;
-    const angle = this.calculateMovementAngle(isMoving);
-    const frame = this.getFrameByAngle(angle);
+  calculateFrameIndexY (isMoving: boolean) {
+    if (!isMoving) {
+      this.frameIndexY = this.previousDirectionsCode;
 
-    this.previousPositionX = this.x;
-    this.previousPositionY = this.y;
+      return;
+    }
 
-    return { isMoving, frame };
+    const angle = this.calculateMovementAngle();
+
+    this.frameIndexY = this.getFrameByAngle(angle);
   }
 
   setEndPosition (x: number, y: number) {
