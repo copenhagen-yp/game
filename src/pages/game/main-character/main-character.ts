@@ -58,8 +58,8 @@ export class MainCharacter {
   private tickCount: number;
   private readonly cropPointX: number;
   private readonly cropPointY: number;
-  private readonly cropWidthX: number;
-  private readonly cropWidthY: number;
+  private readonly cropWidth: number;
+  private readonly cropHeight: number;
   private previousPositionX: number;
   private previousPositionY: number;
   private previousDirectionsCode: number;
@@ -93,14 +93,14 @@ export class MainCharacter {
 
     this.characterImage = CHARACTER_IMAGE;
     this.characterNumberOfFrames = 4;
-    this.ticksPerFrame = 6;
+    this.ticksPerFrame = 8;
     this.frameIndexX = 0;
     this.frameIndexY = 0;
     this.tickCount = 0;
     this.cropPointX = 241;
     this.cropPointY = 285;
-    this.cropWidthX = 234;
-    this.cropWidthY = 283;
+    this.cropWidth = 234;
+    this.cropHeight = 283;
     this.previousPositionX = this.x;
     this.previousPositionY = this.y;
     this.previousDirectionsCode = MOVEMENT_DIRECTION_CODE.DOWN;
@@ -137,8 +137,8 @@ export class MainCharacter {
       this.characterImage,
       this.cropPointX * this.frameIndexX,
       this.cropPointY * this.frameIndexY,
-      this.cropWidthX,
-      this.cropWidthY,
+      this.cropWidth,
+      this.cropHeight,
       this.x,
       this.y,
       this.width,
