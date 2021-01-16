@@ -1,4 +1,5 @@
 import { MainCharacter } from '../main-character';
+import { Enemy, IEnemy } from '../enemy';
 
 const INTERVAL_MOTION = 1 / 60;
 
@@ -7,6 +8,7 @@ export class PlayGround {
   private context: any | null;
 
   private mainCharacter: any | null;
+  private enemy: IEnemy | null;
   private requestAnimationId: any | undefined;
   private lastTime: number;
   private timeDelta: number;
@@ -18,6 +20,7 @@ export class PlayGround {
     this.lastTime = 0;
     this.timeDelta = 0;
 
+    this.enemy = null;
     this.mainCharacter = null;
     this.requestAnimationId = undefined;
   }
@@ -30,6 +33,7 @@ export class PlayGround {
   init() {
     this.initCanvas();
     this.initMainCharacter();
+    this.initEnemy();
 
     this.lastTime = performance.now();
     this.requestAnimationId = requestAnimationFrame(this.render);
@@ -44,6 +48,17 @@ export class PlayGround {
     cancelAnimationFrame(this.requestAnimationId);
 
     this.mainCharacter.destroy();
+  }
+
+  initEnemy() {
+    this.enemy = new Enemy(this.context);
+    this.enemy?.init();
+
+    const startX = 0;
+    const startY = 0;
+
+    this.enemy.setPosition(startX, startY);
+    this.enemy.draw();
   }
 
   initMainCharacter() {
@@ -75,12 +90,14 @@ export class PlayGround {
     while (this.timeDelta > INTERVAL_MOTION) {
       this.timeDelta -= INTERVAL_MOTION;
       this.mainCharacter.move();
+      this.enemy?.move(this.mainCharacter);
     }
 
     this.lastTime = now;
 
     this.clearCanvas();
     this.mainCharacter.draw();
+    this.enemy?.draw();
     this.requestAnimationId = requestAnimationFrame(this.render);
   }
 }
