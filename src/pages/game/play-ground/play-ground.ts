@@ -2,7 +2,9 @@ import { MainCharacter } from '../main-character';
 import { Enemy, IEnemy } from '../enemy';
 
 const INTERVAL_MOTION = 1 / 60;
+const BACKGROUND_SCENE = new Image();
 
+BACKGROUND_SCENE.src = '/images/bg_grass.jpg';
 export class PlayGround {
   private canvas: any | null;
   private context: any | null;
@@ -96,6 +98,7 @@ export class PlayGround {
     this.lastTime = now;
 
     this.clearCanvas();
+    this.context.drawImage(BACKGROUND_SCENE, 0, 0, this.canvas.width, this.canvas.height);
     this.mainCharacter.draw();
     this.enemy?.draw();
     this.requestAnimationId = requestAnimationFrame(this.render);

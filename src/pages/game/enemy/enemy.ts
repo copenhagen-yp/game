@@ -1,30 +1,54 @@
 import { IEnemy, Tpath } from './types';
+import { AnimatedSprite } from '../animated-sprite';
 
 const _countPoint = 10;
 
-export class Enemy implements IEnemy {
+const MOVEMENT_DIRECTION_CODE = {
+  DOWN: 0,
+  UP: 3,
+  LEFT: 1,
+  RIGHT: 2
+}
+
+const ENEMY_IMAGE = '/images/enemy.png';
+
+const SPRITE_CROP = {
+  WIDTH: 56,
+  HEIGHT: 50,
+  POINT_X: 56,
+  POINT_Y: 55,
+}
+
+export class Enemy extends AnimatedSprite implements IEnemy {
   private context: any;
   private canvas: any;
-  private canvasBoundingRect: any;
+
   public readonly width: number;
   public readonly height: number;
-  public x: number;
-  public y: number;
-  public radiusFindHero: number;
+
   private path: Tpath[];
   private followToPathPoint: number;
+
   public step: number;
 
+  public x: number;
+  public y: number;
+
+  public radiusFindHero: number;
+
   constructor (context: any) {
+
+    super(ENEMY_IMAGE, 0, 0, SPRITE_CROP, MOVEMENT_DIRECTION_CODE);
+
     this.context = context;
     this.canvas = context.canvas;
-    this.canvasBoundingRect = this.canvas.getBoundingClientRect();
 
-    this.width = 30;
-    this.height = 30;
+    this.width = 60;
+    this.height = 60 * 1.12;
 
     this.x = 0;
     this.y = 0;
+
     this.radiusFindHero = 0;
     this.step = 0;
 
@@ -57,11 +81,9 @@ export class Enemy implements IEnemy {
   }
 
   draw () {
-    this.context.fillStyle = 'black';
-    this.context.fillRect(this.x, this.y, this.width, this.height);
-    this.context.save();
-    this.context.restore();
+    super.drawSprite(this.context, this.x, this.y, this.width, this.height);
   }
+
 
   setPosition (x: number, y: number) {
     this.x = x;

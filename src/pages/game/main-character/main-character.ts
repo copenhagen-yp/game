@@ -203,6 +203,7 @@ export class MainCharacter {
   }
 
   getFrameByAngle (angle: number) {
+    
     if (angle >= -135 && angle <= -45) {
       this.previousDirectionCode = MOVEMENT_DIRECTION_CODE.UP;
 
