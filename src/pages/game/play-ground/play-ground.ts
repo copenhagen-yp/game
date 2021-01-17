@@ -90,7 +90,7 @@ export class PlayGround {
     while (this.timeDelta > INTERVAL_MOTION) {
       this.timeDelta -= INTERVAL_MOTION;
       this.mainCharacter.move();
-      this.enemy?.move(this.mainCharacter);
+      this.enemy?.update(this.mainCharacter);
     }
 
     this.lastTime = now;
