@@ -5,12 +5,30 @@ const KEY_CODES = {
   right: 39
 }
 
-const STEP = 6;
+const STEP = 5;
 
 const DIRECTIONS_MAP = {
   ASCENDING : 1,
   DESCENDING: -1,
 };
+
+const MOVEMENT_DIRECTION_CODE = {
+  DOWN: 0,
+  UP: 1,
+  LEFT: 2,
+  RIGHT: 3
+}
+
+const CHARACTER_IMAGE = new Image();
+
+CHARACTER_IMAGE.src = '/images/boy.png';
+
+const SPRITE_CROP = {
+  WIDTH: 234,
+  HEIGHT: 283,
+  POINT_X: 241,
+  POINT_Y: 285,
+}
 
 export class MainCharacter {
   private x: number;
@@ -39,13 +57,27 @@ export class MainCharacter {
   private upKeyPressed: boolean;
   private downKeyPressed: boolean;
 
+  private readonly characterImage: HTMLImageElement;
+  private readonly characterNumberOfFrames: number;
+  private readonly ticksPerFrame: number;
+  private frameIndexX: number;
+  private frameIndexY: number;
+  private tickCount: number;
+  private readonly cropPointX: number;
+  private readonly cropPointY: number;
+  private readonly cropWidth: number;
+  private readonly cropHeight: number;
+  private previousPositionX: number;
+  private previousPositionY: number;
+  private previousDirectionCode: number;
+
   constructor (context: any) {
     this.context = context;
     this.canvas = context.canvas;
     this.canvasBoundingRect = this.canvas.getBoundingClientRect();
 
-    this.width = 50;
-    this.height = 50;
+    this.width = 45;
+    this.height = this.width * 1.212;
 
     this.x = 0;
     this.y = 0;
@@ -65,6 +97,20 @@ export class MainCharacter {
     this.leftKeyPressed = false;
     this.upKeyPressed = false;
     this.downKeyPressed = false;
+
+    this.characterImage = CHARACTER_IMAGE;
+    this.characterNumberOfFrames = 4;
+    this.ticksPerFrame = 8;
+    this.frameIndexX = 0;
+    this.frameIndexY = 0;
+    this.tickCount = 0;
+    this.cropPointX = SPRITE_CROP.POINT_X;
+    this.cropPointY = SPRITE_CROP.POINT_Y;
+    this.cropWidth = SPRITE_CROP.WIDTH;
+    this.cropHeight = SPRITE_CROP.HEIGHT;
+    this.previousPositionX = this.x;
+    this.previousPositionY = this.y;
+    this.previousDirectionCode = MOVEMENT_DIRECTION_CODE.DOWN;
   }
 
   init () {
@@ -92,17 +138,96 @@ export class MainCharacter {
   }
 
   draw () {
-    this.context.fillStyle = 'red';
-    this.context.fillRect(this.x, this.y, this.width, this.height);
-    this.context.save();
-    this.context.restore();
+    this.handleAnimation();
+
+    this.context.drawImage(
+      this.characterImage,
+      this.cropPointX * this.frameIndexX,
+      this.cropPointY * this.frameIndexY,
+      this.cropWidth,
+      this.cropHeight,
+      this.x,
+      this.y,
+      this.width,
+      this.height,
+    )
   }
 
   setPosition (x: number, y: number) {
-    this.x = x;
-    this.y = y;
+    this.previousPositionX = this.x = x;
+    this.previousPositionY = this.y = y;
 
     this.setEndPosition(x, y);
+  }
+
+  handleAnimation () {
+    const isMoving = this.previousPositionX !== this.x || this.previousPositionY !== this.y;
+
+    this.updateFrameIndexX(isMoving);
+    this.updateFrameIndexY(isMoving);
+
+    this.previousPositionX = this.x;
+    this.previousPositionY = this.y;
+  }
+
+  updateFrameIndexX (isMoving: boolean) {
+    this.tickCount++;
+
+    if (this.tickCount > this.ticksPerFrame) {
+      this.tickCount = 0;
+
+      if (
+        this.frameIndexX < this.characterNumberOfFrames - 1 && isMoving
+      ) {
+        this.frameIndexX++;
+      } else {
+        this.frameIndexX = 0;
+      }
+    }
+  }
+
+  updateFrameIndexY (isMoving: boolean) {
+    if (!isMoving) {
+      this.frameIndexY = this.previousDirectionCode;
+
+      return;
+    }
+
+    const angle = this.calculateMovementAngle();
+
+    this.frameIndexY = this.getFrameByAngle(angle);
+  }
+
+  calculateMovementAngle () {
+    return Math.atan2(this.y - this.previousPositionY, this.x - this.previousPositionX) * 180 / Math.PI;
+  }
+
+  getFrameByAngle (angle: number) {
+    if (angle >= -135 && angle <= -45) {
+      this.previousDirectionCode = MOVEMENT_DIRECTION_CODE.UP;
+
+      return MOVEMENT_DIRECTION_CODE.UP;
+    }
+
+    if (angle <= 135 && angle >= 45) {
+      this.previousDirectionCode = MOVEMENT_DIRECTION_CODE.DOWN;
+
+      return MOVEMENT_DIRECTION_CODE.DOWN;
+    }
+
+    if (angle > -45 && angle < 45) {
+      this.previousDirectionCode = MOVEMENT_DIRECTION_CODE.RIGHT;
+
+      return MOVEMENT_DIRECTION_CODE.RIGHT;
+    }
+
+    if (angle > 135 || angle < -135) {
+      this.previousDirectionCode = MOVEMENT_DIRECTION_CODE.LEFT;
+
+      return MOVEMENT_DIRECTION_CODE.LEFT;
+    }
+
+    return this.previousDirectionCode;
   }
 
   setEndPosition (x: number, y: number) {
