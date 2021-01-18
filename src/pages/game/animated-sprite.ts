@@ -1,7 +1,7 @@
 const _IMAGE = new Image();
 
 export class AnimatedSprite {
-  private readonly characterNumberOfFrames: number;
+  private readonly numberOfFrames: number;
   private readonly ticksPerFrame: number;
 
   public x: number;
@@ -33,7 +33,7 @@ export class AnimatedSprite {
     this.x = toX;
     this.y = toY;
 
-    this.characterNumberOfFrames = 3;
+    this.numberOfFrames = 3;
     this.ticksPerFrame = 8;
     this.frameIndexX = 0;
     this.frameIndexY = 0;
@@ -70,7 +70,7 @@ export class AnimatedSprite {
     if (this.tickCount > this.ticksPerFrame) {
       this.tickCount = 0;
 
-      if (this.frameIndexX < this.characterNumberOfFrames - 1 && isMoving) {
+      if (this.frameIndexX < this.numberOfFrames - 1 && isMoving) {
         this.frameIndexX++;
       } else {
         this.frameIndexX = 0;
