@@ -1,5 +1,3 @@
-const _IMAGE = new Image();
-
 export class AnimatedSprite {
   private readonly numberOfFrames: number;
   private readonly ticksPerFrame: number;
@@ -28,12 +26,12 @@ export class AnimatedSprite {
   constructor (img: string, toX: number, 
     toY: number, 
     spriteCorp: {[index: string]: number}, 
-    movementDirectionCode: {[index: string]: number}) {
+    movementDirectionCode: {[index: string]: number}, numberOfFrames: number) {
 
     this.x = toX;
     this.y = toY;
 
-    this.numberOfFrames = 3;
+    this.numberOfFrames = numberOfFrames;
     this.ticksPerFrame = 8;
     this.frameIndexX = 0;
     this.frameIndexY = 0;
@@ -46,8 +44,8 @@ export class AnimatedSprite {
     this.previousPositionY = toY;
     this.previousDirectionCode = 0;
     this.movementDirectionCode = movementDirectionCode;
-    _IMAGE.src = img;
-    this.image = _IMAGE;
+    this.image = new Image();
+    this.image.src = img;
   }
 
   handleAnimation () {

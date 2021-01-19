@@ -10,7 +10,8 @@ export class PlayGround {
   private context: any | null;
 
   private mainCharacter: any | null;
-  private enemy: IEnemy | null;
+  private enemy: IEnemy[] | null;
+  private countEnemy: number;
   private requestAnimationId: any | undefined;
   private lastTime: number;
   private timeDelta: number;
@@ -21,6 +22,7 @@ export class PlayGround {
 
     this.lastTime = 0;
     this.timeDelta = 0;
+    this.countEnemy = 2;
 
     this.enemy = null;
     this.mainCharacter = null;
@@ -53,14 +55,22 @@ export class PlayGround {
   }
 
   initEnemy() {
-    this.enemy = new Enemy(this.context);
-    this.enemy?.init();
+    this.enemy = Array.from(Array(this.countEnemy), () => {
+      const enemy = new Enemy(this.context);
 
-    const startX = 0;
-    const startY = 0;
+      enemy?.init();
 
-    this.enemy.setPosition(startX, startY);
-    this.enemy.draw();
+      const startX = 0 + Math.floor(Math.random() * this.canvas.width);
+      const startY = 0 + Math.floor(Math.random() * this.canvas.height);
+
+      enemy.setPosition(startX, startY);
+      enemy.draw();
+
+      return enemy;
+    });
+    
+
+    
   }
 
   initMainCharacter() {
@@ -92,7 +102,7 @@ export class PlayGround {
     while (this.timeDelta > INTERVAL_MOTION) {
       this.timeDelta -= INTERVAL_MOTION;
       this.mainCharacter.move();
-      this.enemy?.update(this.mainCharacter);
+      this.enemy?.map(item => item?.update(this.mainCharacter));
     }
 
     this.lastTime = now;
@@ -100,7 +110,7 @@ export class PlayGround {
     this.clearCanvas();
     this.context.drawImage(BACKGROUND_SCENE, 0, 0, this.canvas.width, this.canvas.height);
     this.mainCharacter.draw();
-    this.enemy?.draw();
+    this.enemy?.map(item => item?.draw());
     this.requestAnimationId = requestAnimationFrame(this.render);
   }
 }

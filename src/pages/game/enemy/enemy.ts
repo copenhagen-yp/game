@@ -1,7 +1,7 @@
 import { IEnemy, Tpath } from './types';
 import { AnimatedSprite } from '../animated-sprite';
 
-const _countPoint = 10;
+const COUNT_POINT = 10;
 
 const MOVEMENT_DIRECTION_CODE = {
   DOWN: 0,
@@ -38,7 +38,7 @@ export class Enemy extends AnimatedSprite implements IEnemy {
 
   constructor (context: any) {
 
-    super(ENEMY_IMAGE, 0, 0, SPRITE_CROP, MOVEMENT_DIRECTION_CODE);
+    super(ENEMY_IMAGE, 0, 0, SPRITE_CROP, MOVEMENT_DIRECTION_CODE, 3);
 
     this.context = context;
     this.canvas = context.canvas;
@@ -70,20 +70,18 @@ export class Enemy extends AnimatedSprite implements IEnemy {
     const countX = Math.floor(this.canvas.width - this.width)
     const countY = Math.floor(this.canvas.height - this.height);
 
-    for (let index = 0; index < _countPoint; index++) {
+    for (let index = 0; index < COUNT_POINT; index++) {
       result.push({ 
         x: Math.floor(Math.random() * countX), 
         y: Math.floor(Math.random() * countY) })
     }
 
     return result;
-
   }
 
   draw () {
     super.drawSprite(this.context, this.x, this.y, this.width, this.height);
   }
-
 
   setPosition (x: number, y: number) {
     this.x = x;
@@ -116,11 +114,8 @@ export class Enemy extends AnimatedSprite implements IEnemy {
       const path = this.path[this.followToPathPoint];
 
       if (path.x === this.x && path.y === this.y) {
-        this.followToPathPoint++;
-        
-        if (this.followToPathPoint > this.path.length - 1) {
-          this.followToPathPoint = 0;
-        }
+        this.followToPathPoint = (this.followToPathPoint + 1) % this.path.length;
+
       } else {
         this.move(path.x, path.y);
       }
@@ -172,5 +167,4 @@ export class Enemy extends AnimatedSprite implements IEnemy {
       this.setPosition(position.x, position.y);
     }
   }
-
 }
