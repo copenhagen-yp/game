@@ -8,4 +8,5 @@ export enum USER {
 export enum GAME_ACTIONS {
   PAUSE = 'PAUSE',
   RESUME = 'RESUME',
+  FINISH = 'FINISH',
 }

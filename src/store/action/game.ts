@@ -7,3 +7,7 @@ export const pauseGame = () => ({
 export const resumeGame = () => ({
   type: GAME_ACTIONS.RESUME,
 });
+
+export const finishGame = () => ({
+  type: GAME_ACTIONS.FINISH,
+})

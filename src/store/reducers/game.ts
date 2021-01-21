@@ -18,6 +18,12 @@ export const gameReducer = (state = defaultState, { type }: {type: string}) => {
         status: 'resume',
       }
 
+    case GAME_ACTIONS.FINISH:
+      return {
+        ...state,
+        status: 'finish',
+      }
+
     default:
       return state;
   }

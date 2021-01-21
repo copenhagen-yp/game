@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { PlayGround } from './play-ground';
-import { resumeGame, pauseGame } from '../../store';
+import { resumeGame, pauseGame, finishGame } from '../../store';
 
 import styles from './game.pcss';
 
@@ -22,7 +22,7 @@ export const Game = () => {
 
     if (canvasObj) {
       const ctx = canvasObj.getContext('2d');
-      const playGroundObj = new PlayGround(canvasObj, ctx);
+      const playGroundObj = new PlayGround(canvasObj, ctx, handleFinish);
 
       setPlayGround(playGroundObj);
     }
@@ -49,6 +49,10 @@ export const Game = () => {
       case 'resume':
         playGround.resume();
         break;
+
+      case 'finish':
+        playGround.finish();
+        break;
     }
   }, [gameState]);
 
@@ -63,6 +67,10 @@ export const Game = () => {
         break;
     }
   };
+
+  const handleFinish = () => {
+    dispatch(finishGame());
+  }
 
   const handleCanvasClick = (event: any) => {
     if (playGround) {
