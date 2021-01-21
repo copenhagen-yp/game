@@ -32,11 +32,8 @@ export class PauseButton {
     this.textWidthPlay = this.context.measureText(BUTTON_TEXT.PLAY).width;
   }
 
-  clickHandler () {
-    console.log('Pause click');
-  }
-
   draw () {
+    this.context.beginPath();
     this.context.rect(this.x, this.y, this.width, this.height);
     this.context.stroke();
 

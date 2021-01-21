@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 
 import { PlayGround } from './play-ground';
+import { resumeGame, pauseGame } from '../../store';
 
 import styles from './game.pcss';
 
@@ -10,6 +12,10 @@ const canvasHeight = 500;
 export const Game = () => {
   const canvasRef = useRef(null);
   const [playGround, setPlayGround] = useState<any>(null);
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  const gameState = useSelector(store => store.game.status);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const canvasObj: any = canvasRef.current;
@@ -28,9 +34,43 @@ export const Game = () => {
     }
   }, [playGround]);
 
+  useEffect(() => {
+    if (!playGround) {
+      return;
+    }
+
+    cancelAnimationFrame(playGround.requestAnimationId);
+
+    if (gameState === 'resume') {
+      playGround.render();
+
+      return;
+    }
+
+    if (gameState === 'pause') {
+      playGround.pause();
+
+      return;
+    }
+  }, [gameState]);
+
+  const handlePauseClick = () => {
+    if (gameState === 'pause') {
+      dispatch(resumeGame());
+
+      return;
+    }
+
+    if (gameState === 'resume') {
+      dispatch(pauseGame());
+
+      return;
+    }
+  };
+
   const handleCanvasClick = (event: any) => {
     if (playGround) {
-      playGround.handleClickCanvas(event);
+      playGround.handleClickCanvas(event, handlePauseClick);
     }
   };
 
@@ -51,3 +91,13 @@ export const Game = () => {
     </main>
   );
 }
+//
+// const mapStateToProps = (store: any) => {
+//   return {
+//     game: store.game,
+//   }
+// }
+//
+// const ConnectedGame = connect(mapStateToProps)(Game);
+//
+// export { ConnectedGame as Game };

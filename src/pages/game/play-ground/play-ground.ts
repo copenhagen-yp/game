@@ -16,7 +16,6 @@ export class PlayGround {
   private requestAnimationId: any | undefined;
   private lastRenderTime: number;
   private timeDelta: number;
-  private isPause: boolean;
   private pauseButton: any;
   private canvasBoundingRect: any;
 
@@ -32,8 +31,6 @@ export class PlayGround {
     this.enemy = null;
     this.mainCharacter = null;
     this.requestAnimationId = undefined;
-
-    this.isPause = false;
   }
 
   start() {
@@ -95,12 +92,12 @@ export class PlayGround {
     }
   }
 
-  handleClickCanvas(event: MouseEvent) {
+  handleClickCanvas(event: MouseEvent, handlePauseClick: () => void) {
     const mousePositionX = event.clientX - this.canvasBoundingRect.left;
     const mousePositionY = event.clientY - this.canvasBoundingRect.top;
 
     if (this.checkMouseOnButton(mousePositionX, mousePositionY, this.pauseButton)) {
-      this.pauseButton.clickHandler(event);
+      handlePauseClick();
     } else {
       this.mainCharacter.clickHandler(mousePositionX, mousePositionY);
     }
@@ -111,11 +108,11 @@ export class PlayGround {
       mousePositionY >= button.y && mousePositionY <= button.y + button.height;
   }
 
-  render = () => {
-    if (this.isPause) {
-      this.requestAnimationId = requestAnimationFrame(this.render);
-    }
+  pause = () => {
+    this.requestAnimationId = requestAnimationFrame(this.pause);
+  }
 
+  render = () => {
     const now = performance.now();
 
     this.timeDelta += (now - this.lastRenderTime) / 1000;
