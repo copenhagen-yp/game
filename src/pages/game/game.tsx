@@ -47,7 +47,7 @@ export const Game = () => {
         break;
 
       case 'resume':
-        playGround.render();
+        playGround.resume();
         break;
     }
   }, [gameState]);

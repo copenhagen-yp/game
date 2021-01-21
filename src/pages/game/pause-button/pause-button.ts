@@ -9,7 +9,6 @@ export class PauseButton {
   private readonly width: number;
   private readonly height: number;
   private readonly lineWidth: number;
-  private state: 'resume' | 'pause';
   private context: any;
   private readonly textWidthPause: number;
   private readonly textWidthPlay: number;
@@ -21,7 +20,6 @@ export class PauseButton {
     this.lineWidth = 3;
     this.x = this.context.canvas.clientWidth - this.width - this.lineWidth;
     this.y = this.lineWidth;
-    this.state = 'resume';
 
     this.context.lineWidth = this.lineWidth;
     this.context.font = '20px Arial';
@@ -32,12 +30,12 @@ export class PauseButton {
     this.textWidthPlay = this.context.measureText(BUTTON_TEXT.PLAY).width;
   }
 
-  draw () {
+  draw (state: string) {
     this.context.beginPath();
     this.context.rect(this.x, this.y, this.width, this.height);
     this.context.stroke();
 
-    switch(this.state) {
+    switch(state) {
       case 'resume':
         this.context.fillText(BUTTON_TEXT.PAUSE,this.x + this.width / 2 - this.textWidthPause / 2,this.y + this.height / 2 + 5);
 

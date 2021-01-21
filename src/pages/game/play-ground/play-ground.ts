@@ -18,6 +18,7 @@ export class PlayGround {
   private timeDelta: number;
   private pauseButton: any;
   private canvasBoundingRect: any;
+  private state: 'resume' | 'pause' | 'finish';
 
   constructor(canvas: any, context: any) {
     this.canvas = canvas;
@@ -31,10 +32,12 @@ export class PlayGround {
     this.enemy = null;
     this.mainCharacter = null;
     this.requestAnimationId = undefined;
+    this.state = 'resume';
   }
 
   start() {
     this.requestAnimationId = undefined;
+    this.state = 'resume';
     this.init();
   }
 
@@ -45,7 +48,7 @@ export class PlayGround {
     this.pauseButton = new PauseButton(this.context);
 
     this.lastRenderTime = performance.now();
-    this.requestAnimationId = requestAnimationFrame(this.render);
+    this.requestAnimationId = requestAnimationFrame(this.loop);
   }
 
   initCanvas () {
@@ -109,12 +112,19 @@ export class PlayGround {
   }
 
   pause = () => {
+    this.state = 'pause';
     this.requestAnimationId = requestAnimationFrame(this.pause);
+    this.render();
 
     this.lastRenderTime = performance.now();
   }
 
-  render = () => {
+  resume = () => {
+    this.state = 'resume';
+    this.loop();
+  }
+
+  loop = () => {
     const now = performance.now();
 
     this.timeDelta += (now - this.lastRenderTime) / 1000;
@@ -126,12 +136,15 @@ export class PlayGround {
     }
 
     this.lastRenderTime = now;
+    this.requestAnimationId = requestAnimationFrame(this.loop);
+    this.render();
+  }
 
+  render = () => {
     this.clearCanvas();
     this.context.drawImage(BACKGROUND_SCENE, 0, 0, this.canvas.width, this.canvas.height);
     this.mainCharacter.draw();
     this.enemy?.map(item => item?.draw());
-    this.pauseButton.draw();
-    this.requestAnimationId = requestAnimationFrame(this.render);
+    this.pauseButton.draw(this.state);
   }
 }
