@@ -110,6 +110,8 @@ export class PlayGround {
 
   pause = () => {
     this.requestAnimationId = requestAnimationFrame(this.pause);
+
+    this.lastRenderTime = performance.now();
   }
 
   render = () => {

@@ -41,30 +41,26 @@ export const Game = () => {
 
     cancelAnimationFrame(playGround.requestAnimationId);
 
-    if (gameState === 'resume') {
-      playGround.render();
+    switch (gameState) {
+      case 'pause':
+        playGround.pause();
+        break;
 
-      return;
-    }
-
-    if (gameState === 'pause') {
-      playGround.pause();
-
-      return;
+      case 'resume':
+        playGround.render();
+        break;
     }
   }, [gameState]);
 
   const handlePauseClick = () => {
-    if (gameState === 'pause') {
-      dispatch(resumeGame());
+    switch (gameState) {
+      case 'pause':
+        dispatch(resumeGame());
+        break;
 
-      return;
-    }
-
-    if (gameState === 'resume') {
-      dispatch(pauseGame());
-
-      return;
+      case 'resume':
+        dispatch(pauseGame());
+        break;
     }
   };
 
