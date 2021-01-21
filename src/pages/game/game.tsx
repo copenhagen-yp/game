@@ -4,8 +4,8 @@ import { PlayGround } from './play-ground';
 
 import styles from './game.pcss';
 
-const canvasWidth = 600;
-const canvasHeight = 400;
+const canvasWidth = 700;
+const canvasHeight = 500;
 
 export const Game = () => {
   const canvasRef = useRef(null);
@@ -28,8 +28,8 @@ export const Game = () => {
     }
   }, [playGround]);
 
-  const handleCanvasClick = (event: any)=>{
-    if(playGround) {
+  const handleCanvasClick = (event: any) => {
+    if (playGround) {
       playGround.handleClickCanvas(event);
     }
   };

@@ -1,5 +1,6 @@
 import { MainCharacter } from '../main-character';
 import { Enemy, IEnemy } from '../enemy';
+import { PauseButton } from '../pause-button';
 
 const INTERVAL_MOTION = 1 / 60;
 const BACKGROUND_SCENE = new Image();
@@ -13,20 +14,26 @@ export class PlayGround {
   private enemy: IEnemy[] | null;
   private countEnemy: number;
   private requestAnimationId: any | undefined;
-  private lastTime: number;
+  private lastRenderTime: number;
   private timeDelta: number;
+  private isPause: boolean;
+  private pauseButton: any;
+  private canvasBoundingRect: any;
 
   constructor(canvas: any, context: any) {
     this.canvas = canvas;
     this.context = context;
+    this.canvasBoundingRect = this.canvas.getBoundingClientRect();
 
-    this.lastTime = 0;
+    this.lastRenderTime = 0;
     this.timeDelta = 0;
     this.countEnemy = 2;
 
     this.enemy = null;
     this.mainCharacter = null;
     this.requestAnimationId = undefined;
+
+    this.isPause = false;
   }
 
   start() {
@@ -38,8 +45,9 @@ export class PlayGround {
     this.initCanvas();
     this.initMainCharacter();
     this.initEnemy();
+    this.pauseButton = new PauseButton(this.context);
 
-    this.lastTime = performance.now();
+    this.lastRenderTime = performance.now();
     this.requestAnimationId = requestAnimationFrame(this.render);
   }
 
@@ -68,9 +76,6 @@ export class PlayGround {
 
       return enemy;
     });
-    
-
-    
   }
 
   initMainCharacter() {
@@ -90,14 +95,30 @@ export class PlayGround {
     }
   }
 
-  handleClickCanvas(event: any) {
-    this.mainCharacter.clickHandler(event);
+  handleClickCanvas(event: MouseEvent) {
+    const mousePositionX = event.clientX - this.canvasBoundingRect.left;
+    const mousePositionY = event.clientY - this.canvasBoundingRect.top;
+
+    if (this.checkMouseOnButton(mousePositionX, mousePositionY, this.pauseButton)) {
+      this.pauseButton.clickHandler(event);
+    } else {
+      this.mainCharacter.clickHandler(mousePositionX, mousePositionY);
+    }
+  }
+
+  checkMouseOnButton (mousePositionX: number, mousePositionY: number, button: { x: number; width: any; y: number; height: any; }) {
+    return mousePositionX >= button.x && mousePositionX <= button.x + button.width &&
+      mousePositionY >= button.y && mousePositionY <= button.y + button.height;
   }
 
   render = () => {
+    if (this.isPause) {
+      this.requestAnimationId = requestAnimationFrame(this.render);
+    }
+
     const now = performance.now();
 
-    this.timeDelta += (now - this.lastTime) / 1000;
+    this.timeDelta += (now - this.lastRenderTime) / 1000;
 
     while (this.timeDelta > INTERVAL_MOTION) {
       this.timeDelta -= INTERVAL_MOTION;
@@ -105,12 +126,13 @@ export class PlayGround {
       this.enemy?.map(item => item?.update(this.mainCharacter));
     }
 
-    this.lastTime = now;
+    this.lastRenderTime = now;
 
     this.clearCanvas();
     this.context.drawImage(BACKGROUND_SCENE, 0, 0, this.canvas.width, this.canvas.height);
     this.mainCharacter.draw();
     this.enemy?.map(item => item?.draw());
+    this.pauseButton.draw();
     this.requestAnimationId = requestAnimationFrame(this.render);
   }
 }

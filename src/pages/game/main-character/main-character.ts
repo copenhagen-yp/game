@@ -1,4 +1,4 @@
-import { AnimatedSprite } from '../animated-sprite'; 
+import { AnimatedSprite } from '../animated-sprite';
 
 const KEY_CODES = {
   up: 38,
@@ -47,7 +47,6 @@ export class MainCharacter extends AnimatedSprite {
 
   private context: any;
   private canvas: any;
-  private canvasBoundingRect: any;
 
   private width: number;
   private height: number;
@@ -62,7 +61,6 @@ export class MainCharacter extends AnimatedSprite {
 
     this.context = context;
     this.canvas = context.canvas;
-    this.canvasBoundingRect = this.canvas.getBoundingClientRect();
 
     this.width = 45;
     this.height = this.width * 1.212;
@@ -230,11 +228,8 @@ export class MainCharacter extends AnimatedSprite {
     }
   }
 
-  clickHandler = (event: any) => {
-    const x = event.clientX - this.canvasBoundingRect.left - this.width / 2;
-    const y = event.clientY - this.canvasBoundingRect.top - this.height / 2;
-
-    const position = this.normalizePosition(x, y);
+  clickHandler = (mousePositionX: number, mousePositionY: number) => {
+    const position = this.normalizePosition(mousePositionX, mousePositionY);
 
     this.setEndPosition(position.x, position.y);
     this.determineSteps();
