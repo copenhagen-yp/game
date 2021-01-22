@@ -5,6 +5,7 @@ import { PlayGround } from './play-ground';
 import * as gameActions from '../../store';
 
 import styles from './game.pcss';
+import { AppState } from 'store/reducers';
 
 const canvasWidth = 700;
 const canvasHeight = 500;
@@ -12,9 +13,7 @@ const canvasHeight = 500;
 export const Game = () => {
   const canvasRef = useRef(null);
   const [playGround, setPlayGround] = useState<any>(null);
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  const gameState = useSelector(store => store.game.status);
+  const gameState = useSelector<AppState>(store => store.game.status);
   const dispatch = useDispatch();
 
   useEffect(() => {

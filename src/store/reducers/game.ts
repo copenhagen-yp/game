@@ -1,10 +1,11 @@
 import { GAME_ACTIONS } from '../constants';
+import { GameReducer } from './types';
 
-const defaultState = {
+const defaultState: GameReducer = {
   status: 'resume',
 };
 
-export const gameReducer = (state = defaultState, { type }: {type: string}) => {
+export const gameReducer = (state: GameReducer = defaultState, { type }: {type: string}): GameReducer => {
   switch (type) {
     case GAME_ACTIONS.PAUSE:
       return {
