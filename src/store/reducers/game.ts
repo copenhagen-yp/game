@@ -25,6 +25,12 @@ export const gameReducer = (state: GameReducer = defaultState, { type }: {type: 
         status: 'finish',
       }
 
+    case GAME_ACTIONS.RESTART:
+      return {
+        ...state,
+        status: 'restart',
+      }
+
     default:
       return state;
   }

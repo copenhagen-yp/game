@@ -5,6 +5,12 @@ import { PauseButton } from '../pause-button';
 const INTERVAL_MOTION = 1 / 60;
 const BACKGROUND_SCENE = new Image();
 
+// Модификаторы для размера главного персонажа
+// Устраняют неидеальность спрайта
+// при расчёте коллизии с врагом
+const WIDTH_MODIFIER = 5;
+const HEIGHT_MODIFIER = 10;
+
 BACKGROUND_SCENE.src = '/images/bg_grass.jpg';
 export class PlayGround {
   private canvas: any | null;
@@ -19,12 +25,12 @@ export class PlayGround {
   private pauseButton: any;
   private canvasBoundingRect: any;
   private state: 'resume' | 'pause' | 'finish';
-  // private handleFinish: () => void;
+  private handleFinish: () => void;
 
-  constructor(canvas: any, context: any/*, handleFinish: () => void*/) {
+  constructor(canvas: any, context: any, handleFinish: () => void) {
     this.canvas = canvas;
     this.context = context;
-    // this.handleFinish = handleFinish;
+    this.handleFinish = handleFinish;
     this.canvasBoundingRect = this.canvas.getBoundingClientRect();
 
     this.lastRenderTime = 0;
@@ -35,9 +41,6 @@ export class PlayGround {
     this.mainCharacter = null;
     this.requestAnimationId = undefined;
     this.state = 'resume';
-
-    // TODO метод для финиша игры
-    // setTimeout(this.handleFinish, 5000);
   }
 
   start() {
@@ -124,6 +127,29 @@ export class PlayGround {
     this.lastRenderTime = performance.now();
   }
 
+  checkCollisionWithEnemy () {
+    return this.enemy?.some((enemy) => {
+      let XColl = false;
+      let YColl = false;
+
+      if (
+        (this.mainCharacter.x + this.mainCharacter.width - WIDTH_MODIFIER >= enemy.x) &&
+        (this.mainCharacter.x <= enemy.x + enemy.width)
+      ) {
+        XColl = true;
+      }
+
+      if (
+        (this.mainCharacter.y + this.mainCharacter.height - HEIGHT_MODIFIER >= enemy.y) &&
+        (this.mainCharacter.y <= enemy.y + enemy.height)
+      ) {
+        YColl = true;
+      }
+
+      return XColl && YColl;
+    });
+  }
+
   resume = () => {
     this.state = 'resume';
     this.loop();
@@ -134,6 +160,10 @@ export class PlayGround {
   }
 
   loop = () => {
+    if (this.checkCollisionWithEnemy()) {
+      this.handleFinish();
+    }
+
     const now = performance.now();
 
     this.timeDelta += (now - this.lastRenderTime) / 1000;

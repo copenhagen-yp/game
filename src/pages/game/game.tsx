@@ -6,6 +6,7 @@ import * as gameActions from '../../store';
 
 import styles from './game.pcss';
 import { AppState } from 'store/reducers';
+import { Button } from '../../components';
 
 const canvasWidth = 700;
 const canvasHeight = 500;
@@ -52,6 +53,11 @@ export const Game = () => {
       case 'finish':
         playGround.finish();
         break;
+
+      case 'restart':
+        playGround.start();
+        dispatch(gameActions.resume());
+        break;
     }
   }, [gameState]);
 
@@ -66,6 +72,10 @@ export const Game = () => {
         break;
     }
   };
+
+  const handleRestartClick = () => {
+    dispatch(gameActions.restart());
+  }
 
   const handleFinish = () => {
     dispatch(gameActions.finish());
@@ -91,6 +101,9 @@ export const Game = () => {
           />
         </div>
       </div>
+      {gameState === 'finish' ?
+        <Button onClick={handleRestartClick}>Начать заново</Button>
+        : ''}
     </main>
   );
 }

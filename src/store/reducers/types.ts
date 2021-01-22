@@ -13,5 +13,5 @@ export type UserReducer = {
 };
 
 export type GameReducer = {
-  status: 'pause' | 'resume' | 'finish'
+  status: 'pause' | 'resume' | 'finish' | 'restart'
 }
