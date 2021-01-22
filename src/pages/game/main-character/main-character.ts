@@ -229,7 +229,10 @@ export class MainCharacter extends AnimatedSprite {
   }
 
   clickHandler = (mousePositionX: number, mousePositionY: number) => {
-    const position = this.normalizePosition(mousePositionX, mousePositionY);
+    const x = mousePositionX - this.width / 2;
+    const y = mousePositionY - this.height / 2;
+
+    const position = this.normalizePosition(x, y);
 
     this.setEndPosition(position.x, position.y);
     this.determineSteps();
