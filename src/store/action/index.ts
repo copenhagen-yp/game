@@ -1,2 +1,2 @@
 export * from './user';
-export { pauseGame, resumeGame, finishGame } from './game';
+export { pause, resume, finish } from './game';

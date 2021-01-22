@@ -1,13 +1,13 @@
 import { GAME_ACTIONS } from '../constants';
 
-export const pauseGame = () => ({
+export const pause = () => ({
   type: GAME_ACTIONS.PAUSE,
 });
 
-export const resumeGame = () => ({
+export const resume = () => ({
   type: GAME_ACTIONS.RESUME,
 });
 
-export const finishGame = () => ({
+export const finish = () => ({
   type: GAME_ACTIONS.FINISH,
 })

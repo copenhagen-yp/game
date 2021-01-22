@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { PlayGround } from './play-ground';
-import { resumeGame, pauseGame, finishGame } from '../../store';
+import * as gameActions from '../../store';
 
 import styles from './game.pcss';
 
@@ -59,17 +59,17 @@ export const Game = () => {
   const handlePauseClick = () => {
     switch (gameState) {
       case 'pause':
-        dispatch(resumeGame());
+        dispatch(gameActions.resume());
         break;
 
       case 'resume':
-        dispatch(pauseGame());
+        dispatch(gameActions.pause());
         break;
     }
   };
 
   const handleFinish = () => {
-    dispatch(finishGame());
+    dispatch(gameActions.finish());
   }
 
   const handleCanvasClick = (event: any) => {
@@ -95,13 +95,3 @@ export const Game = () => {
     </main>
   );
 }
-//
-// const mapStateToProps = (store: any) => {
-//   return {
-//     game: store.game,
-//   }
-// }
-//
-// const ConnectedGame = connect(mapStateToProps)(Game);
-//
-// export { ConnectedGame as Game };

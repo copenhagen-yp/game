@@ -19,12 +19,12 @@ export class PlayGround {
   private pauseButton: any;
   private canvasBoundingRect: any;
   private state: 'resume' | 'pause' | 'finish';
-  private handleFinish: () => void;
+  // private handleFinish: () => void;
 
-  constructor(canvas: any, context: any, handleFinish: () => void) {
+  constructor(canvas: any, context: any/*, handleFinish: () => void*/) {
     this.canvas = canvas;
     this.context = context;
-    this.handleFinish = handleFinish;
+    // this.handleFinish = handleFinish;
     this.canvasBoundingRect = this.canvas.getBoundingClientRect();
 
     this.lastRenderTime = 0;
@@ -36,7 +36,8 @@ export class PlayGround {
     this.requestAnimationId = undefined;
     this.state = 'resume';
 
-    setTimeout(this.handleFinish, 5000);
+    // TODO метод для финиша игры
+    // setTimeout(this.handleFinish, 5000);
   }
 
   start() {
