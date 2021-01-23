@@ -9,4 +9,4 @@ export const configureStore = () => {
   const store = createStore(reducers, composeEnhancers(applyMiddleware(thunk)));
 
   return store;
-}
+};

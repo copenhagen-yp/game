@@ -10,4 +10,4 @@ export const PublicLayout = ({ children }: LayoutType) => {
       {children}
     </div>
   );
-}
+};
