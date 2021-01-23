@@ -107,16 +107,16 @@ export class PlayGround {
     const mousePositionX = event.clientX - this.canvasBoundingRect.left;
     const mousePositionY = event.clientY - this.canvasBoundingRect.top;
 
-    if (this.checkMouseOnButton(mousePositionX, mousePositionY, this.pauseButton)) {
+    if (this.checkMouseOnButton(mousePositionX, mousePositionY)) {
       handlePauseClick();
     } else {
       this.mainCharacter.clickHandler(mousePositionX, mousePositionY);
     }
   }
 
-  checkMouseOnButton (mousePositionX: number, mousePositionY: number, button: { x: number; width: any; y: number; height: any; }) {
-    return mousePositionX >= button.x && mousePositionX <= button.x + button.width &&
-      mousePositionY >= button.y && mousePositionY <= button.y + button.height;
+  checkMouseOnButton (mousePositionX: number, mousePositionY: number) {
+    return mousePositionX >= this.pauseButton.x && mousePositionX <= this.pauseButton.x + this.pauseButton.width &&
+      mousePositionY >= this.pauseButton.y && mousePositionY <= this.pauseButton.y + this.pauseButton.height;
   }
 
   pause = () => {

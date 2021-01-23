@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import Modal from 'react-modal';
 
 import { PlayGround } from './play-ground';
 import * as gameActions from '../../store';
@@ -8,13 +9,27 @@ import styles from './game.pcss';
 import { AppState } from 'store/reducers';
 import { Button } from '../../components';
 
-const canvasWidth = 700;
-const canvasHeight = 500;
+const CANVAS_WIDTH = 700;
+const CANVAS_HEIGHT = 500;
+
+const customStyles = {
+  content : {
+    top                   : '50%',
+    left                  : '50%',
+    right                 : 'auto',
+    bottom                : 'auto',
+    marginRight           : '-50%',
+    transform             : 'translate(-50%, -50%)'
+  }
+};
+
+Modal.setAppElement('#root');
 
 export const Game = () => {
   const canvasRef = useRef(null);
   const [playGround, setPlayGround] = useState<any>(null);
   const gameState = useSelector<AppState>(store => store.game.status);
+  const [modalIsOpen, setIsOpen] = React.useState(false);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -74,10 +89,12 @@ export const Game = () => {
   };
 
   const handleRestartClick = () => {
+    setIsOpen(false);
     dispatch(gameActions.restart());
   }
 
   const handleFinish = () => {
+    setIsOpen(true);
     dispatch(gameActions.finish());
   }
 
@@ -89,21 +106,24 @@ export const Game = () => {
 
   return (
     <main className={styles.game}>
+      <Modal
+        isOpen={modalIsOpen}
+        style={customStyles}
+      >
+        <Button onClick={handleRestartClick}>Начать заново</Button>
+      </Modal>
       <h1>Game</h1>
       <div className={styles.container}>
         <div className={styles.canvasWrapper}>
           <canvas
             className={styles.canvas}
             ref={canvasRef}
-            width={canvasWidth}
-            height={canvasHeight}
+            width={CANVAS_WIDTH}
+            height={CANVAS_HEIGHT}
             onClick={handleCanvasClick}
           />
         </div>
       </div>
-      {gameState === 'finish' ?
-        <Button onClick={handleRestartClick}>Начать заново</Button>
-        : ''}
     </main>
   );
 }
