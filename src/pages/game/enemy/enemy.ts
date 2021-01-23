@@ -8,7 +8,7 @@ const MOVEMENT_DIRECTION_CODE = {
   UP: 3,
   LEFT: 1,
   RIGHT: 2
-}
+};
 
 const ENEMY_IMAGE = '/images/enemy.png';
 
@@ -17,7 +17,7 @@ const SPRITE_CROP = {
   HEIGHT: 50,
   POINT_X: 56,
   POINT_Y: 55,
-}
+};
 
 export class Enemy extends AnimatedSprite implements IEnemy {
   private context: any;
@@ -67,13 +67,13 @@ export class Enemy extends AnimatedSprite implements IEnemy {
   addPath () {
     const result = [];
 
-    const countX = Math.floor(this.canvas.width - this.width)
+    const countX = Math.floor(this.canvas.width - this.width);
     const countY = Math.floor(this.canvas.height - this.height);
 
     for (let index = 0; index < COUNT_POINT; index++) {
       result.push({ 
         x: Math.floor(Math.random() * countX), 
-        y: Math.floor(Math.random() * countY) })
+        y: Math.floor(Math.random() * countY) });
     }
 
     return result;

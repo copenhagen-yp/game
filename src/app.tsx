@@ -14,6 +14,7 @@ import * as userActions from './store/user/actions';
 import { useHttp } from './hooks';
 
 
+
 const App = () => {
   const [isLoading, setIsLoading] = useState(true);
 
@@ -29,7 +30,7 @@ const App = () => {
         .catch(() => dispatch(userActions.setUserInfo(null)))
         .finally(() => {
           setIsLoading(false);
-        })
+        });
     }
 
     init();

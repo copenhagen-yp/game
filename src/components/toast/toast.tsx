@@ -8,10 +8,6 @@ import { Button } from '../../components';
 import styles from './toast.pcss';
 
 export const Toast = ({ appearance, children, onDismiss }: ToastProps) => {
-  const handleClickClose = () => {
-    onDismiss()
-  };
-
   return (
     <div className={cn(styles.toast, styles[`toast_${appearance}`])}>
       {children}
@@ -19,11 +15,11 @@ export const Toast = ({ appearance, children, onDismiss }: ToastProps) => {
         type='button'
         viewType='icon'
         className={styles.closeButton}
-        onClick={handleClickClose}
+        onClick={onDismiss}
       >
         {/*ToDO: change to icon*/}
         x
       </Button>
     </div>
   );
-}
+};
