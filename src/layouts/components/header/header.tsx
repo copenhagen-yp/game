@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import { routes } from '../../../routes';
 import styles from './header.pcss';
+import { Navigation } from '../navigation';
 
 import * as userSelectors from '../../../store/user/selectors';
 import { Button } from '../../../components';
@@ -27,7 +28,7 @@ export const Header = () => {
   return (
     <div className={styles.header}>
       <a href={routes.home.path}>Лого</a>
-
+      <Navigation />
       <Button onClick={handleClickLogout}>
         Выйти
       </Button>

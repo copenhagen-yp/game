@@ -10,15 +10,21 @@ import { Button } from '../../components';
 import { GAME_STATUSES } from '../../store/game/constants';
 
 import styles from './game.pcss';
+import { Button } from '../../components';
 
 const CANVAS_WIDTH = 700;
 const CANVAS_HEIGHT = 500;
 
 export const Game = () => {
   const canvasRef = useRef(null);
+  const containerRef = useRef(null);
+  const canvasWrapperRef = useRef(null);
+
   const [playGround, setPlayGround] = useState<any>(null);
   const gameStatus = useSelector<AppState>(gameSelectors.getStatus);
-  const [modalIsOpen, setIsOpen] = React.useState(false);
+  const [modalIsOpen, setIsOpen] = useState(false);
+  const [isFullScreen, setIsFullScreen] = useState<boolean>(false);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -26,10 +32,21 @@ export const Game = () => {
 
     if (canvasObj) {
       const ctx = canvasObj.getContext('2d');
+      handleResizeCanvasWrapper();
       const playGroundObj = new PlayGround(canvasObj, ctx, handleFinish);
 
       setPlayGround(playGroundObj);
     }
+
+    const canvasWrapperRefElement: any = canvasWrapperRef.current;
+
+    if (canvasWrapperRefElement) {
+      window.addEventListener('resize', handleResizeCanvasWrapper);
+    }
+
+    return () => {
+      window.removeEventListener('resize', handleResizeCanvasWrapper);
+    };
   }, []);
 
   useEffect(() => {
@@ -89,7 +106,66 @@ export const Game = () => {
 
   const handleCanvasClick = (event: any) => {
     if (playGround) {
-      playGround.handleClickCanvas(event, handlePauseClick);
+      playGround.handleClickCanvas(event);
+    }
+  };
+  const changeCanvasSize = (width: number, height: number) => {
+    const canvas: any = canvasRef.current;
+
+    if (canvas) {
+      const ratio = canvas.width / canvas.height;
+
+      let canvasHeight = height;
+      let canvasWidth = canvasHeight * ratio;
+
+      if (canvasWidth > width) {
+        canvasWidth = width;
+        canvasHeight = canvasWidth / ratio;
+      }
+
+      canvas.style.width = canvasWidth + 'px';
+      canvas.style.height = canvasHeight + 'px';
+    }
+  };
+
+  const handleResizeCanvasWrapper = () => {
+    if (!isFullScreen) {
+      changeCanvasSize(canvasWidth, canvasHeight);
+    }
+
+    const canvasWrapperElement: any = canvasWrapperRef.current;
+
+    const width = canvasWrapperElement.offsetWidth;
+    const height = canvasWrapperElement.offsetHeight;
+
+    changeCanvasSize(width, height);
+  };
+
+  const handleCLickFullscreen = () => {
+    if (!containerRef || !containerRef.current) {
+      return;
+    }
+
+    const elem = containerRef.current;
+
+    if (!document.fullscreenElement) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      if (elem.requestFullscreen) {
+
+        setIsFullScreen(true);
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        elem.requestFullscreen();
+      }
+    } else {
+      if (document.exitFullscreen) {
+        setIsFullScreen(false);
+
+        document.exitFullscreen();
+      }
+
+      handleResizeCanvasWrapper();
     }
   };
 
@@ -101,8 +177,13 @@ export const Game = () => {
         <Button onClick={handleRestartClick}>Начать заново</Button>
       </Modal>
       <h1>Game</h1>
-      <div className={styles.container}>
-        <div className={styles.canvasWrapper}>
+      <div className={styles.container} ref={containerRef}>
+        <Button
+          onClick={handleCLickFullscreen}
+        >
+          {isFullScreen ? 'Свернуть' : 'Развернуть'}
+        </Button>
+        <div className={styles.canvasWrapper} ref={canvasWrapperRef}>
           <canvas
             className={styles.canvas}
             ref={canvasRef}
