@@ -6,7 +6,7 @@ import { PlayGround } from './play-ground';
 import * as gameActions from '../../store';
 
 import styles from './game.pcss';
-import { AppState } from 'store/reducers';
+import { AppState } from '../../store/reducer';
 import { Button } from '../../components';
 
 const CANVAS_WIDTH = 700;

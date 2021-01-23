@@ -112,7 +112,7 @@ export const Profile = () => {
         <Form
           wrapperClassName={styles.profile__formWrapper}
           formClassName={styles.profile__form}
-          handleSubmit={handleSubmitProfile}
+          onSubmit={handleSubmitProfile}
           submitButtonText={APP_TEXT.PROFILE_SUBMIT_BUTTON_TEXT}
           title={APP_TEXT.PROFILE_FORM_TITLE}
         >
@@ -144,7 +144,7 @@ export const Profile = () => {
           <Form
             wrapperClassName={styles.profile__formWrapper}
             formClassName={styles.profile__form}
-            handleSubmit={handleSubmitPassword}
+            onSubmit={handleSubmitPassword}
             submitButtonText={APP_TEXT.PROFILE_SUBMIT_BUTTON_TEXT}
             title={APP_TEXT.PASSWORD_FORM_TITLE}
           >

@@ -5,7 +5,7 @@ const { merge } = require('webpack-merge');
 
 module.exports = merge(mainConfig, {
   mode: 'development',
-  devtool: 'eval-source-map',
+  devtool: 'source-map',
   target: 'web',
   watchOptions: {
     aggregateTimeout: 200,

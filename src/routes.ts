@@ -8,6 +8,7 @@ export const routes = {
     component: Topic,
     layout: PrivateLayout,
     exact: true,
+    isPrivate: true,
   },
   forums: {
     name: 'forum',
@@ -15,6 +16,7 @@ export const routes = {
     component: Forum,
     layout: PrivateLayout,
     exact: true,
+    isPrivate: true,
   },
   signIn: {
     name: 'signIn',
@@ -22,6 +24,7 @@ export const routes = {
     component: SignIn,
     layout: PublicLayout,
     exact: true,
+    isPrivate: false,
   },
   signUp: {
     name: 'signUp',
@@ -29,6 +32,7 @@ export const routes = {
     component: SignUp,
     layout: PublicLayout,
     exact: true,
+    isPrivate: false,
   },
   game: {
     name: 'game',
@@ -36,6 +40,7 @@ export const routes = {
     component: Game,
     layout: PrivateLayout,
     exact: true,
+    isPrivate: true,
   },
   leaderboard: {
     name: 'leaderboard',
@@ -43,6 +48,7 @@ export const routes = {
     component: Leaderboard,
     layout: PrivateLayout,
     exact: true,
+    isPrivate: true,
   },
   profile: {
     name: 'profile',
@@ -50,6 +56,7 @@ export const routes = {
     component: Profile,
     layout: PrivateLayout,
     exact: true,
+    isPrivate: true,
   },
   home: {
     name: 'home',
@@ -57,5 +64,6 @@ export const routes = {
     component: Home,
     layout: PrivateLayout,
     exact: true,
+    isPrivate: true,
   },
 };

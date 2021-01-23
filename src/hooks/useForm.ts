@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 
 import { Fields, Error } from './types';
 import { useHttp } from './useHttp';
-import { actionUserFailed, actionUserSuccess, actionUserSetUserItem } from '../store';
+import * as userActions from '../store/user/actions';
 import { APP_REGULAR, APP_TEXT, REQUEST_METHOD } from '../constants';
 
 
@@ -13,7 +13,7 @@ export const useForm = (requiredFields: string[], successResult?: string, url?: 
   const { request } = useHttp();
   const [fields, setFields] = useState<Fields>({});
   const [error, setError] = useState<Error>(requiredFields.reduce((accumulate, nameField)=>({ ...accumulate, [nameField]: { value: false, text: '' } }),{}));
-  
+
   const history = useHistory();
   const dispatch = useDispatch();
 
@@ -26,18 +26,18 @@ export const useForm = (requiredFields: string[], successResult?: string, url?: 
       request(url, { body: JSON.stringify(fields), method: method || REQUEST_METHOD.POST })
         .then(response => {
           if (response && successResult) {
-            
-            dispatch(actionUserSuccess());
-            
+
+            dispatch(userActions.setSuccessStatus());
+
             request(API_URL.GET_USER_INFO)
               .then((resp) => {
-                dispatch(actionUserSetUserItem(resp));
+                dispatch(userActions.setUserInfo(resp));
               })
             history.push(successResult);
           }
         })
-        .catch(() => dispatch(actionUserFailed()));
-      
+        .catch(() => dispatch(userActions.setFailedStatus()));
+
     } else {
       const form = e.target.elements;
 
@@ -46,7 +46,7 @@ export const useForm = (requiredFields: string[], successResult?: string, url?: 
           const element = form[key];
 
           if (element.name && !element.value) {
-            setError((prevProps: any) => ({ ...prevProps, [element.name]: { value: true, text: '' } }));  
+            setError((prevProps: any) => ({ ...prevProps, [element.name]: { value: true, text: '' } }));
           }
         }
       }
@@ -74,7 +74,7 @@ export const useForm = (requiredFields: string[], successResult?: string, url?: 
           const element = form[key];
 
           if (element.name && !element.value) {
-            setError((prevProps: any) => ({ ...prevProps, [element.name]: { value: true, text: '' } }));  
+            setError((prevProps: any) => ({ ...prevProps, [element.name]: { value: true, text: '' } }));
           }
         }
       }
@@ -97,7 +97,7 @@ export const useForm = (requiredFields: string[], successResult?: string, url?: 
     if (!e.target.value && e.target.name in error) {
       setError((prevProps: any) => ({ ...prevProps, [e.target.name]: { value: true, text: '' } }));
     } else {
-      setError((prevProps: any) => ({ ...prevProps, [e.target.name]: { value: false, text: '' } }));  
+      setError((prevProps: any) => ({ ...prevProps, [e.target.name]: { value: false, text: '' } }));
     }
   },[]);
 
