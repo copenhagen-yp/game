@@ -55,7 +55,8 @@
     "webpack": "5.11.0",
     "webpack-cli": "4.2.0",
     "webpack-dev-server": "3.11.0",
-    "webpack-merge": "5.7.2"
+    "webpack-merge": "5.7.2",
+    "workbox-webpack-plugin": "6.0.2"
   },
   "dependencies": {
     "@types/react-toast-notifications": "2.4.0",
