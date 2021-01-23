@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import Modal from 'react-modal';
 
 import { PlayGround } from './play-ground';
-import * as gameActions from '../../store';
+import * as gameActions from '../../store/game/actions';
 
 import styles from './game.pcss';
 import { AppState } from '../../store/reducer';

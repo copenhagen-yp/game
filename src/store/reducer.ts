@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux';
 
 import { userReducer } from './user/reducer';
-import { gameReducer } from './reducers/game';
-import { GameReducer } from './reducers/types';
+import { gameReducer } from './game/reducer';
+import { GameReducer } from './game/types';
 import { UserReducer } from './user/types';
 
 export type AppState = {

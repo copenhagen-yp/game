@@ -1,4 +1,4 @@
-import { GAME_ACTIONS } from '../constants';
+import { GAME_ACTIONS } from './constants';
 
 export const pause = () => ({
   type: GAME_ACTIONS.PAUSE,

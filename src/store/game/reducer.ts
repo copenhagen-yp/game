@@ -1,4 +1,4 @@
-import { GAME_ACTIONS } from '../constants';
+import { GAME_ACTIONS } from './constants';
 import { GameReducer } from './types';
 
 const defaultState: GameReducer = {
