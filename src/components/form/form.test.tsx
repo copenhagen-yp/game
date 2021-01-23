@@ -20,7 +20,7 @@ test('Form renders correctly', () => {
   const tree = renderer
     .create(
       <Form
-        handleSubmit={() => {
+        onSubmit={() => {
           console.log();
         }}
         submitButtonText='Сохранить'

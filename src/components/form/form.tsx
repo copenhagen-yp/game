@@ -10,14 +10,14 @@ export const Form: FC<formProps> = (props) => {
     children,
     wrapperClassName,
     formClassName,
-    handleSubmit,
+    onSubmit,
     title,
     submitButtonText,
   } = props;
 
   return (
     <div className={cn(styles.form__wrapper, wrapperClassName && wrapperClassName)}>
-      <form onSubmit={handleSubmit} className={cn(styles.form, formClassName && formClassName)}>
+      <form onSubmit={onSubmit} className={cn(styles.form, formClassName && formClassName)}>
         <div className={styles.form__header}>
           <h3>{title}</h3>
         </div>

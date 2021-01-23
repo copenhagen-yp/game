@@ -1,9 +1,12 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import { APP_TEXT, API_URL } from '../../constants';
-import { Field, Input, Form } from '../../components';
+import { Field, Input, Form, Button } from '../../components';
 import { useForm } from '../../hooks';
 import { routes } from '../../routes';
+
+import styles from '../sign-in-up.pcss';
 
 const signUpFields = [
   {
@@ -50,27 +53,37 @@ export const SignUp = () => {
   } = useForm(requiredFields, successResult, API_URL.SIGN_UP);
 
   return (
-    <Form
-      handleSubmit={handleSubmitSign}
-      submitButtonText={APP_TEXT.REGISTRATION_BTN_TEXT}
-      title={APP_TEXT.REGISTRATION}
-    >
-      {signUpFields.map((field) => (
-        <Field
-          key={field.name}
-          label={field.label}
-          error={error[field.name]}
+    <div className={styles.page}>
+      <div className={styles.content}>
+        <Form
+          onSubmit={handleSubmitSign}
+          submitButtonText={APP_TEXT.REGISTRATION_BTN_TEXT}
+          title={APP_TEXT.REGISTRATION}
         >
-          <Input
-            type={field.type}
-            name={field.name}
-            onChange={handleChange}
-            onBlur={handleBlur}
-            error={error[field.name]}
-            value={fieldsValues[field.name] || ''}
-          />
-        </Field>
-      ))}
-    </Form>
+          {signUpFields.map((field) => (
+            <Field
+              key={field.name}
+              label={field.label}
+              error={error[field.name]}
+            >
+              <Input
+                type={field.type}
+                name={field.name}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={error[field.name]}
+                value={fieldsValues[field.name] || ''}
+              />
+            </Field>
+          ))}
+        </Form>
+
+        <Link to={routes.signIn.path}>
+          <Button>
+            Войти
+          </Button>
+        </Link>
+      </div>
+    </div>
   )
 };
