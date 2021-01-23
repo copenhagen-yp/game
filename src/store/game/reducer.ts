@@ -1,4 +1,4 @@
-import { GAME_ACTIONS } from './constants';
+import { GAME_ACTIONS, GAME_STATUSES } from './constants';
 import { GameReducer } from './types';
 
 const defaultState: GameReducer = {
@@ -10,25 +10,25 @@ export const gameReducer = (state: GameReducer = defaultState, { type }: {type: 
     case GAME_ACTIONS.PAUSE:
       return {
         ...state,
-        status: 'pause',
+        status: GAME_STATUSES.PAUSE,
       }
 
     case GAME_ACTIONS.RESUME:
       return {
         ...state,
-        status: 'resume',
+        status: GAME_STATUSES.RESUME,
       }
 
     case GAME_ACTIONS.FINISH:
       return {
         ...state,
-        status: 'finish',
+        status: GAME_STATUSES.FINISH,
       }
 
     case GAME_ACTIONS.RESTART:
       return {
         ...state,
-        status: 'restart',
+        status: GAME_STATUSES.RESTART,
       }
 
     default:

@@ -33,15 +33,20 @@ export class PauseButton {
   draw (state: string) {
     this.context.beginPath();
     this.context.rect(this.x, this.y, this.width, this.height);
-    this.context.stroke();
 
     switch(state) {
       case 'resume':
         this.context.fillText(BUTTON_TEXT.PAUSE,this.x + this.width / 2 - this.textWidthPause / 2,this.y + this.height / 2 + 5);
-
+        this.context.stroke();
         break;
-      default:
+
+      case 'pause':
         this.context.fillText(BUTTON_TEXT.PLAY,this.x + this.width / 2 - this.textWidthPlay / 2,this.y + this.height / 2 + 5);
+        this.context.stroke();
+        break;
+
+      default:
+        break;
     }
   }
 }

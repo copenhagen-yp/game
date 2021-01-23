@@ -1,34 +1,23 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import Modal from 'react-modal';
+import { Modal } from '../../components';
 
 import { PlayGround } from './play-ground';
 import * as gameActions from '../../store/game/actions';
-
-import styles from './game.pcss';
 import { AppState } from '../../store/reducer';
 import { Button } from '../../components';
+import { getStatus } from '../../store/game/selectors';
+import { GAME_STATUSES } from '../../store/game/constants';
+
+import styles from './game.pcss';
 
 const CANVAS_WIDTH = 700;
 const CANVAS_HEIGHT = 500;
 
-const customStyles = {
-  content : {
-    top                   : '50%',
-    left                  : '50%',
-    right                 : 'auto',
-    bottom                : 'auto',
-    marginRight           : '-50%',
-    transform             : 'translate(-50%, -50%)'
-  }
-};
-
-Modal.setAppElement('#root');
-
 export const Game = () => {
   const canvasRef = useRef(null);
   const [playGround, setPlayGround] = useState<any>(null);
-  const gameState = useSelector<AppState>(store => store.game.status);
+  const gameState = useSelector<AppState>(getStatus);
   const [modalIsOpen, setIsOpen] = React.useState(false);
   const dispatch = useDispatch();
 
@@ -57,19 +46,19 @@ export const Game = () => {
     cancelAnimationFrame(playGround.requestAnimationId);
 
     switch (gameState) {
-      case 'pause':
+      case GAME_STATUSES.PAUSE:
         playGround.pause();
         break;
 
-      case 'resume':
+      case GAME_STATUSES.RESUME:
         playGround.resume();
         break;
 
-      case 'finish':
+      case GAME_STATUSES.FINISH:
         playGround.finish();
         break;
 
-      case 'restart':
+      case GAME_STATUSES.RESTART:
         playGround.start();
         dispatch(gameActions.resume());
         break;
@@ -78,11 +67,11 @@ export const Game = () => {
 
   const handlePauseClick = () => {
     switch (gameState) {
-      case 'pause':
+      case GAME_STATUSES.PAUSE:
         dispatch(gameActions.resume());
         break;
 
-      case 'resume':
+      case GAME_STATUSES.RESUME:
         dispatch(gameActions.pause());
         break;
     }
@@ -108,7 +97,6 @@ export const Game = () => {
     <main className={styles.game}>
       <Modal
         isOpen={modalIsOpen}
-        style={customStyles}
       >
         <Button onClick={handleRestartClick}>Начать заново</Button>
       </Modal>

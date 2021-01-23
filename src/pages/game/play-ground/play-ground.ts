@@ -156,7 +156,9 @@ export class PlayGround {
   }
 
   finish = () => {
-    console.log('finish');
+    this.state = 'finish';
+    this.requestAnimationId = requestAnimationFrame(this.finish);
+    this.render();
   }
 
   loop = () => {
