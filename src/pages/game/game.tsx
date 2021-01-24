@@ -80,12 +80,12 @@ export const Game = () => {
   const handleRestartClick = () => {
     setIsOpen(false);
     dispatch(gameActions.restart());
-  }
+  };
 
   const handleFinish = () => {
     setIsOpen(true);
     dispatch(gameActions.finish());
-  }
+  };
 
   const handleCanvasClick = (event: any) => {
     if (playGround) {
@@ -114,4 +114,4 @@ export const Game = () => {
       </div>
     </main>
   );
-}
+};

@@ -10,4 +10,4 @@ export const configureStore = () => {
   const store = createStore(reducers, composeEnhancers(applyMiddleware(thunk, logger)));
 
   return store;
-}
+};

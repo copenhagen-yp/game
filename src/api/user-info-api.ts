@@ -5,8 +5,8 @@ export const userInfoApi = (request: { (url:string, options?: Options): Promise<
   const getInfo = () => {
     return request(
       API_URL.GET_USER_INFO,
-      { method: REQUEST_METHOD.GET })
-  }
+      { method: REQUEST_METHOD.GET });
+  };
 
   const updateUserAvatar = (image: any) => {
     if (!image) {
@@ -24,11 +24,11 @@ export const userInfoApi = (request: { (url:string, options?: Options): Promise<
         method: REQUEST_METHOD.PUT,
         headers,
         body: formData
-      })
-  }
+      });
+  };
 
   return {
     getInfo,
     updateUserAvatar,
-  }
+  };
 };

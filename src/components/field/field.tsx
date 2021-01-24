@@ -13,5 +13,5 @@ export const Field: FC<Props> = (props) => {
       {children}
       {error?.value ? <span className={styles.error}>{error?.text || 'Поле обязательно для заполнения'}</span> : null}
     </div>
-  )
+  );
 };

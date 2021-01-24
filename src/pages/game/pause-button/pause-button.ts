@@ -1,9 +1,9 @@
-import { GAME_STATUSES } from '../../../store/game/constants'
+import { GAME_STATUSES } from '../../../store/game/constants';
 
 const BUTTON_TEXT = {
   PLAY: 'Играть',
   PAUSE: 'Пауза',
-}
+};
 
 export class PauseButton {
   private readonly x: number;

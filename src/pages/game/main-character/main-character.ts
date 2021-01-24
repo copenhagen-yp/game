@@ -5,7 +5,7 @@ const KEY_CODES = {
   down: 40,
   left: 37,
   right: 39
-}
+};
 
 const STEP = 5;
 
@@ -19,7 +19,7 @@ const MOVEMENT_DIRECTION_CODE = {
   UP: 1,
   LEFT: 2,
   RIGHT: 3
-}
+};
 
 const CHARACTER_IMAGE = '/images/boy.png';
 
@@ -28,7 +28,7 @@ const SPRITE_CROP = {
   HEIGHT: 283,
   POINT_X: 241,
   POINT_Y: 285,
-}
+};
 
 export class MainCharacter extends AnimatedSprite {
   public x: number;
@@ -167,7 +167,7 @@ export class MainCharacter extends AnimatedSprite {
     return {
       x: speedX,
       y: speedY
-    }
+    };
   }
 
   stopMove () {
@@ -256,9 +256,9 @@ export class MainCharacter extends AnimatedSprite {
     } else if (event.keyCode === KEY_CODES.left) {
       this.leftKeyPressed = false;
     } else if (event.keyCode === KEY_CODES.up) {
-      this.upKeyPressed = false
+      this.upKeyPressed = false;
     } else if (event.keyCode === KEY_CODES.down) {
-      this.downKeyPressed = false
+      this.downKeyPressed = false;
     }
   }
 

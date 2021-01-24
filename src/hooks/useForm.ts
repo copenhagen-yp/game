@@ -32,7 +32,7 @@ export const useForm = (requiredFields: string[], successResult?: string, url?: 
             request(API_URL.GET_USER_INFO)
               .then((resp) => {
                 dispatch(userActions.setUserInfo(resp));
-              })
+              });
             history.push(successResult);
           }
         })

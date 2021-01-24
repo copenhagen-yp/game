@@ -19,7 +19,7 @@ export const leaderboardApi = (request: { (url: string, options?: Options): Prom
           ratingFieldName
         }),
         method: REQUEST_METHOD.POST
-      })
+      });
   };
 
   const getLeaderboard = () => {
@@ -32,8 +32,8 @@ export const leaderboardApi = (request: { (url: string, options?: Options): Prom
           limit,
         }),
         method: REQUEST_METHOD.POST
-      })
+      });
   };
 
   return { addUser, getLeaderboard };
-}
+};

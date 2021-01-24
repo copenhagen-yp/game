@@ -10,8 +10,8 @@ export const resume = () => ({
 
 export const finish = () => ({
   type: GAME_ACTIONS.FINISH,
-})
+});
 
 export const restart = () => ({
   type: GAME_ACTIONS.RESTART,
-})
+});

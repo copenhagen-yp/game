@@ -44,12 +44,13 @@ const signUpFields = [
 export const SignUp = () => {
   const requiredFields = ['first_name', 'second_name', 'login', 'email', 'password', 'phone'];
   const successResult = routes.home.path;
+
   const {
     handleSubmitSign,
     handleChange,
     handleBlur,
     error,
-    fields: fieldsValues,
+    fields: fieldsValues
   } = useForm(requiredFields, successResult, API_URL.SIGN_UP);
 
   return (
@@ -85,5 +86,5 @@ export const SignUp = () => {
         </Link>
       </div>
     </div>
-  )
+  );
 };

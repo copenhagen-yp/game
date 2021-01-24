@@ -19,5 +19,5 @@ export const setUserInfo = (userInfo: IUser | null) => ({
 export const logoutUser = () => {
   return {
     type: USER.LOGOUT,
-  }
-}
+  };
+};
