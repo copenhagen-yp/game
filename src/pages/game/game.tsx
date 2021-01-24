@@ -42,10 +42,12 @@ export const Game = () => {
 
     if (canvasWrapperRefElement) {
       window.addEventListener('resize', handleResizeCanvasWrapper);
+      document.addEventListener('fullscreenchange', handleFullscreenChange);
     }
 
     return () => {
       window.removeEventListener('resize', handleResizeCanvasWrapper);
+      document.removeEventListener('fullscreenchange', handleFullscreenChange);
     };
   }, []);
 
@@ -144,6 +146,11 @@ export const Game = () => {
     }
   };
 
+  const handleFullscreenChange = () => {
+    setIsFullScreen(!!document.fullscreenElement);
+    handleResizeCanvasWrapper();
+  };
+
   const handleClickFullscreen = () => {
     if (!containerRef || !containerRef.current) {
       return;
@@ -153,33 +160,32 @@ export const Game = () => {
 
     if (!document.fullscreenElement) {
       if (elem.requestFullscreen) {
-
-        setIsFullScreen(true);
         elem.requestFullscreen();
       }
     } else {
       if (document.exitFullscreen) {
-        setIsFullScreen(false);
-
         document.exitFullscreen();
       }
-
-      handleResizeCanvasWrapper();
     }
   };
 
   return (
     <main className={styles.game}>
-      <Modal
-        isOpen={modalIsOpen}
-      >
-        <Button onClick={handleRestartClick}>Начать заново</Button>
-      </Modal>
       <h1>Game</h1>
       <div
         className={styles.container}
         ref={containerRef}
       >
+        {containerRef.current && (
+          <Modal
+            isOpen={modalIsOpen}
+            parentSelector={() => containerRef.current}
+          >
+            <Button onClick={handleRestartClick}>
+              Начать заново
+            </Button>
+          </Modal>
+        )}
         <Button
           onClick={handleClickFullscreen}
         >
