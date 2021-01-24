@@ -1,6 +1,7 @@
 import { MainCharacter } from '../main-character';
 import { Enemy, IEnemy } from '../enemy';
 import { PauseButton } from '../pause-button';
+import { GAME_STATUSES } from '../../../store/game/constants';
 
 const INTERVAL_MOTION = 1 / 60;
 const BACKGROUND_SCENE = new Image();
@@ -40,12 +41,12 @@ export class PlayGround {
     this.enemy = null;
     this.mainCharacter = null;
     this.requestAnimationId = undefined;
-    this.state = 'resume';
+    this.state = GAME_STATUSES.RESUME;
   }
 
   start() {
     this.requestAnimationId = undefined;
-    this.state = 'resume';
+    this.state = GAME_STATUSES.RESUME;
     this.init();
   }
 
@@ -120,7 +121,7 @@ export class PlayGround {
   }
 
   pause = () => {
-    this.state = 'pause';
+    this.state = GAME_STATUSES.PAUSE;
     this.requestAnimationId = requestAnimationFrame(this.pause);
     this.render();
 
@@ -151,12 +152,12 @@ export class PlayGround {
   }
 
   resume = () => {
-    this.state = 'resume';
+    this.state = GAME_STATUSES.RESUME;
     this.loop();
   }
 
   finish = () => {
-    this.state = 'finish';
+    this.state = GAME_STATUSES.FINISH;
     this.requestAnimationId = requestAnimationFrame(this.finish);
     this.render();
   }

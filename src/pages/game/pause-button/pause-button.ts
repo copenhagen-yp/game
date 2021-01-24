@@ -1,3 +1,5 @@
+import { GAME_STATUSES } from '../../../store/game/constants'
+
 const BUTTON_TEXT = {
   PLAY: 'Играть',
   PAUSE: 'Пауза',
@@ -35,12 +37,12 @@ export class PauseButton {
     this.context.rect(this.x, this.y, this.width, this.height);
 
     switch(state) {
-      case 'resume':
+      case GAME_STATUSES.RESUME:
         this.context.fillText(BUTTON_TEXT.PAUSE,this.x + this.width / 2 - this.textWidthPause / 2,this.y + this.height / 2 + 5);
         this.context.stroke();
         break;
 
-      case 'pause':
+      case GAME_STATUSES.PAUSE:
         this.context.fillText(BUTTON_TEXT.PLAY,this.x + this.width / 2 - this.textWidthPlay / 2,this.y + this.height / 2 + 5);
         this.context.stroke();
         break;

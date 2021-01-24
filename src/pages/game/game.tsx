@@ -4,9 +4,9 @@ import { Modal } from '../../components';
 
 import { PlayGround } from './play-ground';
 import * as gameActions from '../../store/game/actions';
+import * as gameSelectors from '../../store/game/selectors';
 import { AppState } from '../../store/reducer';
 import { Button } from '../../components';
-import { getStatus } from '../../store/game/selectors';
 import { GAME_STATUSES } from '../../store/game/constants';
 
 import styles from './game.pcss';
@@ -17,7 +17,7 @@ const CANVAS_HEIGHT = 500;
 export const Game = () => {
   const canvasRef = useRef(null);
   const [playGround, setPlayGround] = useState<any>(null);
-  const gameState = useSelector<AppState>(getStatus);
+  const gameStatus = useSelector<AppState>(gameSelectors.getStatus);
   const [modalIsOpen, setIsOpen] = React.useState(false);
   const dispatch = useDispatch();
 
@@ -45,7 +45,7 @@ export const Game = () => {
 
     cancelAnimationFrame(playGround.requestAnimationId);
 
-    switch (gameState) {
+    switch (gameStatus) {
       case GAME_STATUSES.PAUSE:
         playGround.pause();
         break;
@@ -63,10 +63,10 @@ export const Game = () => {
         dispatch(gameActions.resume());
         break;
     }
-  }, [gameState]);
+  }, [gameStatus]);
 
   const handlePauseClick = () => {
-    switch (gameState) {
+    switch (gameStatus) {
       case GAME_STATUSES.PAUSE:
         dispatch(gameActions.resume());
         break;
