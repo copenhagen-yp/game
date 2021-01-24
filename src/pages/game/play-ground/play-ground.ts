@@ -24,7 +24,6 @@ export class PlayGround {
   private lastRenderTime: number;
   private timeDelta: number;
   private pauseButton: any;
-  private canvasBoundingRect: any;
   private state: 'resume' | 'pause' | 'finish';
   private handleFinish: () => void;
 
@@ -32,7 +31,6 @@ export class PlayGround {
     this.canvas = canvas;
     this.context = context;
     this.handleFinish = handleFinish;
-    this.canvasBoundingRect = this.canvas.getBoundingClientRect();
 
     this.lastRenderTime = 0;
     this.timeDelta = 0;
@@ -107,8 +105,8 @@ export class PlayGround {
   handleClickCanvas(event: MouseEvent, handlePauseClick: () => void) {
     const canvasBoundingRect = this.canvas.getBoundingClientRect();
 
-    const mousePositionX = this.canvas.width * event.clientX / canvasBoundingRect.width;
-    const mousePositionY = this.canvas.height * event.clientY / canvasBoundingRect.height;
+    const mousePositionX = this.canvas.width * (event.clientX - canvasBoundingRect.left) / canvasBoundingRect.width;
+    const mousePositionY = this.canvas.height * (event.clientY - canvasBoundingRect.top) / canvasBoundingRect.height;
 
     if (this.checkMouseOnButton(mousePositionX, mousePositionY)) {
       handlePauseClick();

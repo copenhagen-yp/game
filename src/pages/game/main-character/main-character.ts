@@ -229,10 +229,8 @@ export class MainCharacter extends AnimatedSprite {
   }
 
   clickHandler = (mousePositionX: number, mousePositionY: number) => {
-    const canvasBoundingRect = this.canvas.getBoundingClientRect();
-
-    const x = mousePositionX - canvasBoundingRect.left - this.width / 2;
-    const y = mousePositionY - canvasBoundingRect.top - this.height / 2;
+    const x = mousePositionX - this.width / 2;
+    const y = mousePositionY - this.height / 2;
 
     const position = this.normalizePosition(x, y);
 

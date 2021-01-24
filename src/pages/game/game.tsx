@@ -10,7 +10,6 @@ import { Button } from '../../components';
 import { GAME_STATUSES } from '../../store/game/constants';
 
 import styles from './game.pcss';
-import { Button } from '../../components';
 
 const CANVAS_WIDTH = 700;
 const CANVAS_HEIGHT = 500;
@@ -32,6 +31,7 @@ export const Game = () => {
 
     if (canvasObj) {
       const ctx = canvasObj.getContext('2d');
+
       handleResizeCanvasWrapper();
       const playGroundObj = new PlayGround(canvasObj, ctx, handleFinish);
 
@@ -106,9 +106,10 @@ export const Game = () => {
 
   const handleCanvasClick = (event: any) => {
     if (playGround) {
-      playGround.handleClickCanvas(event);
+      playGround.handleClickCanvas(event, handlePauseClick);
     }
   };
+
   const changeCanvasSize = (width: number, height: number) => {
     const canvas: any = canvasRef.current;
 
@@ -130,7 +131,7 @@ export const Game = () => {
 
   const handleResizeCanvasWrapper = () => {
     if (!isFullScreen) {
-      changeCanvasSize(canvasWidth, canvasHeight);
+      changeCanvasSize(CANVAS_WIDTH, CANVAS_HEIGHT);
     }
 
     const canvasWrapperElement: any = canvasWrapperRef.current;
