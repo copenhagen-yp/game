@@ -8,10 +8,6 @@ import styles from './navigation.pcss';
 export const Navigation = () => {
   const menu = [
     {
-      label: 'SignIn',
-      path: routes.signIn.path,
-    },
-    {
       label: 'SignUp',
       path: routes.signUp.path,
     },

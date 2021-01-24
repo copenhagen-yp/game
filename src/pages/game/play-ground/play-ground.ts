@@ -105,8 +105,10 @@ export class PlayGround {
   }
 
   handleClickCanvas(event: MouseEvent, handlePauseClick: () => void) {
-    const mousePositionX = event.clientX - this.canvasBoundingRect.left;
-    const mousePositionY = event.clientY - this.canvasBoundingRect.top;
+    const canvasBoundingRect = this.canvas.getBoundingClientRect();
+
+    const mousePositionX = this.canvas.width * event.clientX / canvasBoundingRect.width;
+    const mousePositionY = this.canvas.height * event.clientY / canvasBoundingRect.height;
 
     if (this.checkMouseOnButton(mousePositionX, mousePositionY)) {
       handlePauseClick();
