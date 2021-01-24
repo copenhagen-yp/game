@@ -15,9 +15,9 @@ const CANVAS_WIDTH = 700;
 const CANVAS_HEIGHT = 500;
 
 export const Game = () => {
-  const canvasRef = useRef(null);
-  const containerRef = useRef(null);
-  const canvasWrapperRef = useRef(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const canvasWrapperRef = useRef<HTMLDivElement>(null);
 
   const [playGround, setPlayGround] = useState<any>(null);
   const gameStatus = useSelector<AppState>(gameSelectors.getStatus);
@@ -27,7 +27,7 @@ export const Game = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const canvasObj: any = canvasRef.current;
+    const canvasObj = canvasRef.current;
 
     if (canvasObj) {
       const ctx = canvasObj.getContext('2d');
@@ -38,7 +38,7 @@ export const Game = () => {
       setPlayGround(playGroundObj);
     }
 
-    const canvasWrapperRefElement: any = canvasWrapperRef.current;
+    const canvasWrapperRefElement = canvasWrapperRef.current;
 
     if (canvasWrapperRefElement) {
       window.addEventListener('resize', handleResizeCanvasWrapper);
@@ -111,7 +111,7 @@ export const Game = () => {
   };
 
   const changeCanvasSize = (width: number, height: number) => {
-    const canvas: any = canvasRef.current;
+    const canvas = canvasRef.current;
 
     if (canvas) {
       const ratio = canvas.width / canvas.height;
@@ -134,15 +134,17 @@ export const Game = () => {
       changeCanvasSize(CANVAS_WIDTH, CANVAS_HEIGHT);
     }
 
-    const canvasWrapperElement: any = canvasWrapperRef.current;
+    const canvasWrapperElement = canvasWrapperRef.current;
 
-    const width = canvasWrapperElement.offsetWidth;
-    const height = canvasWrapperElement.offsetHeight;
+    if(canvasWrapperElement) {
+      const width = canvasWrapperElement.offsetWidth;
+      const height = canvasWrapperElement.offsetHeight;
 
-    changeCanvasSize(width, height);
+      changeCanvasSize(width, height);
+    }
   };
 
-  const handleCLickFullscreen = () => {
+  const handleClickFullscreen = () => {
     if (!containerRef || !containerRef.current) {
       return;
     }
@@ -150,13 +152,9 @@ export const Game = () => {
     const elem = containerRef.current;
 
     if (!document.fullscreenElement) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
       if (elem.requestFullscreen) {
 
         setIsFullScreen(true);
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
         elem.requestFullscreen();
       }
     } else {
@@ -178,9 +176,12 @@ export const Game = () => {
         <Button onClick={handleRestartClick}>Начать заново</Button>
       </Modal>
       <h1>Game</h1>
-      <div className={styles.container} ref={containerRef}>
+      <div
+        className={styles.container}
+        ref={containerRef}
+      >
         <Button
-          onClick={handleCLickFullscreen}
+          onClick={handleClickFullscreen}
         >
           {isFullScreen ? 'Свернуть' : 'Развернуть'}
         </Button>
