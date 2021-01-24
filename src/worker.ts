@@ -23,16 +23,16 @@ self.addEventListener('install', (event: any) => {
         .then(function(cache) {
           fetch('asset-manifest.json')
             .then(response => {
-              response.json()
+              response.json();
             })
             .then((assets: any) => {
               const urlsToCache = [
                 '/',
                 assets['build.js']
-              ]
+              ];
 
               cache.addAll(urlsToCache);
-            })
+            });
         })
     );
   }
