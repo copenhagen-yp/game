@@ -50,4 +50,4 @@ export const Game = () => {
       </div>
     </main>
   );
-}
+};

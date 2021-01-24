@@ -22,7 +22,7 @@ export const Header = () => {
       .then(() => {
         dispatch(userActions.logoutUser());
       });
-  }
+  };
 
   return (
     <div className={styles.header}>

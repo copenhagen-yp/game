@@ -103,7 +103,7 @@ export const Profile = () => {
           .reduce((acc, key) => (requiredProfileFields.includes(key) ? { ...acc, [key]: userFieldValues[key] } : acc), {});
 
         setFieldsProfile((prevState: any) => ({ ...prevState, ...currentFieldValues }));
-      })
+      });
   }, []);
 
   return (
@@ -170,4 +170,4 @@ export const Profile = () => {
       </div>
     </main>
   );
-}
+};

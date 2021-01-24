@@ -28,4 +28,4 @@ export const NoMatch = () => {
       </div>
     </div>
   );
-}
+};

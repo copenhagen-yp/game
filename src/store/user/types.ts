@@ -24,5 +24,3 @@ export type UserReducer = {
   status: LoadStatus | null,
   userInfo: IUser | null,
 };
-
-

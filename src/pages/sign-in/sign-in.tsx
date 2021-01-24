@@ -24,12 +24,13 @@ const signInFields = [
 export const SignIn = () => {
   const requiredFields = ['login', 'password'];
   const successResult = routes.home.path;
+
   const {
     handleSubmitSign,
     handleChange,
     handleBlur,
     error,
-    fields: fieldsValues,
+    fields: fieldsValues
   } = useForm(requiredFields, successResult, API_URL.SIGN_IN);
 
   return (
@@ -65,5 +66,5 @@ export const SignIn = () => {
         </Link>
       </div>
     </div>
-  )
+  );
 };

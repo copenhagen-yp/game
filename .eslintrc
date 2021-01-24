@@ -18,6 +18,8 @@
     "object-curly-spacing": ["error", "always"],
     "no-unused-vars": "off",
     "@typescript-eslint/no-unused-vars": ["error"],
+    "eol-last": ["error"],
+    "semi": [2, "always"],
     "padding-line-between-statements": [
       2,
       {

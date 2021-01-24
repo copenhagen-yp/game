@@ -19,7 +19,7 @@ export const Leaderboard = () => {
           setPlayersData(res);
           setLoading(false);
         }
-      })
+      });
   }, []);
 
   return (
@@ -50,4 +50,4 @@ export const Leaderboard = () => {
       </div>
     </main>
   );
-}
+};
