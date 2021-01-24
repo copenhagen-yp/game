@@ -31,7 +31,7 @@ export const Navigation = () => {
       label: 'Forums',
       path: routes.forums.path,
     },
-  ]
+  ];
 
   return (
     <ul className={styles.menu}>
