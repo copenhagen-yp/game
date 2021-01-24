@@ -7,10 +7,10 @@ import { Options } from './types';
 export const useHttp = () => {
   const [errors, setErrors] = useState<string[]>([]);
   const { addToast } = useToasts();
-  const headers = new Headers();
 
   const request = useCallback(
     async(url: string, options?: Options) => {
+      const headers = new Headers();
 
       if (!options?.headers) {
         headers.append('Content-Type', 'application/json');

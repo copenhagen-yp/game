@@ -1,11 +1,11 @@
-import { AnimatedSprite } from '../animated-sprite'; 
+import { AnimatedSprite } from '../animated-sprite';
 
 const KEY_CODES = {
   up: 38,
   down: 40,
   left: 37,
   right: 39
-}
+};
 
 const STEP = 5;
 
@@ -19,7 +19,7 @@ const MOVEMENT_DIRECTION_CODE = {
   UP: 1,
   LEFT: 2,
   RIGHT: 3
-}
+};
 
 const CHARACTER_IMAGE = '/images/boy.png';
 
@@ -28,7 +28,7 @@ const SPRITE_CROP = {
   HEIGHT: 283,
   POINT_X: 241,
   POINT_Y: 285,
-}
+};
 
 export class MainCharacter extends AnimatedSprite {
   public x: number;
@@ -47,7 +47,6 @@ export class MainCharacter extends AnimatedSprite {
 
   private context: any;
   private canvas: any;
-  private canvasBoundingRect: any;
 
   private width: number;
   private height: number;
@@ -62,7 +61,6 @@ export class MainCharacter extends AnimatedSprite {
 
     this.context = context;
     this.canvas = context.canvas;
-    this.canvasBoundingRect = this.canvas.getBoundingClientRect();
 
     this.width = 45;
     this.height = this.width * 1.212;
@@ -169,7 +167,7 @@ export class MainCharacter extends AnimatedSprite {
     return {
       x: speedX,
       y: speedY
-    }
+    };
   }
 
   stopMove () {
@@ -230,9 +228,9 @@ export class MainCharacter extends AnimatedSprite {
     }
   }
 
-  clickHandler = (event: any) => {
-    const x = event.clientX - this.canvasBoundingRect.left - this.width / 2;
-    const y = event.clientY - this.canvasBoundingRect.top - this.height / 2;
+  clickHandler = (mousePositionX: number, mousePositionY: number) => {
+    const x = mousePositionX - this.width / 2;
+    const y = mousePositionY - this.height / 2;
 
     const position = this.normalizePosition(x, y);
 
@@ -258,9 +256,9 @@ export class MainCharacter extends AnimatedSprite {
     } else if (event.keyCode === KEY_CODES.left) {
       this.leftKeyPressed = false;
     } else if (event.keyCode === KEY_CODES.up) {
-      this.upKeyPressed = false
+      this.upKeyPressed = false;
     } else if (event.keyCode === KEY_CODES.down) {
-      this.downKeyPressed = false
+      this.downKeyPressed = false;
     }
   }
 

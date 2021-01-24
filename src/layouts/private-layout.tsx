@@ -16,4 +16,4 @@ export const PrivateLayout = ({ children }: LayoutType) => {
       </div>
     </div>
   );
-}
+};

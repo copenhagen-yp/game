@@ -24,7 +24,7 @@ export const Forum = () => {
                   <p>{item.description}</p>
                 </li>
               </Link>
-            )
+            );
           })
         }
       </ul>
@@ -52,5 +52,5 @@ export const Forum = () => {
         </Field>
       </Form>
     </div>
-  )
+  );
 };

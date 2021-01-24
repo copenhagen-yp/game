@@ -19,4 +19,4 @@ export const Home = () => {
       <Button onClick={handleClickToast}>Show toasts</Button>
     </div>
   );
-}
+};

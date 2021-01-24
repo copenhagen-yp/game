@@ -1,12 +1,18 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const WorkboxPlugin = require('workbox-webpack-plugin');
 
 module.exports = {
-  entry: './src/index.tsx',
+  entry: {
+    bundle:'./src/index.tsx',
+    sw: './src/worker.ts'
+  },
   output: {
     path: path.join(__dirname, '/dist'),
-    filename: 'bundle.js',
+    filename: '[name].js',
     publicPath: '/',
   },
   resolve: {
@@ -41,5 +47,10 @@ module.exports = {
     new CopyWebpackPlugin({
       patterns: [{ from: 'src/images/', to: 'images' }],
     }),
+    new WorkboxPlugin.GenerateSW({
+      clientsClaim: true,
+      skipWaiting: true,
+      importScriptsViaChunks: ['sw'],
+    })
   ],
 };

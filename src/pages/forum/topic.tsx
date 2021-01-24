@@ -18,7 +18,7 @@ export const Topic = () => {
         {currentComments.map(item => {
           return (
             <li key={item.id} className={styles.comments}>{item.comment}</li>
-          )
+          );
         })}
       </ul>
       <form onSubmit={handleSubmitComments} className={styles.forum__form}>
@@ -34,5 +34,5 @@ export const Topic = () => {
         <Button>{APP_TEXT.BTN_SEND}</Button>
       </form>
     </div>
-  )
+  );
 };

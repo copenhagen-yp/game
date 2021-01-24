@@ -8,7 +8,7 @@ const MOVEMENT_DIRECTION_CODE = {
   UP: 3,
   LEFT: 1,
   RIGHT: 2
-}
+};
 
 const ENEMY_IMAGE = '/images/enemy.png';
 
@@ -17,7 +17,7 @@ const SPRITE_CROP = {
   HEIGHT: 50,
   POINT_X: 56,
   POINT_Y: 55,
-}
+};
 
 export class Enemy extends AnimatedSprite implements IEnemy {
   private context: any;
@@ -37,7 +37,6 @@ export class Enemy extends AnimatedSprite implements IEnemy {
   public radiusFindHero: number;
 
   constructor (context: any) {
-
     super(ENEMY_IMAGE, 0, 0, SPRITE_CROP, MOVEMENT_DIRECTION_CODE, 3);
 
     this.context = context;
@@ -67,13 +66,13 @@ export class Enemy extends AnimatedSprite implements IEnemy {
   addPath () {
     const result = [];
 
-    const countX = Math.floor(this.canvas.width - this.width)
+    const countX = Math.floor(this.canvas.width - this.width);
     const countY = Math.floor(this.canvas.height - this.height);
 
     for (let index = 0; index < COUNT_POINT; index++) {
-      result.push({ 
-        x: Math.floor(Math.random() * countX), 
-        y: Math.floor(Math.random() * countY) })
+      result.push({
+        x: Math.floor(Math.random() * countX),
+        y: Math.floor(Math.random() * countY) });
     }
 
     return result;
@@ -126,12 +125,12 @@ export class Enemy extends AnimatedSprite implements IEnemy {
     let XColl = false;
     let YColl = false;
 
-    if (this && (this.x + this.width * this.radiusFindHero >= otherSprite.x) 
+    if (this && (this.x + this.width * this.radiusFindHero >= otherSprite.x)
         && (this.x - this.width * this.radiusFindHero <= otherSprite.x + otherSprite.width)) {
       XColl = true;
     }
 
-    if (this && (this.y + this.width * this.radiusFindHero >= otherSprite.y ) 
+    if (this && (this.y + this.width * this.radiusFindHero >= otherSprite.y )
         && (this.y - this.width * this.radiusFindHero <= otherSprite.y + otherSprite.width)) {
       YColl = true;
     }
@@ -144,7 +143,6 @@ export class Enemy extends AnimatedSprite implements IEnemy {
   }
 
   move (toX: number, toY: number) {
-      
     if (toX && toY) {
       let x = this.x;
       let y = this.y;
