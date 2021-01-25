@@ -4,10 +4,13 @@ import { USER } from './constants';
 const defaultReducer: UserReducer = {
   status: null,
   userInfo: null,
+  gameInfo: {
+    point: 0
+  },
 };
 
 export const userReducer = (state: UserReducer = defaultReducer, { type, payload }: ItemActionType)
-  : UserReducer => {
+  : UserReducer => {    
   switch (type) {
     case USER.SET_FAILED_STATUS:
       return {
@@ -28,6 +31,14 @@ export const userReducer = (state: UserReducer = defaultReducer, { type, payload
       return {
         ...state,
         userInfo: null,
+      };
+    case USER.POINT:
+      return {
+        ...state,
+        gameInfo: {
+          ...state.gameInfo,
+          point: payload ? state.gameInfo.point + payload.point : 0
+        }
       };
     default:
       return state;

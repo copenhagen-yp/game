@@ -1,3 +1,4 @@
+import { userActions } from '../../../store/user';
 import { MainCharacter } from '../main-character';
 import { Enemy, IEnemy } from '../enemy';
 import { Foods, IFoods } from '../foods';
@@ -20,8 +21,10 @@ const ARR_IMG_FOODS: string[] = ['/images/mushroom.png', '/images/raspberries.pn
 export class PlayGround {
   private canvas: any | null;
   private context: any | null;
+  private dispatch: any;
 
   private mainCharacter: any | null;
+  public points: number;
 
   private enemy: IEnemy[] | null;
   private countEnemy: number;
@@ -37,15 +40,15 @@ export class PlayGround {
   private state: 'resume' | 'pause' | 'finish';
   private handleFinish: () => void;
 
-  constructor(canvas: any, context: any, handleFinish: () => void) {
+  constructor(canvas: any, context: any, handleFinish: () => void, dispatch: any) {
     this.canvas = canvas;
     this.context = context;
     this.handleFinish = handleFinish;
     this.canvasBoundingRect = this.canvas.getBoundingClientRect();
+    this.dispatch = dispatch;
 
     this.lastRenderTime = 0;
     this.timeDelta = 0;
-    
 
     this.foods = null;
     this.countFoods = 5;
@@ -54,6 +57,7 @@ export class PlayGround {
     this.countEnemy = 2;
 
     this.mainCharacter = null;
+    this.points = 0;
     this.requestAnimationId = undefined;
     this.state = GAME_STATUSES.RESUME;
   }
@@ -90,7 +94,7 @@ export class PlayGround {
     return Math.floor(Math.random() * (max - min) + min);
   }
 
-  initFoods () {
+  initFoods() {
     this.foods = Array.from(Array(this.countFoods), () => {
       const foods = new Foods(this.context);
 
@@ -151,6 +155,9 @@ export class PlayGround {
   
         if (XColl && YColl) {
           this.foods.splice(index, 1);
+          this.points += 1;
+          
+          this.dispatch(userActions.pointUser(1));
         }
       }
     }
@@ -247,8 +254,6 @@ export class PlayGround {
     this.mainCharacter.draw();
     this.enemy?.forEach(item => item?.draw());
     this.foods?.forEach(item => item?.draw());
-    this.requestAnimationId = requestAnimationFrame(this.render);
-    this.enemy?.map(item => item?.draw());
     this.pauseButton.draw(this.state);
   }
 }

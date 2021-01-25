@@ -21,3 +21,12 @@ export const logoutUser = () => {
     type: USER.LOGOUT,
   };
 };
+
+export const pointUser = (point: number) => {
+  return {
+    type: USER.POINT,
+    payload: {
+      point
+    }
+  };
+};
