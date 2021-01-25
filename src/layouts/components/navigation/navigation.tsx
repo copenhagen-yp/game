@@ -3,15 +3,35 @@ import React from 'react';
 
 import { routes } from './../../../routes';
 
+import styles from './navigation.pcss';
+
 export const Navigation = () => {
+  const menu = [
+    {
+      label: 'Home',
+      path: routes.home.path,
+    },
+    {
+      label: 'Game',
+      path: routes.game.path,
+    },
+    {
+      label: 'Leaderboard',
+      path: routes.leaderboard.path,
+    },
+    {
+      label: 'Forums',
+      path: routes.forums.path,
+    },
+  ];
+
   return (
-    <ul>
-      <li><Link to={routes.signIn.path}>SignIn</Link></li>
-      <li><Link to={routes.signUp.path}>SignUp</Link></li>
-      <li><Link to={routes.home.path}>Home</Link></li>
-      <li><Link to={routes.game.path}>Game</Link></li>
-      <li><Link to={routes.leaderboard.path}>Leaderboard</Link></li>
-      <li><Link to={routes.forums.path}>Forums</Link></li>
+    <ul className={styles.menu}>
+      { menu.map((item: any) => (
+        <li className={styles.item} key={item.path}>
+          <Link to={item.path}>{item.label}</Link>
+        </li>
+      ))}
     </ul>
   );
 };

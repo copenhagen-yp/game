@@ -15,21 +15,40 @@ const CANVAS_WIDTH = 700;
 const CANVAS_HEIGHT = 500;
 
 export const Game = () => {
-  const canvasRef = useRef(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const canvasWrapperRef = useRef<HTMLDivElement>(null);
+
   const [playGround, setPlayGround] = useState<any>(null);
   const gameStatus = useSelector<AppState>(gameSelectors.getStatus);
-  const [modalIsOpen, setIsOpen] = React.useState(false);
+  const [modalIsOpen, setIsOpen] = useState(false);
+  const [isFullScreen, setIsFullScreen] = useState<boolean>(false);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const canvasObj: any = canvasRef.current;
+    const canvasObj = canvasRef.current;
 
     if (canvasObj) {
       const ctx = canvasObj.getContext('2d');
+
+      handleResizeCanvasWrapper();
       const playGroundObj = new PlayGround(canvasObj, ctx, handleFinish);
 
       setPlayGround(playGroundObj);
     }
+
+    const canvasWrapperRefElement = canvasWrapperRef.current;
+
+    if (canvasWrapperRefElement) {
+      window.addEventListener('resize', handleResizeCanvasWrapper);
+      document.addEventListener('fullscreenchange', handleFullscreenChange);
+    }
+
+    return () => {
+      window.removeEventListener('resize', handleResizeCanvasWrapper);
+      document.removeEventListener('fullscreenchange', handleFullscreenChange);
+    };
   }, []);
 
   useEffect(() => {
@@ -93,16 +112,86 @@ export const Game = () => {
     }
   };
 
+  const changeCanvasSize = (width: number, height: number) => {
+    const canvas = canvasRef.current;
+
+    if (canvas) {
+      const ratio = canvas.width / canvas.height;
+
+      let canvasHeight = height;
+      let canvasWidth = canvasHeight * ratio;
+
+      if (canvasWidth > width) {
+        canvasWidth = width;
+        canvasHeight = canvasWidth / ratio;
+      }
+
+      canvas.style.width = canvasWidth + 'px';
+      canvas.style.height = canvasHeight + 'px';
+    }
+  };
+
+  const handleResizeCanvasWrapper = () => {
+    if (!isFullScreen) {
+      changeCanvasSize(CANVAS_WIDTH, CANVAS_HEIGHT);
+    }
+
+    const canvasWrapperElement = canvasWrapperRef.current;
+
+    if(canvasWrapperElement) {
+      const width = canvasWrapperElement.offsetWidth;
+      const height = canvasWrapperElement.offsetHeight;
+
+      changeCanvasSize(width, height);
+    }
+  };
+
+  const handleFullscreenChange = () => {
+    setIsFullScreen(!!document.fullscreenElement);
+    handleResizeCanvasWrapper();
+  };
+
+  const handleClickFullscreen = () => {
+    if (!containerRef || !containerRef.current) {
+      return;
+    }
+
+    const elem = containerRef.current;
+
+    if (!document.fullscreenElement) {
+      if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+      }
+    } else {
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      }
+    }
+  };
+
   return (
     <main className={styles.game}>
-      <Modal
-        isOpen={modalIsOpen}
-      >
-        <Button onClick={handleRestartClick}>Начать заново</Button>
-      </Modal>
       <h1>Game</h1>
-      <div className={styles.container}>
-        <div className={styles.canvasWrapper}>
+      <div
+        className={styles.container}
+        ref={containerRef}
+      >
+        {containerRef.current && (
+          <Modal
+            isOpen={modalIsOpen}
+            parentSelector={() => containerRef.current}
+          >
+            <Button onClick={handleRestartClick}>
+              Начать заново
+            </Button>
+          </Modal>
+        )}
+        <Button
+          onClick={handleClickFullscreen}
+        >
+          {isFullScreen ? 'Свернуть' : 'Развернуть'}
+        </Button>
+        <div className={styles.canvasWrapper} ref={canvasWrapperRef}>
           <canvas
             className={styles.canvas}
             ref={canvasRef}

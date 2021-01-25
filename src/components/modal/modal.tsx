@@ -18,11 +18,13 @@ ReactModal.setAppElement('#root');
 export const Modal: FC<modalProps> = (props) => {
   const {
     children,
+    parentSelector,
     ...restProps
   } = props;
 
   return (
     <ReactModal
+      parentSelector={parentSelector}
       {...restProps}
       style={customStyles}
     >
