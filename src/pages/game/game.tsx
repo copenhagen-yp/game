@@ -95,8 +95,6 @@ export const Game = () => {
       playGround.handleClickCanvas(event, handlePauseClick);
     }
   };
-
-  console.log(gameInfoUser);
   
   return (
     <main className={styles.game}>

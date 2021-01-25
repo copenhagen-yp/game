@@ -24,7 +24,6 @@ export class PlayGround {
   private dispatch: any;
 
   private mainCharacter: any | null;
-  public points: number;
 
   private enemy: IEnemy[] | null;
   private countEnemy: number;
@@ -57,7 +56,6 @@ export class PlayGround {
     this.countEnemy = 2;
 
     this.mainCharacter = null;
-    this.points = 0;
     this.requestAnimationId = undefined;
     this.state = GAME_STATUSES.RESUME;
   }
@@ -155,8 +153,6 @@ export class PlayGround {
   
         if (XColl && YColl) {
           this.foods.splice(index, 1);
-          this.points += 1;
-          
           this.dispatch(userActions.pointUser(1));
         }
       }
