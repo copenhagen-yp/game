@@ -114,7 +114,7 @@ export const Game = () => {
   };
 
   const handleSetPoint = (point: number) => {
-    dispatch(userActions.pointUser(point));
+    dispatch(userActions.setPointUser(point));
   };
   
   const changeCanvasSize = (width: number, height: number) => {

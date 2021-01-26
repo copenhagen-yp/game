@@ -163,7 +163,7 @@ export class PlayGround {
     this.lastRenderTime = performance.now();
   }
 
-  checkCollisionWithEnemy (arrObj: IFoods[] | IEnemy[] | null, flag?: boolean) {
+  checkCollisionWithObjects (arrObj: IFoods[] | IEnemy[] | null, flag?: boolean) {
     return arrObj?.some((item, index) => {
       let XColl = false;
       let YColl = false;
@@ -204,7 +204,7 @@ export class PlayGround {
   }
 
   loop = () => {
-    if (this.checkCollisionWithEnemy(this.enemy)) {
+    if (this.checkCollisionWithObjects(this.enemy)) {
       this.handleFinish();
     }
 
@@ -216,7 +216,7 @@ export class PlayGround {
       this.timeDelta -= INTERVAL_MOTION;
       this.mainCharacter.move();
       this.enemy?.forEach(item => item?.update(this.mainCharacter));
-      this.checkCollisionWithEnemy(this.foods, true);
+      this.checkCollisionWithObjects(this.foods, true);
     }
 
     this.lastRenderTime = now;
