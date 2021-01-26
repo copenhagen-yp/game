@@ -5,11 +5,33 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const WorkboxPlugin = require('workbox-webpack-plugin');
 
+function addEntryPath() {
+  if (process.env.NODE_ENV === 'production') {
+    return {
+      bundle:'./src/index.tsx',
+      sw: './src/worker.ts'
+    };
+  }
+
+  return './src/index.tsx';
+}
+
+function addParamToWorkbox() {
+  if (process.env.NODE_ENV === 'production') {
+    return {
+      clientsClaim: true,
+      skipWaiting: true,
+      importScriptsViaChunks: ['sw'],
+    };
+  }
+
+  return {
+    maximumFileSizeToCacheInBytes: 5000000
+  };
+}
+  
 module.exports = {
-  entry: {
-    bundle:'./src/index.tsx',
-    sw: './src/worker.ts'
-  },
+  entry: addEntryPath(),
   output: {
     path: path.join(__dirname, '/dist'),
     filename: '[name].js',
@@ -47,10 +69,6 @@ module.exports = {
     new CopyWebpackPlugin({
       patterns: [{ from: 'src/images/', to: 'images' }],
     }),
-    new WorkboxPlugin.GenerateSW({
-      clientsClaim: true,
-      skipWaiting: true,
-      importScriptsViaChunks: ['sw'],
-    })
+    new WorkboxPlugin.GenerateSW(addParamToWorkbox())
   ],
 };

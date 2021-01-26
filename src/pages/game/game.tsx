@@ -5,7 +5,6 @@ import { Modal } from '../../components';
 import { PlayGround } from './play-ground';
 import * as gameActions from '../../store/game/actions';
 import * as gameSelectors from '../../store/game/selectors';
-import { userSelectors } from '../../store/user';
 import { AppState } from '../../store/reducer';
 import { Button } from '../../components';
 import { GAME_STATUSES } from '../../store/game/constants';
@@ -19,7 +18,6 @@ export const Game = () => {
   const canvasRef = useRef(null);
   const [playGround, setPlayGround] = useState<any>(null);
   const gameStatus = useSelector<AppState>(gameSelectors.getStatus);
-  const gameInfoUser = useSelector(userSelectors.getGameInfo);
   const [modalIsOpen, setIsOpen] = React.useState(false);
   const dispatch = useDispatch();
 
@@ -106,14 +104,6 @@ export const Game = () => {
       <h1>Game</h1>
       <div className={styles.container}>
         <div className={styles.canvasWrapper}>
-          <div className={styles.infoPanel}>
-            <div className={styles.infoPanel__left}>
-              Очки: {gameInfoUser.point}
-            </div>
-            <div className={styles.infoPanel__right}>
-              Время: 01:00
-            </div>
-          </div>
           <canvas
             className={styles.canvas}
             ref={canvasRef}

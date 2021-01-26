@@ -24,6 +24,7 @@ export class PlayGround {
   private dispatch: any;
 
   private mainCharacter: any | null;
+  private countPoint: number;
 
   private enemy: IEnemy[] | null;
   private countEnemy: number;
@@ -56,6 +57,7 @@ export class PlayGround {
     this.countEnemy = 2;
 
     this.mainCharacter = null;
+    this.countPoint = 0;
     this.requestAnimationId = undefined;
     this.state = GAME_STATUSES.RESUME;
   }
@@ -153,6 +155,7 @@ export class PlayGround {
   
         if (XColl && YColl) {
           this.foods.splice(index, 1);
+          this.countPoint += 1;
           this.dispatch(userActions.pointUser(1));
         }
       }
@@ -247,6 +250,7 @@ export class PlayGround {
   render = () => {
     this.clearCanvas();
     this.context.drawImage(BACKGROUND_SCENE, 0, 0, this.canvas.width, this.canvas.height);
+    this.context.fillText(`Счет: ${this.countPoint}`, 10, 20);
     this.mainCharacter.draw();
     this.enemy?.forEach(item => item?.draw());
     this.foods?.forEach(item => item?.draw());
