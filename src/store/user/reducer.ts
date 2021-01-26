@@ -32,7 +32,7 @@ export const userReducer = (state: UserReducer = defaultReducer, { type, payload
         ...state,
         userInfo: null,
       };
-    case USER.POINT:
+    case USER.SET_POINT:
       return {
         ...state,
         gameInfo: {

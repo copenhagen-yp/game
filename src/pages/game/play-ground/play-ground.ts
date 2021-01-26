@@ -1,4 +1,3 @@
-import { userActions } from '../../../store/user';
 import { MainCharacter } from '../main-character';
 import { Enemy, IEnemy } from '../enemy';
 import { Foods, IFoods } from '../foods';
@@ -21,7 +20,6 @@ const ARR_IMG_FOODS: string[] = ['/images/mushroom.png', '/images/raspberries.pn
 export class PlayGround {
   private canvas: any | null;
   private context: any | null;
-  private dispatch: any;
 
   private mainCharacter: any | null;
   private countPoint: number;
@@ -39,13 +37,14 @@ export class PlayGround {
   private canvasBoundingRect: any;
   private state: 'resume' | 'pause' | 'finish';
   private handleFinish: () => void;
+  private handleSetPoint: (point: number) => void;
 
-  constructor(canvas: any, context: any, handleFinish: () => void, dispatch: any) {
+  constructor(canvas: any, context: any, handleFinish: () => void, handleSetPoint: (point: number) => void) {
     this.canvas = canvas;
     this.context = context;
     this.handleFinish = handleFinish;
     this.canvasBoundingRect = this.canvas.getBoundingClientRect();
-    this.dispatch = dispatch;
+    this.handleSetPoint = handleSetPoint;
 
     this.lastRenderTime = 0;
     this.timeDelta = 0;
@@ -134,34 +133,6 @@ export class PlayGround {
     this.mainCharacter.draw();
   }
 
-  didCollide() {
-    if (this.foods) {
-      for ( let index = 0; index < this.foods.length; index++) {
-
-        const itemFood = this.foods[index];
-  
-        let XColl = false;
-        let YColl = false;
-    
-        if ((itemFood.x + itemFood.width >= this.mainCharacter.x) 
-            && (itemFood.x - itemFood.width <= this.mainCharacter.x + this.mainCharacter.width)) {
-          XColl = true;
-        }
-    
-        if ((itemFood.y + itemFood.width >= this.mainCharacter.y ) 
-            && (itemFood.y - itemFood.width <= this.mainCharacter.y + this.mainCharacter.width)) {
-          YColl = true;
-        }
-  
-        if (XColl && YColl) {
-          this.foods.splice(index, 1);
-          this.countPoint += 1;
-          this.dispatch(userActions.pointUser(1));
-        }
-      }
-    }
-  }
-
   clearCanvas() {
     if(this.context) {
       this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -192,23 +163,29 @@ export class PlayGround {
     this.lastRenderTime = performance.now();
   }
 
-  checkCollisionWithEnemy () {
-    return this.enemy?.some((enemy) => {
+  checkCollisionWithEnemy (arrObj: IFoods[] | IEnemy[] | null, flag?: boolean) {
+    return arrObj?.some((item, index) => {
       let XColl = false;
       let YColl = false;
 
       if (
-        (this.mainCharacter.x + this.mainCharacter.width - WIDTH_MODIFIER >= enemy.x) &&
-        (this.mainCharacter.x <= enemy.x + enemy.width)
+        (this.mainCharacter.x + this.mainCharacter.width - WIDTH_MODIFIER >= item.x) &&
+        (this.mainCharacter.x <= item.x + item.width)
       ) {
         XColl = true;
       }
 
       if (
-        (this.mainCharacter.y + this.mainCharacter.height - HEIGHT_MODIFIER >= enemy.y) &&
-        (this.mainCharacter.y <= enemy.y + enemy.height)
+        (this.mainCharacter.y + this.mainCharacter.height - HEIGHT_MODIFIER >= item.y) &&
+        (this.mainCharacter.y <= item.y + item.height)
       ) {
         YColl = true;
+      }
+
+      if (XColl && YColl && flag) {
+        arrObj.splice(index, 1);
+        this.countPoint += 1;
+        this.handleSetPoint(this.countPoint);
       }
 
       return XColl && YColl;
@@ -227,7 +204,7 @@ export class PlayGround {
   }
 
   loop = () => {
-    if (this.checkCollisionWithEnemy()) {
+    if (this.checkCollisionWithEnemy(this.enemy)) {
       this.handleFinish();
     }
 
@@ -239,7 +216,7 @@ export class PlayGround {
       this.timeDelta -= INTERVAL_MOTION;
       this.mainCharacter.move();
       this.enemy?.forEach(item => item?.update(this.mainCharacter));
-      this.didCollide();
+      this.checkCollisionWithEnemy(this.foods, true);
     }
 
     this.lastRenderTime = now;

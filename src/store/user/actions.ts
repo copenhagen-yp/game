@@ -24,7 +24,7 @@ export const logoutUser = () => {
 
 export const pointUser = (point: number) => {
   return {
-    type: USER.POINT,
+    type: USER.SET_POINT,
     payload: {
       point
     }
