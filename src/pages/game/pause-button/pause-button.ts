@@ -20,7 +20,7 @@ export class PauseButton {
     this.width = 80;
     this.height = 40;
     this.lineWidth = 3;
-    this.x = this.context.canvas.clientWidth - this.width - this.lineWidth;
+    this.x = this.context.canvas.width - this.width - this.lineWidth;
     this.y = this.lineWidth;
 
     this.context.lineWidth = this.lineWidth;

@@ -72,7 +72,8 @@ export class Enemy extends AnimatedSprite implements IEnemy {
     for (let index = 0; index < COUNT_POINT; index++) {
       result.push({
         x: Math.floor(Math.random() * countX),
-        y: Math.floor(Math.random() * countY) });
+        y: Math.floor(Math.random() * countY),
+      });
     }
 
     return result;
