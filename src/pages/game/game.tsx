@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useLayoutEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Modal } from '../../components';
 
@@ -45,9 +45,14 @@ export const Game = () => {
       document.addEventListener('fullscreenchange', handleFullscreenChange);
     }
 
+    const handleVisibilityChangeWrap = () => handleVisibilityChangeRef.current();
+
+    window.addEventListener('visibilitychange', handleVisibilityChangeWrap);
+
     return () => {
       window.removeEventListener('resize', handleResizeCanvasWrapper);
       document.removeEventListener('fullscreenchange', handleFullscreenChange);
+      document.removeEventListener('visibilitychange', handleVisibilityChangeWrap);
     };
   }, []);
 
@@ -150,6 +155,16 @@ export const Game = () => {
     setIsFullScreen(!!document.fullscreenElement);
     handleResizeCanvasWrapper();
   };
+
+  const handleVisibilityChange = () => {
+    playGround.lastRenderTime = performance.now();
+  };
+
+  const handleVisibilityChangeRef = useRef(handleVisibilityChange);
+
+  useLayoutEffect(() => {
+    handleVisibilityChangeRef.current = handleVisibilityChange;
+  }, [handleVisibilityChange]);
 
   const handleClickFullscreen = () => {
     if (!containerRef || !containerRef.current) {
