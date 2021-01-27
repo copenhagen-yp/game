@@ -9,18 +9,22 @@ export interface IUser {
   avatar?: string
 }
 
+export type TGameInfo = {
+  point: number,
+};
+
 export type LoadStatus = 'success' | 'failed';
 
 export type TPayload = {
-  userInfo: IUser | null,
+  userInfo?: IUser | null,
 };
-
 export interface ItemActionType {
   type?: string,
-  payload?: TPayload,
+  payload?: TPayload & TGameInfo,
 }
 
 export type UserReducer = {
   status: LoadStatus | null,
   userInfo: IUser | null,
+  gameInfo: TGameInfo
 };

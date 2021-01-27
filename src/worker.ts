@@ -49,7 +49,7 @@ self.addEventListener('fetch', function(event: any) {
 });
 
 export const registerSw = () => {
-  if ('serviceWorker' in navigator) {
+  if ('serviceWorker' in navigator && doCache) {
     window.addEventListener('load', () => {
       navigator.serviceWorker.register('/service-worker.js').then(() => {
         console.log('SW registered');

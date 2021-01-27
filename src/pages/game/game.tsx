@@ -5,6 +5,7 @@ import { Modal } from '../../components';
 import { PlayGround } from './play-ground';
 import * as gameActions from '../../store/game/actions';
 import * as gameSelectors from '../../store/game/selectors';
+import { userActions } from '../../store/user';
 import { AppState } from '../../store/reducer';
 import { Button } from '../../components';
 import { GAME_STATUSES } from '../../store/game/constants';
@@ -31,10 +32,9 @@ export const Game = () => {
 
     if (canvasObj) {
       const ctx = canvasObj.getContext('2d');
+      const playGroundObj = new PlayGround(canvasObj, ctx, handleFinish, handleSetPoint);
 
       handleResizeCanvasWrapper();
-      const playGroundObj = new PlayGround(canvasObj, ctx, handleFinish);
-
       setPlayGround(playGroundObj);
     }
 
@@ -61,6 +61,7 @@ export const Game = () => {
       playGround.start();
     }
   }, [playGround]);
+  
 
   useEffect(() => {
     if (!playGround) {
@@ -117,6 +118,10 @@ export const Game = () => {
     }
   };
 
+  const handleSetPoint = (point: number) => {
+    dispatch(userActions.setPointUser(point));
+  };
+  
   const changeCanvasSize = (width: number, height: number) => {
     const canvas = canvasRef.current;
 
