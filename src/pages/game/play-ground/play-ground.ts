@@ -1,5 +1,6 @@
 import { MainCharacter } from '../main-character';
 import { Enemy, IEnemy } from '../enemy';
+import { Foods, IFoods } from '../foods';
 import { PauseButton } from '../pause-button';
 import { GAME_STATUSES } from '../../../store/game/constants';
 
@@ -13,31 +14,47 @@ const WIDTH_MODIFIER = 5;
 const HEIGHT_MODIFIER = 10;
 
 BACKGROUND_SCENE.src = '/images/bg_grass.jpg';
+
+const ARR_IMG_FOODS: string[] = ['/images/mushroom.png', '/images/raspberries.png'];
+
 export class PlayGround {
   private canvas: any | null;
   private context: any | null;
 
   private mainCharacter: any | null;
+  private countPoint: number;
+
   private enemy: IEnemy[] | null;
   private countEnemy: number;
+
+  private foods: IFoods[] | null;
+  private countFoods: number;
+
   private requestAnimationId: any | undefined;
   private lastRenderTime: number;
   private timeDelta: number;
   private pauseButton: any;
   private state: 'resume' | 'pause' | 'finish';
   private handleFinish: () => void;
+  private handleSetPoint: (point: number) => void;
 
-  constructor(canvas: any, context: any, handleFinish: () => void) {
+  constructor(canvas: any, context: any, handleFinish: () => void, handleSetPoint: (point: number) => void) {
     this.canvas = canvas;
     this.context = context;
     this.handleFinish = handleFinish;
+    this.handleSetPoint = handleSetPoint;
 
     this.lastRenderTime = 0;
     this.timeDelta = 0;
-    this.countEnemy = 2;
+
+    this.foods = null;
+    this.countFoods = 5;
 
     this.enemy = null;
+    this.countEnemy = 2;
+
     this.mainCharacter = null;
+    this.countPoint = 0;
     this.requestAnimationId = undefined;
     this.state = GAME_STATUSES.RESUME;
   }
@@ -52,6 +69,7 @@ export class PlayGround {
     this.initCanvas();
     this.initMainCharacter();
     this.initEnemy();
+    this.initFoods();
     this.pauseButton = new PauseButton(this.context);
 
     this.lastRenderTime = performance.now();
@@ -67,6 +85,23 @@ export class PlayGround {
     cancelAnimationFrame(this.requestAnimationId);
 
     this.mainCharacter.destroy();
+  }
+
+  randomNumber(min: number, max: number) {
+    return Math.floor(Math.random() * (max - min) + min);
+  }
+
+  initFoods() {
+    this.foods = Array.from(Array(this.countFoods), () => {
+      const foods = new Foods(this.context);
+
+      const startX = this.randomNumber(0, this.canvas.width - foods.width);
+      const startY = this.randomNumber(0, this.canvas.height - foods.height);
+
+      foods.init(ARR_IMG_FOODS[Math.floor(Math.random() * Math.floor(ARR_IMG_FOODS.length))], startX, startY);
+
+      return foods; 
+    });
   }
 
   initEnemy() {
@@ -128,23 +163,29 @@ export class PlayGround {
     this.lastRenderTime = performance.now();
   }
 
-  checkCollisionWithEnemy () {
-    return this.enemy?.some((enemy) => {
+  checkCollisionWithObjects (arrObj: IFoods[] | IEnemy[] | null, flag?: boolean) {
+    return arrObj?.some((item, index) => {
       let XColl = false;
       let YColl = false;
 
       if (
-        (this.mainCharacter.x + this.mainCharacter.width - WIDTH_MODIFIER >= enemy.x) &&
-        (this.mainCharacter.x <= enemy.x + enemy.width)
+        (this.mainCharacter.x + this.mainCharacter.width - WIDTH_MODIFIER >= item.x) &&
+        (this.mainCharacter.x <= item.x + item.width)
       ) {
         XColl = true;
       }
 
       if (
-        (this.mainCharacter.y + this.mainCharacter.height - HEIGHT_MODIFIER >= enemy.y) &&
-        (this.mainCharacter.y <= enemy.y + enemy.height)
+        (this.mainCharacter.y + this.mainCharacter.height - HEIGHT_MODIFIER >= item.y) &&
+        (this.mainCharacter.y <= item.y + item.height)
       ) {
         YColl = true;
+      }
+
+      if (XColl && YColl && flag) {
+        arrObj.splice(index, 1);
+        this.countPoint += 1;
+        this.handleSetPoint(this.countPoint);
       }
 
       return XColl && YColl;
@@ -163,7 +204,7 @@ export class PlayGround {
   }
 
   loop = () => {
-    if (this.checkCollisionWithEnemy()) {
+    if (this.checkCollisionWithObjects(this.enemy)) {
       this.handleFinish();
     }
 
@@ -174,7 +215,8 @@ export class PlayGround {
     while (this.timeDelta > INTERVAL_MOTION) {
       this.timeDelta -= INTERVAL_MOTION;
       this.mainCharacter.move();
-      this.enemy?.map(item => item?.update(this.mainCharacter));
+      this.enemy?.forEach(item => item?.update(this.mainCharacter));
+      this.checkCollisionWithObjects(this.foods, true);
     }
 
     this.lastRenderTime = now;
@@ -185,8 +227,10 @@ export class PlayGround {
   render = () => {
     this.clearCanvas();
     this.context.drawImage(BACKGROUND_SCENE, 0, 0, this.canvas.width, this.canvas.height);
+    this.context.fillText(`Счет: ${this.countPoint}`, 10, 20);
     this.mainCharacter.draw();
-    this.enemy?.map(item => item?.draw());
+    this.enemy?.forEach(item => item?.draw());
+    this.foods?.forEach(item => item?.draw());
     this.pauseButton.draw(this.state);
   }
 }
