@@ -100,7 +100,7 @@ export class PlayGround {
 
       foods.init(ARR_IMG_FOODS[Math.floor(Math.random() * Math.floor(ARR_IMG_FOODS.length))], startX, startY);
 
-      return foods; 
+      return foods;
     });
   }
 

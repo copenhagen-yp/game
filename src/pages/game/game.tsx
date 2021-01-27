@@ -47,7 +47,7 @@ export const Game = () => {
 
     const handleVisibilityChangeWrap = () => handleVisibilityChangeRef.current();
 
-    window.addEventListener('visibilitychange', handleVisibilityChangeWrap);
+    document.addEventListener('visibilitychange', handleVisibilityChangeWrap);
 
     return () => {
       window.removeEventListener('resize', handleResizeCanvasWrapper);
@@ -61,7 +61,7 @@ export const Game = () => {
       playGround.start();
     }
   }, [playGround]);
-  
+
 
   useEffect(() => {
     if (!playGround) {
@@ -121,7 +121,7 @@ export const Game = () => {
   const handleSetPoint = (point: number) => {
     dispatch(userActions.setPointUser(point));
   };
-  
+
   const changeCanvasSize = (width: number, height: number) => {
     const canvas = canvasRef.current;
 
