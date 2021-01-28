@@ -162,7 +162,10 @@ export const Game = () => {
   };
 
   const handleVisibilityChange = () => {
-    playGround.lastRenderTime = performance.now();
+    // playGround.lastRenderTime = performance.now();
+    if (document.hidden && gameStatus === 'resume') {
+      dispatch(gameActions.pause());
+    }
   };
 
   const handleVisibilityChangeRef = useRef(handleVisibilityChange);
