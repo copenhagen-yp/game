@@ -13,7 +13,7 @@ export default {
     ],
   },
   server: {
-    test: /(\.css|\.pcss$/,
+    test: /(\.css|\.pcss)$/,
     loader: 'null-loader',
   },
 };

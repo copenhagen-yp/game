@@ -1,5 +1,4 @@
 import path from 'path';
-const 
 import nodeExternals from 'webpack-node-externals';
 
 import { IS_DEV, DIST_DIR, SRC_DIR } from './env';
