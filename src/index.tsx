@@ -10,7 +10,7 @@ const store = configureStore();
 
 registerSw();
 
-ReactDOM.render(
+ReactDOM.hydrate(
   <Provider store={store}>
     <App />
   </Provider>, document.getElementById('root'));
