@@ -12,7 +12,9 @@ import { ErrorBoundary } from './error-boundary';
 import { Toast } from './components';
 import { UserInfoWrapper } from './user-info-wrapper';
 
-const App = () => {
+const App = (props: any) => {
+  console.log(props);
+  
   return (
     <ToastProvider
       components={{ Toast }}

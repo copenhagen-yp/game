@@ -1,16 +1,23 @@
 import React from 'react';
+import { StaticRouter } from 'react-router-dom';
+import { StaticRouterContext } from 'react-router';
 import { renderToString } from 'react-dom/server';
 import { Request, Response } from 'express';
 import App from './app';
 
-export default (req: Request, res: Response) => {
-  const jsx = (<App />);
+export const serverRenderMiddleware = (req: Request, res: Response) => {
+  const location = req.url;
+  const context: StaticRouterContext = {};
+  const jsx = (
+    <StaticRouter context={context} location={location}>
+      <App />
+    </StaticRouter>);
   const reactHtml = renderToString(jsx);
 
   res.send(getHtml(reactHtml));
 };
 
-function getHtml(reactHtml: string) {
+const getHtml = (reactHtml: string) => {
   return `
   <!DOCTYPE html>
   <html lang="en">
@@ -28,4 +35,4 @@ function getHtml(reactHtml: string) {
   </body>
   </html>
   `;
-}
+};

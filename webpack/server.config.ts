@@ -16,7 +16,7 @@ const config = {
   },
   output: {
     filename: 'server.js',
-    libraryTarget: 'commonjs2',
+    libraryTarget: 'commonjs',
     path: DIST_DIR,
     publicPath: '/src/images/',
   },
