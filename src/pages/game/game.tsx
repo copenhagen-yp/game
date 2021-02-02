@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useLayoutEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Modal } from '../../components';
 
@@ -45,9 +45,14 @@ export const Game = () => {
       document.addEventListener('fullscreenchange', handleFullscreenChange);
     }
 
+    const handleVisibilityChangeWrap = () => handleVisibilityChangeRef.current();
+
+    document.addEventListener('visibilitychange', handleVisibilityChangeWrap);
+
     return () => {
       window.removeEventListener('resize', handleResizeCanvasWrapper);
       document.removeEventListener('fullscreenchange', handleFullscreenChange);
+      document.removeEventListener('visibilitychange', handleVisibilityChangeWrap);
     };
   }, []);
 
@@ -56,7 +61,7 @@ export const Game = () => {
       playGround.start();
     }
   }, [playGround]);
-  
+
 
   useEffect(() => {
     if (!playGround) {
@@ -116,7 +121,7 @@ export const Game = () => {
   const handleSetPoint = (point: number) => {
     dispatch(userActions.setPointUser(point));
   };
-  
+
   const changeCanvasSize = (width: number, height: number) => {
     const canvas = canvasRef.current;
 
@@ -155,6 +160,18 @@ export const Game = () => {
     setIsFullScreen(!!document.fullscreenElement);
     handleResizeCanvasWrapper();
   };
+
+  const handleVisibilityChange = () => {
+    if (document.hidden && gameStatus === 'resume') {
+      dispatch(gameActions.pause());
+    }
+  };
+
+  const handleVisibilityChangeRef = useRef(handleVisibilityChange);
+
+  useLayoutEffect(() => {
+    handleVisibilityChangeRef.current = handleVisibilityChange;
+  }, [handleVisibilityChange]);
 
   const handleClickFullscreen = () => {
     if (!containerRef || !containerRef.current) {
