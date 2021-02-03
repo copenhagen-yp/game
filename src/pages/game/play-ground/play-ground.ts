@@ -3,15 +3,13 @@ import { Enemy, IEnemy } from '../enemy';
 import { Foods, IFoods } from '../foods';
 import { PauseButton } from '../pause-button';
 import { GAME_STATUSES } from '../../../store/game/constants';
+import { gameObjects } from './types';
 
 const INTERVAL_MOTION = 1 / 60;
 const BACKGROUND_SCENE = new Image();
 
-// Модификаторы для размера главного персонажа
-// Устраняют неидеальность спрайта
-// при расчёте коллизии с врагом
-const WIDTH_MODIFIER = 5;
-const HEIGHT_MODIFIER = 10;
+const SAFE_ZONE_WIDTH = 150;
+const SAFE_ZONE_HEIGHT = 150;
 
 BACKGROUND_SCENE.src = '/images/bg_grass.jpg';
 
@@ -105,15 +103,27 @@ export class PlayGround {
   }
 
   initEnemy() {
+    const mainCharacterSafeZone = {
+      x: this.mainCharacter.x + this.mainCharacter.width / 2 - SAFE_ZONE_WIDTH / 2,
+      y: this.mainCharacter.y + this.mainCharacter.height / 2 - SAFE_ZONE_HEIGHT / 2,
+      width: SAFE_ZONE_WIDTH,
+      height: SAFE_ZONE_HEIGHT,
+    };
+
     this.enemy = Array.from(Array(this.countEnemy), () => {
+      let startX;
+      let startY;
       const enemy = new Enemy(this.context);
 
       enemy?.init();
 
-      const startX = 0 + Math.floor(Math.random() * this.canvas.width);
-      const startY = 0 + Math.floor(Math.random() * this.canvas.height);
+      do {
+        startX = Math.floor(Math.random() * this.canvas.width);
+        startY = Math.floor(Math.random() * this.canvas.height);
 
-      enemy.setPosition(startX, startY);
+        enemy.setPosition(startX, startY);
+      } while (this.checkCollision(mainCharacterSafeZone, enemy));
+
       enemy.draw();
 
       return enemy;
@@ -163,32 +173,40 @@ export class PlayGround {
     this.lastRenderTime = performance.now();
   }
 
-  checkCollisionWithObjects (arrObj: IFoods[] | IEnemy[] | null, flag?: boolean) {
-    return arrObj?.some((item, index) => {
-      let XColl = false;
-      let YColl = false;
+  checkCollision (firstObject: gameObjects, secondObject: gameObjects) {
+    let collX = false;
+    let collY = false;
 
-      if (
-        (this.mainCharacter.x + this.mainCharacter.width - WIDTH_MODIFIER >= item.x) &&
-        (this.mainCharacter.x <= item.x + item.width)
-      ) {
-        XColl = true;
-      }
+    if (
+      (firstObject.x + firstObject.width >= secondObject.x) &&
+      (firstObject.x <= secondObject.x + secondObject.width)
+    ) {
+      collX = true;
+    }
 
-      if (
-        (this.mainCharacter.y + this.mainCharacter.height - HEIGHT_MODIFIER >= item.y) &&
-        (this.mainCharacter.y <= item.y + item.height)
-      ) {
-        YColl = true;
-      }
+    if (
+      (firstObject.y + firstObject.height >= secondObject.y) &&
+      (firstObject.y <= secondObject.y + secondObject.height)
+    ) {
+      collY = true;
+    }
 
-      if (XColl && YColl && flag) {
-        arrObj.splice(index, 1);
+    return collX && collY;
+  }
+
+  checkCollisionWithEnemy (enemies: IEnemy[] | null) {
+    return enemies?.some((enemy) => {
+      return this.checkCollision(enemy, this.mainCharacter);
+    });
+  }
+
+  checkCollisionWithFood (foods: IFoods[] | null) {
+    foods?.forEach((food, index) => {
+      if (this.checkCollision(food, this.mainCharacter)) {
+        foods.splice(index, 1);
         this.countPoint += 1;
         this.handleSetPoint(this.countPoint);
       }
-
-      return XColl && YColl;
     });
   }
 
@@ -204,7 +222,7 @@ export class PlayGround {
   }
 
   loop = () => {
-    if (this.checkCollisionWithObjects(this.enemy)) {
+    if (this.checkCollisionWithEnemy(this.enemy)) {
       this.handleFinish();
     }
 
@@ -216,7 +234,7 @@ export class PlayGround {
       this.timeDelta -= INTERVAL_MOTION;
       this.mainCharacter.move();
       this.enemy?.forEach(item => item?.update(this.mainCharacter));
-      this.checkCollisionWithObjects(this.foods, true);
+      this.checkCollisionWithFood(this.foods);
     }
 
     this.lastRenderTime = now;

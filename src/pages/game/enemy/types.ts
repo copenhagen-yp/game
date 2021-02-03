@@ -1,14 +1,8 @@
-interface IEnemy {
-  x: number,
-  y: number,
+import { IMovableCharacter } from '../../game';
+
+interface IEnemy extends IMovableCharacter {
   radiusFindHero: number,
-  width: number,
-  height: number,
-  init: () => void,
-  draw: () => void,
-  setPosition: (x: number, y: number) => void,
-  move: (x: number, y: number) => void,
-  update: (otherSprite?: any) => void
+  update: (otherSprite?: IMovableCharacter) => void,
 }
 
 type Tpath = {
