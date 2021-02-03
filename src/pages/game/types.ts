@@ -1,4 +1,4 @@
-export interface IMainCharacter {
+interface IMovableCharacter {
   x: number,
   y: number,
   width: number,
@@ -8,3 +8,5 @@ export interface IMainCharacter {
   setPosition: (x: number, y: number) => void,
   move: (x: number, y: number) => void,
 }
+
+export { IMovableCharacter };

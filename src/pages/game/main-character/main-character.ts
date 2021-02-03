@@ -1,5 +1,5 @@
 import { AnimatedSprite } from '../animated-sprite';
-import { IMainCharacter } from './types';
+import { IMovableCharacter } from '../../game';
 
 const KEY_CODES = {
   up: 38,
@@ -31,7 +31,7 @@ const SPRITE_CROP = {
   POINT_Y: 285,
 };
 
-export class MainCharacter extends AnimatedSprite implements IMainCharacter {
+export class MainCharacter extends AnimatedSprite implements IMovableCharacter {
   public x: number;
   public y: number;
 
