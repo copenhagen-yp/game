@@ -1,6 +1,6 @@
 import path from 'path';
-import express from 'express';
 import compression from 'compression';
+import express from 'express';
 import { serverRenderMiddleware } from './server-render-middleware';
 
 const app = express();

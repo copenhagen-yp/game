@@ -12,10 +12,16 @@ import { GAME_STATUSES } from '../../store/game/constants';
 
 import styles from './game.pcss';
 
+declare let SSR: boolean;
+
 const CANVAS_WIDTH = 700;
 const CANVAS_HEIGHT = 500;
 
 export const Game = () => {
+  if (SSR) {
+    return null;
+  }
+
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasWrapperRef = useRef<HTMLDivElement>(null);

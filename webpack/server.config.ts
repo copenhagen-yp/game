@@ -1,5 +1,6 @@
 import path from 'path';
 import nodeExternals from 'webpack-node-externals';
+import webpack from 'webpack';
 
 import { IS_DEV, DIST_DIR, SRC_DIR } from './env';
 import fileLoader from './loaders/file';
@@ -16,7 +17,7 @@ const config = {
   },
   output: {
     filename: 'server.js',
-    libraryTarget: 'commonjs',
+    libraryTarget: 'commonjs2',
     path: DIST_DIR,
     publicPath: '/src/images/',
   },
@@ -30,6 +31,13 @@ const config = {
   performance: {
     hints: IS_DEV ? false : 'warning',
   },
+
+  plugins: [
+    new webpack.DefinePlugin({
+      'SSR': JSON.stringify(true)
+    })
+    
+  ],
 
   externals: [nodeExternals({ allowlist: [/\.(?!(?:tsx?|json)$).{1,5}$/i] })],
 

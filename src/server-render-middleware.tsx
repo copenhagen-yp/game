@@ -27,7 +27,6 @@ const getHtml = (reactHtml: string) => {
       <meta http-equiv="X-UA-Compatible" content="ie=edge">
       <link rel="shortcut icon" type="image/png" href="/images/favicon.jpg">
       <title>Sneakers shop</title>
-      <link href="/main.css" rel="stylesheet">
   </head>
   <body>
       <div id="mount">${reactHtml}</div>

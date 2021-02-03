@@ -5,15 +5,13 @@ import { PauseButton } from '../pause-button';
 import { GAME_STATUSES } from '../../../store/game/constants';
 
 const INTERVAL_MOTION = 1 / 60;
-const BACKGROUND_SCENE = new Image();
+
 
 // Модификаторы для размера главного персонажа
 // Устраняют неидеальность спрайта
 // при расчёте коллизии с врагом
 const WIDTH_MODIFIER = 5;
 const HEIGHT_MODIFIER = 10;
-
-BACKGROUND_SCENE.src = '/images/bg_grass.jpg';
 
 const ARR_IMG_FOODS: string[] = ['/images/mushroom.png', '/images/raspberries.png'];
 
@@ -37,6 +35,7 @@ export class PlayGround {
   private state: 'resume' | 'pause' | 'finish';
   private handleFinish: () => void;
   private handleSetPoint: (point: number) => void;
+  private image: HTMLImageElement;
 
   constructor(canvas: any, context: any, handleFinish: () => void, handleSetPoint: (point: number) => void) {
     this.canvas = canvas;
@@ -57,6 +56,10 @@ export class PlayGround {
     this.countPoint = 0;
     this.requestAnimationId = undefined;
     this.state = GAME_STATUSES.RESUME;
+
+    this.image = new Image();
+    this.image.src = '/images/bg_grass.jpg';
+
   }
 
   start() {
@@ -226,7 +229,7 @@ export class PlayGround {
 
   render = () => {
     this.clearCanvas();
-    this.context.drawImage(BACKGROUND_SCENE, 0, 0, this.canvas.width, this.canvas.height);
+    this.context.drawImage(this.image, 0, 0, this.canvas.width, this.canvas.height);
     this.context.fillText(`Счет: ${this.countPoint}`, 10, 20);
     this.mainCharacter.draw();
     this.enemy?.forEach(item => item?.draw());
