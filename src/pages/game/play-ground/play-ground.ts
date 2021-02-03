@@ -36,6 +36,7 @@ export class PlayGround {
   private handleFinish: () => void;
   private handleSetPoint: (point: number) => void;
   private image: HTMLImageElement;
+  private imageReady = false;
 
   constructor(canvas: any, context: any, handleFinish: () => void, handleSetPoint: (point: number) => void) {
     this.canvas = canvas;
@@ -59,6 +60,10 @@ export class PlayGround {
 
     this.image = new Image();
     this.image.src = '/images/bg_grass.jpg';
+  
+    this.image.onload = () => {
+      this.imageReady = true;
+    };
 
   }
 
@@ -228,6 +233,10 @@ export class PlayGround {
   }
 
   render = () => {
+    if (!this.imageReady) {
+      return;
+    }
+
     this.clearCanvas();
     this.context.drawImage(this.image, 0, 0, this.canvas.width, this.canvas.height);
     this.context.fillText(`Счет: ${this.countPoint}`, 10, 20);

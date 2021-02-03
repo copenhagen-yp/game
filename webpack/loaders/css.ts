@@ -2,7 +2,7 @@ export default {
   client: {
     test: /(\.css|\.pcss)$/,
     use: [
-      'style-loader',
+      'isomorphic-style-loader',
       {
         loader: 'css-loader',
         options: {
@@ -14,6 +14,19 @@ export default {
   },
   server: {
     test: /(\.css|\.pcss)$/,
-    loader: 'null-loader',
+    // loader: 'null-loader',
+    use: [
+      'isomorphic-style-loader',
+      {
+        loader: 'css-loader',
+        options: {
+          modules: true,
+          importLoaders: 1,
+          esModule: false,
+        },
+      },
+      'postcss-loader'
+    ],
+
   },
 };

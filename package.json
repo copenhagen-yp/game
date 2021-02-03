@@ -82,6 +82,7 @@
     "classnames": "2.2.6",
     "compression": "1.7.4",
     "express": "4.17.1",
+    "isomorphic-style-loader": "5.1.0",
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "react-modal": "3.12.1",

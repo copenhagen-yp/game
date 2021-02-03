@@ -35,8 +35,7 @@ const config = {
   plugins: [
     new webpack.DefinePlugin({
       'SSR': JSON.stringify(true)
-    })
-    
+    })    
   ],
 
   externals: [nodeExternals({ allowlist: [/\.(?!(?:tsx?|json)$).{1,5}$/i] })],

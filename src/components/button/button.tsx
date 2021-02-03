@@ -1,11 +1,12 @@
 import React, { FC } from 'react';
 import cn from 'classnames';
+import withStyles from 'isomorphic-style-loader/withStyles';
 
 import { Props } from 'components/button/types';
 
 import styles from './button.pcss';
 
-export const Button: FC<Props> = (props) => {
+export const Button: FC<Props> = withStyles(styles)((props: Props) => {
   const {
     children,
     viewType,
@@ -25,4 +26,4 @@ export const Button: FC<Props> = (props) => {
       {children}
     </button>
   );
-};
+});

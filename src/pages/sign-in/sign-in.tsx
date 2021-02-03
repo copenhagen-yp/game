@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import withStyles from 'isomorphic-style-loader/withStyles';
 
 import { APP_TEXT, API_URL } from '../../constants';
 import { Button, Field, Form, Input } from '../../components';
@@ -21,7 +22,7 @@ const signInFields = [
   },
 ];
 
-export const SignIn = () => {
+export const SignIn = withStyles(styles)(() => {
   const requiredFields = ['login', 'password'];
   const successResult = routes.home.path;
 
@@ -67,4 +68,4 @@ export const SignIn = () => {
       </div>
     </div>
   );
-};
+});

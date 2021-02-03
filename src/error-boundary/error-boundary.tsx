@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { IProps, IState } from './types';
+import withStyles from 'isomorphic-style-loader/withStyles';
 
 import styles from './error-boundary.pcss';
 
-export class ErrorBoundary extends Component<IProps, IState> {
+class ErrorBoundaryComponent extends Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
     this.state = { hasError: false };
@@ -34,3 +35,7 @@ export class ErrorBoundary extends Component<IProps, IState> {
     return this.props.children;
   }
 }
+
+const ErrorBoundary = withStyles(styles)(ErrorBoundaryComponent);
+
+export { ErrorBoundary };

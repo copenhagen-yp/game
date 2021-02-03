@@ -12,13 +12,13 @@ export const withAccess = (layout: ComponentType<RouteProps>) => {
   const AccessComponent = ({ component, isPrivate, ...restProps } : withAccessType) => {
     const user = useSelector(userSelectors.getCurrent);
 
-    if(isPrivate && !user) {
-      return <Redirect to={routes.signIn.path} />;
-    }
+    // if(isPrivate && !user) {
+    //   return <Redirect to={routes.signIn.path} />;
+    // }
 
-    if(!isPrivate && user) {
-      return <Redirect to={routes.home.path} />;
-    }
+    // if(!isPrivate && user) {
+    //   return <Redirect to={routes.home.path} />;
+    // }
 
     const Layout = layout;
     const Component = component;

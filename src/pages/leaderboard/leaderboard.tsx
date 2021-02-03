@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import withStyles from 'isomorphic-style-loader/withStyles';
 
 import { GetLeadersResponseType } from './types';
 import { useHttp } from '../../hooks/useHttp';
@@ -6,7 +7,7 @@ import { leaderboardApi } from '../../api';
 import cn from 'classnames';
 import styles from './leaderboard.pcss';
 
-export const Leaderboard = () => {
+export const Leaderboard = withStyles(styles)(() => {
   const [playersData, setPlayersData] = useState<GetLeadersResponseType>([]);
   const [loading, setLoading] = useState(true);
   const { request } = useHttp();
@@ -50,4 +51,4 @@ export const Leaderboard = () => {
       </div>
     </main>
   );
-};
+});

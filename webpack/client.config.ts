@@ -1,3 +1,4 @@
+import webpack from 'webpack';
 import path from 'path';
 import WorkboxPlugin from 'workbox-webpack-plugin';
 
@@ -24,8 +25,8 @@ function addParamToWorkbox() {
 const config = {
   name: 'client',
   entry: [
-    IS_DEV && 'react-hot-loader/patch',
-    IS_DEV && 'webpack-hot-middleware/client',
+    // IS_DEV && 'react-hot-loader/patch',
+    // IS_DEV && 'webpack-hot-middleware/client',
     path.join(SRC_DIR, 'index'),
   ],
   module: {
@@ -38,11 +39,14 @@ const config = {
   },
   resolve: {
     modules: ['src', 'node_modules'],
-    alias: { 'react-dom': '@hot-loader/react-dom' },
+    // alias: { 'react-dom': '@hot-loader/react-dom' },
     extensions: ['*', '.js', '.jsx', '.json', '.ts', '.tsx'],
   },
   plugins: [
-    new WorkboxPlugin.GenerateSW(addParamToWorkbox())
+    new WorkboxPlugin.GenerateSW(addParamToWorkbox()),
+    new webpack.DefinePlugin({
+      'SSR': JSON.stringify(false)
+    })    
   ],
 
   devtool: 'source-map',

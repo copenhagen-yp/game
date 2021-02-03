@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Modal } from '../../components';
+import withStyles from 'isomorphic-style-loader/withStyles';
 
 import { PlayGround } from './play-ground';
 import * as gameActions from '../../store/game/actions';
@@ -17,7 +18,7 @@ declare let SSR: boolean;
 const CANVAS_WIDTH = 700;
 const CANVAS_HEIGHT = 500;
 
-export const Game = () => {
+export const Game = withStyles(styles)(() => {
   if (SSR) {
     return null;
   }
@@ -214,4 +215,4 @@ export const Game = () => {
       </div>
     </main>
   );
-};
+});

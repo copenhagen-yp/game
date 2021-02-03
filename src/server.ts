@@ -7,7 +7,7 @@ const app = express();
 
 app.use(compression())
   .use(express.static(path.resolve(__dirname, '../dist')))
-  .use(express.static(path.resolve(__dirname, '../src/images')));
+  .use('/images', express.static(path.resolve(__dirname, '../src/images')));
 
 app.get('/*', serverRenderMiddleware);
 
