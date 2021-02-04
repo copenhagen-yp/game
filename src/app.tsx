@@ -2,7 +2,7 @@ import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { ToastProvider } from 'react-toast-notifications';
 import withStyles from 'isomorphic-style-loader/withStyles';
-// import 'normalize.css';
+import 'normalize.css';
 
 import commonStyles from './styles/common.pcss';
 
@@ -19,7 +19,7 @@ function App() {
       components={{ Toast }}
       autoDismiss
     >
-      {/* <UserInfoWrapper> */}
+      <UserInfoWrapper>
         <ErrorBoundary>
           <Switch>
             {Object.values(routes).map((route) => (
@@ -38,7 +38,7 @@ function App() {
             </Route>
           </Switch>
         </ErrorBoundary>
-      {/* </UserInfoWrapper> */}
+      </UserInfoWrapper>
     </ToastProvider>
   );
 }

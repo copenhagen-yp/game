@@ -10,23 +10,25 @@ import { configureStore } from './store';
 const store = configureStore();
 
 
-
 export const serverRenderMiddleware = (req: Request, res: Response) => {
   const location = req.url;
   const context: StaticRouterContext = {};
   const css: any = new Set(); // CSS for all rendered React components
   const insertCss = (...styles: any) => styles.forEach((style: any) => css.add(style._getCss()));
   const jsx = (
-    <StaticRouter context={context} location={location}>
-      <Provider store={store}>
-        <StyleContext.Provider value={{ insertCss }}>
+   
+    <StyleContext.Provider value={{ insertCss }}>
+      <StaticRouter context={context} location={location}>
+        <Provider store={store}>
           <App />
-        </StyleContext.Provider>
-      </Provider>
-    </StaticRouter>);
+        </Provider>
+      </StaticRouter>
+    </StyleContext.Provider>
+  );
   const reactHtml = renderToString(jsx);
 
   const getHtml = (reactHtml: string) => {
+    
     return `
     <!DOCTYPE html>
     <html lang="en">

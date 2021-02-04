@@ -39,7 +39,6 @@ const config = {
   },
   resolve: {
     modules: ['src', 'node_modules'],
-    // alias: { 'react-dom': '@hot-loader/react-dom' },
     extensions: ['*', '.js', '.jsx', '.json', '.ts', '.tsx'],
   },
   plugins: [

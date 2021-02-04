@@ -28,7 +28,7 @@ export const UserInfoWrapper: FC<userInfoWrapperProps> = ({ children }) => {
   }, []);
 
   if (isLoading) {
-    return <div>Загрузка пользователя</div>;
+    return null;
   }
 
   return <>
