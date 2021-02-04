@@ -31,6 +31,12 @@ export const gameReducer = (state: GameReducer = defaultState, { type }: {type: 
         status: GAME_STATUSES.RESTART,
       };
 
+    case GAME_ACTIONS.DESTROYED:
+      return {
+        ...state,
+        status: GAME_STATUSES.DESTROYED,
+      };
+
     default:
       return state;
   }

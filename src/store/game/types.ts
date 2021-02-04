@@ -1,3 +1,3 @@
 export type GameReducer = {
-  status: 'pause' | 'resume' | 'finish' | 'restart'
+  status: 'pause' | 'resume' | 'finish' | 'restart' | 'destroyed'
 }
