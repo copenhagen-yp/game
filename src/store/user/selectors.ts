@@ -7,3 +7,7 @@ export const getCurrent = ({ user }: { user: UserReducer}) => {
 export const getGameInfo = ({ user }: { user: UserReducer}) => {
   return user.gameInfo;
 };
+
+export const getGamePoint = ({ user }: { user: UserReducer}) => {
+  return user.gameInfo.point;
+};
