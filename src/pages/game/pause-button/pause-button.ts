@@ -11,11 +11,11 @@ export class PauseButton {
   private readonly width: number;
   private readonly height: number;
   private readonly lineWidth: number;
-  private context: any;
+  private context: CanvasRenderingContext2D;
   private readonly textWidthPause: number;
   private readonly textWidthPlay: number;
 
-  constructor(context: any) {
+  constructor(context: CanvasRenderingContext2D) {
     this.context = context;
     this.width = 80;
     this.height = 40;

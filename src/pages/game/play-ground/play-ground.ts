@@ -1,9 +1,10 @@
 import { MainCharacter } from '../main-character';
 import { Enemy, IEnemy } from '../enemy';
 import { Foods, IFoods } from '../foods';
+import { Exit, IExit } from '../exit';
 import { PauseButton } from '../pause-button';
 import { GAME_STATUSES } from '../../../store/game/constants';
-import { gameObjects } from './types';
+import { gameObjects, IPlayGround } from './types';
 
 const INTERVAL_MOTION = 1 / 60;
 const BACKGROUND_SCENE = new Image();
@@ -14,10 +15,11 @@ const SAFE_ZONE_HEIGHT = 150;
 BACKGROUND_SCENE.src = '/images/bg_grass.jpg';
 
 const ARR_IMG_FOODS: string[] = ['/images/mushroom.png', '/images/raspberries.png'];
+const EXIT_IMAGE = '/images/exit.png';
 
 export class PlayGround {
   private canvas: any | null;
-  private context: any | null;
+  private context: CanvasRenderingContext2D;
 
   private mainCharacter: any | null;
   private countPoint: number;
@@ -28,18 +30,23 @@ export class PlayGround {
   private foods: IFoods[] | null;
   private countFoods: number;
 
+  private exit: IExit | null;
+
   private requestAnimationId: any | undefined;
   private lastRenderTime: number;
   private timeDelta: number;
   private pauseButton: any;
   private state: 'resume' | 'pause' | 'finish';
-  private handleFinish: () => void;
+  private handleFinishFailure: () => void;
+  private handleFinishSuccess: (countPoint: number) => void;
   private handleSetPoint: (point: number) => void;
 
-  constructor(canvas: any, context: any, handleFinish: () => void, handleSetPoint: (point: number) => void) {
+  constructor( { canvas, context, handleFinishFailure,
+    handleFinishSuccess, handleSetPoint } : IPlayGround) {
     this.canvas = canvas;
     this.context = context;
-    this.handleFinish = handleFinish;
+    this.handleFinishFailure = handleFinishFailure;
+    this.handleFinishSuccess = handleFinishSuccess;
     this.handleSetPoint = handleSetPoint;
 
     this.lastRenderTime = 0;
@@ -50,6 +57,8 @@ export class PlayGround {
 
     this.enemy = null;
     this.countEnemy = 2;
+
+    this.exit = null;
 
     this.mainCharacter = null;
     this.countPoint = 0;
@@ -68,6 +77,7 @@ export class PlayGround {
     this.initMainCharacter();
     this.initEnemy();
     this.initFoods();
+    this.initExit();
     this.pauseButton = new PauseButton(this.context);
 
     this.lastRenderTime = performance.now();
@@ -102,6 +112,16 @@ export class PlayGround {
     });
   }
 
+  initExit() {
+    this.exit = new Exit(this.context);
+
+    const x = this.canvas.width - this.exit.width;
+    const y = this.canvas.height - this.exit.height;
+
+    this.exit.init(EXIT_IMAGE, x, y);
+    this.exit.draw();
+  }
+
   initEnemy() {
     const mainCharacterSafeZone = {
       x: this.mainCharacter.x + this.mainCharacter.width / 2 - SAFE_ZONE_WIDTH / 2,
@@ -134,7 +154,7 @@ export class PlayGround {
     this.mainCharacter = new MainCharacter(this.context);
     this.mainCharacter.init();
 
-    const startX = this.canvas.width / 2 - this.mainCharacter.width / 2;
+    const startX = 0;
     const startY = this.canvas.height / 2 - this.mainCharacter.height / 2;
 
     this.mainCharacter.setPosition(startX, startY);
@@ -223,7 +243,13 @@ export class PlayGround {
 
   loop = () => {
     if (this.checkCollisionWithEnemy(this.enemy)) {
-      this.handleFinish();
+      this.handleFinishFailure();
+    }
+
+    if (this.exit && this.checkCollision(this.exit, this.mainCharacter)) {
+      this.handleFinishSuccess(this.countPoint);
+
+      return;
     }
 
     const now = performance.now();
@@ -249,6 +275,7 @@ export class PlayGround {
     this.mainCharacter.draw();
     this.enemy?.forEach(item => item?.draw());
     this.foods?.forEach(item => item?.draw());
+    this.exit?.draw();
     this.pauseButton.draw(this.state);
   }
 }

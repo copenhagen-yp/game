@@ -18,6 +18,7 @@ export enum API_URL {
   API_DOMAIN = 'https://ya-praktikum.tech/api/v2/',
   SIGN_IN = 'auth/signin',
   LEADERBOARD_ALL = 'leaderboard/all',
+  LEADERBOARD = 'leaderboard',
   EDIT_PROFILE = 'user/profile',
   GET_USER_INFO = 'auth/user',
   UPDATE_AVATAR = 'user/profile/avatar',

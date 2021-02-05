@@ -20,7 +20,7 @@ const SPRITE_CROP = {
 };
 
 export class Enemy extends AnimatedSprite implements IEnemy {
-  private context: any;
+  private context: CanvasRenderingContext2D;
   private canvas: any;
 
   public readonly width: number;
@@ -36,7 +36,7 @@ export class Enemy extends AnimatedSprite implements IEnemy {
 
   public radiusFindHero: number;
 
-  constructor (context: any) {
+  constructor (context: CanvasRenderingContext2D) {
     super(ENEMY_IMAGE, 0, 0, SPRITE_CROP, MOVEMENT_DIRECTION_CODE, 3);
 
     this.context = context;
