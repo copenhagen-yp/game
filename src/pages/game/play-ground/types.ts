@@ -7,7 +7,7 @@ export type gameObjects = {
 
 export type IPlayGround = {
   canvas: HTMLCanvasElement,
-  context: CanvasRenderingContext2D | null,
+  context: CanvasRenderingContext2D,
   handleFinishFailure: () => void,
   handleFinishSuccess: (countPoint: number) => void,
   handleSetPoint: (point: number) => void,

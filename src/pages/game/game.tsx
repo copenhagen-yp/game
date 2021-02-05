@@ -40,16 +40,19 @@ export const Game = () => {
 
     if (canvasObj) {
       const ctx = canvasObj.getContext('2d');
-      const playGroundObj = new PlayGround({
-        canvas: canvasObj,
-        context: ctx,
-        handleFinishFailure,
-        handleFinishSuccess,
-        handleSetPoint,
-      });
 
-      handleResizeCanvasWrapper();
-      setPlayGround(playGroundObj);
+      if(ctx) {
+        const playGroundObj = new PlayGround({
+          canvas: canvasObj,
+          context: ctx,
+          handleFinishFailure,
+          handleFinishSuccess,
+          handleSetPoint,
+        });
+
+        handleResizeCanvasWrapper();
+        setPlayGround(playGroundObj);
+      }
     }
 
     const canvasWrapperRefElement = canvasWrapperRef.current;

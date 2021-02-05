@@ -19,7 +19,7 @@ const EXIT_IMAGE = '/images/exit.png';
 
 export class PlayGround {
   private canvas: any | null;
-  private context: any | null;
+  private context: CanvasRenderingContext2D;
 
   private mainCharacter: any | null;
   private countPoint: number;

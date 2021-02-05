@@ -46,7 +46,7 @@ export class MainCharacter extends AnimatedSprite implements IMovableCharacter {
 
   private speedPerFrame: number;
 
-  private context: any;
+  private context: CanvasRenderingContext2D;
   private canvas: any;
 
   public width: number;
@@ -57,7 +57,7 @@ export class MainCharacter extends AnimatedSprite implements IMovableCharacter {
   private upKeyPressed: boolean;
   private downKeyPressed: boolean;
 
-  constructor (context: any) {
+  constructor (context: CanvasRenderingContext2D) {
     super(CHARACTER_IMAGE, 0, 0, SPRITE_CROP, MOVEMENT_DIRECTION_CODE, 4);
 
     this.context = context;

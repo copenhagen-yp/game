@@ -1,7 +1,7 @@
 import { IFoods } from './types';
 
 export class Foods implements IFoods {
-  private context: any;
+  private context: CanvasRenderingContext2D;
 
   public readonly width: number;
   public readonly height: number;
@@ -11,7 +11,7 @@ export class Foods implements IFoods {
 
   private image: HTMLImageElement;
 
-  constructor (context: any) {
+  constructor (context: CanvasRenderingContext2D) {
     this.context = context;
 
     this.width = 35;
