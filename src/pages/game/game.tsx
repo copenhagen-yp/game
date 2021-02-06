@@ -1,14 +1,17 @@
-import React, { useEffect, useRef, useState, useLayoutEffect } from 'react';
+import React, { useEffect, useRef, useState, useLayoutEffect, useCallback } from 'react';
+import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { Modal } from '../../components';
 
 import { PlayGround } from './play-ground';
-import * as gameActions from '../../store/game/actions';
-import * as gameSelectors from '../../store/game/selectors';
-import { userActions } from '../../store/user';
+import { gameActions, gameSelectors } from '../../store/game';
+import { userSelectors, userActions } from '../../store/user';
 import { AppState } from '../../store/reducer';
 import { Button } from '../../components';
 import { GAME_STATUSES } from '../../store/game/constants';
+import { leaderboardApi } from '../../api';
+import { useHttp } from '../../hooks/useHttp';
+import { routes } from '../../routes';
 
 import styles from './game.pcss';
 
@@ -22,20 +25,34 @@ export const Game = () => {
 
   const [playGround, setPlayGround] = useState<any>(null);
   const gameStatus = useSelector<AppState>(gameSelectors.getStatus);
-  const [modalIsOpen, setIsOpen] = useState(false);
+  const [isOpenFinishFailureModal, setIsOpenFinishFailureModal] = useState(false);
+  const [isOpenFinishSuccessModal, setIsOpenFinishSuccessModal] = useState(false);
   const [isFullScreen, setIsFullScreen] = useState<boolean>(false);
 
   const dispatch = useDispatch();
+  const { request } = useHttp();
+  const { addUser } = leaderboardApi(request);
+  const point = useSelector(userSelectors.getGamePoint);
+  const user = useSelector(userSelectors.getCurrent);
 
   useEffect(() => {
     const canvasObj = canvasRef.current;
 
     if (canvasObj) {
       const ctx = canvasObj.getContext('2d');
-      const playGroundObj = new PlayGround(canvasObj, ctx, handleFinish, handleSetPoint);
 
-      handleResizeCanvasWrapper();
-      setPlayGround(playGroundObj);
+      if(ctx) {
+        const playGroundObj = new PlayGround({
+          canvas: canvasObj,
+          context: ctx,
+          handleFinishFailure,
+          handleFinishSuccess,
+          handleSetPoint,
+        });
+
+        handleResizeCanvasWrapper();
+        setPlayGround(playGroundObj);
+      }
     }
 
     const canvasWrapperRefElement = canvasWrapperRef.current;
@@ -105,14 +122,27 @@ export const Game = () => {
   };
 
   const handleRestartClick = () => {
-    setIsOpen(false);
+    setIsOpenFinishFailureModal(false);
+    setIsOpenFinishSuccessModal(false);
     dispatch(gameActions.restart());
   };
 
-  const handleFinish = () => {
-    setIsOpen(true);
+  const handleFinishFailure = () => {
+    setIsOpenFinishFailureModal(true);
     dispatch(gameActions.finish());
   };
+
+  const handleFinishSuccess = useCallback((countPoint: number) => {
+    if(user?.first_name && user?.id) {
+      addUser(user.first_name, user.id, countPoint)
+        .then((res: any) => {
+          if (res) {
+            setIsOpenFinishSuccessModal(true);
+            dispatch(gameActions.finish());
+          }
+        });
+    }
+  }, []);
 
   const handleCanvasClick = (event: any) => {
     if (playGround) {
@@ -213,12 +243,28 @@ export const Game = () => {
       >
         {containerRef.current && (
           <Modal
-            isOpen={modalIsOpen}
+            isOpen={isOpenFinishFailureModal}
             parentSelector={() => containerRef.current}
           >
             <Button onClick={handleRestartClick}>
               Начать заново
             </Button>
+          </Modal>
+        )}
+        {containerRef.current && (
+          <Modal
+            isOpen={isOpenFinishSuccessModal}
+            parentSelector={() => containerRef.current}
+          >
+            <p>Вы прошли! Вы собрали баллы: {point} </p>
+            <Button onClick={handleRestartClick}>
+              Пройти заново
+            </Button>
+            <Link to={routes.leaderboard.path}>
+              <Button>
+                Посмотреть рейтинг
+              </Button>
+            </Link>
           </Modal>
         )}
         <Button

@@ -10,7 +10,7 @@ const defaultReducer: UserReducer = {
 };
 
 export const userReducer = (state: UserReducer = defaultReducer, { type, payload }: ItemActionType)
-  : UserReducer => {    
+  : UserReducer => {
   switch (type) {
     case USER.SET_FAILED_STATUS:
       return {
@@ -37,7 +37,7 @@ export const userReducer = (state: UserReducer = defaultReducer, { type, payload
         ...state,
         gameInfo: {
           ...state.gameInfo,
-          point: payload ? state.gameInfo.point + payload.point : 0
+          point: payload?.point || 0,
         }
       };
     default:

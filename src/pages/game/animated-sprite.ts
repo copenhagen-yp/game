@@ -23,9 +23,9 @@ export class AnimatedSprite {
 
   private image: HTMLImageElement;
 
-  constructor (img: string, toX: number, 
-    toY: number, 
-    spriteCorp: {[index: string]: number}, 
+  constructor (img: string, toX: number,
+    toY: number,
+    spriteCorp: {[index: string]: number},
     movementDirectionCode: {[index: string]: number}, numberOfFrames: number) {
 
     this.x = toX;
@@ -56,7 +56,7 @@ export class AnimatedSprite {
 
     this.previousPositionX = this.x;
     this.previousPositionY = this.y;
-  }  
+  }
 
   calculateMovementAngle () {
     return Math.atan2(this.y - this.previousPositionY, this.x - this.previousPositionX) * 180 / Math.PI;
@@ -89,7 +89,7 @@ export class AnimatedSprite {
   }
 
   getFrameByAngle (angle: number) {
-   
+
     if (angle >= -135 && angle <= -45) {
       this.previousDirectionCode = this.movementDirectionCode?.UP;
 
@@ -117,7 +117,7 @@ export class AnimatedSprite {
     return this.previousDirectionCode;
   }
 
-  drawSprite (context: any, toX: number, toY: number, width: number, height: number) {
+  drawSprite (context: CanvasRenderingContext2D, toX: number, toY: number, width: number, height: number) {
 
     this.x = toX;
     this.y = toY;
