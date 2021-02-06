@@ -6,7 +6,8 @@ export default {
       {
         loader: 'css-loader',
         options: {
-          modules: true
+          modules: true,
+          esModule: false,
         },
       },
       'postcss-loader'
