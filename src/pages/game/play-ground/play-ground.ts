@@ -1,23 +1,23 @@
 import { MainCharacter } from '../main-character';
 import { Enemy, IEnemy } from '../enemy';
 import { Foods, IFoods } from '../foods';
+import { Exit, IExit } from '../exit';
 import { PauseButton } from '../pause-button';
 import { GAME_STATUSES } from '../../../store/game/constants';
+import { gameObjects, IPlayGround } from './types';
 
 const INTERVAL_MOTION = 1 / 60;
 
 
-// Модификаторы для размера главного персонажа
-// Устраняют неидеальность спрайта
-// при расчёте коллизии с врагом
-const WIDTH_MODIFIER = 5;
-const HEIGHT_MODIFIER = 10;
+const SAFE_ZONE_WIDTH = 150;
+const SAFE_ZONE_HEIGHT = 150;
 
 const ARR_IMG_FOODS: string[] = ['/images/mushroom.png', '/images/raspberries.png'];
+const EXIT_IMAGE = '/images/exit.png';
 
 export class PlayGround {
   private canvas: any | null;
-  private context: any | null;
+  private context: CanvasRenderingContext2D;
 
   private mainCharacter: any | null;
   private countPoint: number;
@@ -28,20 +28,25 @@ export class PlayGround {
   private foods: IFoods[] | null;
   private countFoods: number;
 
+  private exit: IExit | null;
+
   private requestAnimationId: any | undefined;
   private lastRenderTime: number;
   private timeDelta: number;
   private pauseButton: any;
   private state: 'resume' | 'pause' | 'finish';
-  private handleFinish: () => void;
+  private handleFinishFailure: () => void;
+  private handleFinishSuccess: (countPoint: number) => void;
   private handleSetPoint: (point: number) => void;
   private image: HTMLImageElement;
   private imageReady = false;
 
-  constructor(canvas: any, context: any, handleFinish: () => void, handleSetPoint: (point: number) => void) {
+  constructor( { canvas, context, handleFinishFailure,
+    handleFinishSuccess, handleSetPoint } : IPlayGround) {
     this.canvas = canvas;
     this.context = context;
-    this.handleFinish = handleFinish;
+    this.handleFinishFailure = handleFinishFailure;
+    this.handleFinishSuccess = handleFinishSuccess;
     this.handleSetPoint = handleSetPoint;
 
     this.lastRenderTime = 0;
@@ -52,6 +57,8 @@ export class PlayGround {
 
     this.enemy = null;
     this.countEnemy = 2;
+
+    this.exit = null;
 
     this.mainCharacter = null;
     this.countPoint = 0;
@@ -78,6 +85,7 @@ export class PlayGround {
     this.initMainCharacter();
     this.initEnemy();
     this.initFoods();
+    this.initExit();
     this.pauseButton = new PauseButton(this.context);
 
     this.lastRenderTime = performance.now();
@@ -108,20 +116,42 @@ export class PlayGround {
 
       foods.init(ARR_IMG_FOODS[Math.floor(Math.random() * Math.floor(ARR_IMG_FOODS.length))], startX, startY);
 
-      return foods; 
+      return foods;
     });
   }
 
+  initExit() {
+    this.exit = new Exit(this.context);
+
+    const x = this.canvas.width - this.exit.width;
+    const y = this.canvas.height - this.exit.height;
+
+    this.exit.init(EXIT_IMAGE, x, y);
+    this.exit.draw();
+  }
+
   initEnemy() {
+    const mainCharacterSafeZone = {
+      x: this.mainCharacter.x + this.mainCharacter.width / 2 - SAFE_ZONE_WIDTH / 2,
+      y: this.mainCharacter.y + this.mainCharacter.height / 2 - SAFE_ZONE_HEIGHT / 2,
+      width: SAFE_ZONE_WIDTH,
+      height: SAFE_ZONE_HEIGHT,
+    };
+
     this.enemy = Array.from(Array(this.countEnemy), () => {
+      let startX;
+      let startY;
       const enemy = new Enemy(this.context);
 
       enemy?.init();
 
-      const startX = 0 + Math.floor(Math.random() * this.canvas.width);
-      const startY = 0 + Math.floor(Math.random() * this.canvas.height);
+      do {
+        startX = Math.floor(Math.random() * this.canvas.width);
+        startY = Math.floor(Math.random() * this.canvas.height);
 
-      enemy.setPosition(startX, startY);
+        enemy.setPosition(startX, startY);
+      } while (this.checkCollision(mainCharacterSafeZone, enemy));
+
       enemy.draw();
 
       return enemy;
@@ -132,7 +162,7 @@ export class PlayGround {
     this.mainCharacter = new MainCharacter(this.context);
     this.mainCharacter.init();
 
-    const startX = this.canvas.width / 2 - this.mainCharacter.width / 2;
+    const startX = 0;
     const startY = this.canvas.height / 2 - this.mainCharacter.height / 2;
 
     this.mainCharacter.setPosition(startX, startY);
@@ -171,32 +201,40 @@ export class PlayGround {
     this.lastRenderTime = performance.now();
   }
 
-  checkCollisionWithObjects (arrObj: IFoods[] | IEnemy[] | null, flag?: boolean) {
-    return arrObj?.some((item, index) => {
-      let XColl = false;
-      let YColl = false;
+  checkCollision (firstObject: gameObjects, secondObject: gameObjects) {
+    let collX = false;
+    let collY = false;
 
-      if (
-        (this.mainCharacter.x + this.mainCharacter.width - WIDTH_MODIFIER >= item.x) &&
-        (this.mainCharacter.x <= item.x + item.width)
-      ) {
-        XColl = true;
-      }
+    if (
+      (firstObject.x + firstObject.width >= secondObject.x) &&
+      (firstObject.x <= secondObject.x + secondObject.width)
+    ) {
+      collX = true;
+    }
 
-      if (
-        (this.mainCharacter.y + this.mainCharacter.height - HEIGHT_MODIFIER >= item.y) &&
-        (this.mainCharacter.y <= item.y + item.height)
-      ) {
-        YColl = true;
-      }
+    if (
+      (firstObject.y + firstObject.height >= secondObject.y) &&
+      (firstObject.y <= secondObject.y + secondObject.height)
+    ) {
+      collY = true;
+    }
 
-      if (XColl && YColl && flag) {
-        arrObj.splice(index, 1);
+    return collX && collY;
+  }
+
+  checkCollisionWithEnemy (enemies: IEnemy[] | null) {
+    return enemies?.some((enemy) => {
+      return this.checkCollision(enemy, this.mainCharacter);
+    });
+  }
+
+  checkCollisionWithFood (foods: IFoods[] | null) {
+    foods?.forEach((food, index) => {
+      if (this.checkCollision(food, this.mainCharacter)) {
+        foods.splice(index, 1);
         this.countPoint += 1;
         this.handleSetPoint(this.countPoint);
       }
-
-      return XColl && YColl;
     });
   }
 
@@ -212,8 +250,14 @@ export class PlayGround {
   }
 
   loop = () => {
-    if (this.checkCollisionWithObjects(this.enemy)) {
-      this.handleFinish();
+    if (this.checkCollisionWithEnemy(this.enemy)) {
+      this.handleFinishFailure();
+    }
+
+    if (this.exit && this.checkCollision(this.exit, this.mainCharacter)) {
+      this.handleFinishSuccess(this.countPoint);
+
+      return;
     }
 
     const now = performance.now();
@@ -224,7 +268,7 @@ export class PlayGround {
       this.timeDelta -= INTERVAL_MOTION;
       this.mainCharacter.move();
       this.enemy?.forEach(item => item?.update(this.mainCharacter));
-      this.checkCollisionWithObjects(this.foods, true);
+      this.checkCollisionWithFood(this.foods);
     }
 
     this.lastRenderTime = now;
@@ -243,6 +287,7 @@ export class PlayGround {
     this.mainCharacter.draw();
     this.enemy?.forEach(item => item?.draw());
     this.foods?.forEach(item => item?.draw());
+    this.exit?.draw();
     this.pauseButton.draw(this.state);
   }
 }

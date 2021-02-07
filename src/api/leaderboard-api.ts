@@ -8,15 +8,15 @@ const limit = 10;
 export const leaderboardApi = (request: { (url: string, options?: Options): Promise<any> }) => {
   const addUser = (name: string, id: number, points: number) => {
     return request(
-      API_URL.LEADERBOARD_ALL,
+      API_URL.LEADERBOARD,
       {
         body: JSON.stringify({
-          'data': {
+          data: {
             name,
             id,
             points,
           },
-          ratingFieldName
+          ratingFieldName,
         }),
         method: REQUEST_METHOD.POST
       });

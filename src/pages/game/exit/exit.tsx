@@ -1,6 +1,6 @@
-import { IFoods } from './types';
+import { IExit } from './types';
 
-export class Foods implements IFoods {
+export class Exit implements IExit {
   private context: CanvasRenderingContext2D;
 
   public readonly width: number;
@@ -14,8 +14,8 @@ export class Foods implements IFoods {
   constructor (context: CanvasRenderingContext2D) {
     this.context = context;
 
-    this.width = 35;
-    this.height = 35;
+    this.width = 50;
+    this.height = 50;
 
     this.x = 0;
     this.y = 0;

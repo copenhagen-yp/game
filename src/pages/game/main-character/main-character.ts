@@ -1,4 +1,5 @@
 import { AnimatedSprite } from '../animated-sprite';
+import { IMovableCharacter } from '../../game';
 
 const KEY_CODES = {
   up: 38,
@@ -30,7 +31,7 @@ const SPRITE_CROP = {
   POINT_Y: 285,
 };
 
-export class MainCharacter extends AnimatedSprite {
+export class MainCharacter extends AnimatedSprite implements IMovableCharacter {
   public x: number;
   public y: number;
 
@@ -45,18 +46,18 @@ export class MainCharacter extends AnimatedSprite {
 
   private speedPerFrame: number;
 
-  private context: any;
+  private context: CanvasRenderingContext2D;
   private canvas: any;
 
-  private width: number;
-  private height: number;
+  public width: number;
+  public height: number;
 
   private rightKeyPressed: boolean;
   private leftKeyPressed: boolean;
   private upKeyPressed: boolean;
   private downKeyPressed: boolean;
 
-  constructor (context: any) {
+  constructor (context: CanvasRenderingContext2D) {
     super(CHARACTER_IMAGE, 0, 0, SPRITE_CROP, MOVEMENT_DIRECTION_CODE, 4);
 
     this.context = context;
