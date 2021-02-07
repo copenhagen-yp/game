@@ -13,7 +13,7 @@ import { API_URL, REQUEST_METHOD } from '../../../constants';
 import * as userActions from '../../../store/user/actions';
 import { useHttp } from '../../../hooks';
 
-export const HeaderWrapper = () => {
+export const Header = withStyles(styles)(() => {
   const { request } = useHttp();
   const dispatch = useDispatch();
 
@@ -37,6 +37,4 @@ export const HeaderWrapper = () => {
       <Link to={routes.profile.path}>Профиль {user?.first_name}</Link>
     </div>
   );
-};
-
-export const Header = withStyles(styles)(HeaderWrapper);
+});
