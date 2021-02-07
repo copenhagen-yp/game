@@ -8,7 +8,18 @@ import { registerSw } from './worker';
 import App from './app';
 import { BrowserRouter } from 'react-router-dom';
 
-const store = configureStore();
+let preloadedState;
+
+if (typeof window !== 'undefined') {
+  // https://redux.js.org/recipes/server-rendering
+  // Grab the state from a global variable injected into the server-generated HTML
+  preloadedState = (window as any).__PRELOADED_STATE__;
+  
+  // Allow the passed state to be garbage-collected
+  delete (window as any).__PRELOADED_STATE__;
+}
+
+const store = configureStore(preloadedState);
 
 registerSw();
 

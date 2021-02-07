@@ -1,12 +1,19 @@
 import React, { FC, useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { API_URL } from '../constants';
+import * as userSelectors from '../store/user/selectors';
 import * as userActions from '../store/user/actions';
 import { useHttp } from '../hooks';
 import { userInfoWrapperProps } from 'user-info-wrapper/types';
 
 export const UserInfoWrapper: FC<userInfoWrapperProps> = ({ children }) => {
+  const user = useSelector(userSelectors.getCurrent);
+
+  if (user) {
+    return <>{children}</>;
+  }
+
   const [isLoading, setIsLoading] = useState(true);
 
   const { request } = useHttp();
@@ -31,7 +38,5 @@ export const UserInfoWrapper: FC<userInfoWrapperProps> = ({ children }) => {
     return null;
   }
 
-  return <>
-    {children}
-  </>;
+  return <>{children}</>;
 };

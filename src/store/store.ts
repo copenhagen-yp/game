@@ -7,10 +7,10 @@ let composeEnhancers = compose;
 
 if (typeof window !== 'undefined' && (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) {
   composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__;
-} 
+}
 
-export const configureStore = () => {
-  const store = createStore(reducers, composeEnhancers(applyMiddleware(thunk)));
+export const configureStore = (preloadedState: any) => {
+  const store = createStore(reducers, preloadedState, composeEnhancers(applyMiddleware(thunk)));
 
   return store;
 };
