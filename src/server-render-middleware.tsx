@@ -8,8 +8,9 @@ import { Request, Response } from 'express';
 import { Provider } from 'react-redux';
 import App from './app';
 import { configureStore } from './store';
+import { defaultReducer as userReducerState } from './store/user/reducer';
 
-function fetchUserInfo() {
+function fetchUserInfo(): Promise<any> {
   return new Promise((resolve) => {
     https.get({
       hostname: 'ya-praktikum.tech',
@@ -49,11 +50,13 @@ export const serverRenderMiddleware = async (req: Request, res: Response) => {
 
   try {
     const userInfo = await fetchUserInfo();
+
     // TODO: Обработка ошибок (в т.ч. cookie is not valid)
 
     preloadedState = {
       user: {
-        userInfo
+        ...userReducerState,
+        userInfo,
       }
     };
   } catch (ex) {
@@ -89,7 +92,7 @@ export const serverRenderMiddleware = async (req: Request, res: Response) => {
         <style>${[...Array.from(css)].join('')}</style>
     </head>
     <body>
-        <div id="root">${reactHtml}</div>
+        <div id="root" style="height: 100%">${reactHtml}</div>
         <script>
         // WARNING: See the following for security issues around embedding JSON in HTML:
         // https://redux.js.org/recipes/server-rendering/#security-considerations
