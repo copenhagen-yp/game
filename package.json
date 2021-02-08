@@ -78,10 +78,14 @@
     "workbox-webpack-plugin": "6.0.2"
   },
   "dependencies": {
+    "@types/cookie-parser": "1.4.2",
+    "@types/follow-redirects": "1.13.0",
     "@types/react-toast-notifications": "2.4.0",
     "classnames": "2.2.6",
     "compression": "1.7.4",
+    "cookie-parser": "1.4.5",
     "express": "4.17.1",
+    "follow-redirects": "1.13.2",
     "isomorphic-style-loader": "5.1.0",
     "react": "17.0.1",
     "react-dom": "17.0.1",
