@@ -3,6 +3,7 @@ export enum GAME_ACTIONS {
   RESUME = 'RESUME',
   FINISH = 'FINISH',
   RESTART = 'RESTART',
+  DESTROYED = 'DESTROYED',
 }
 
 export enum GAME_STATUSES {
@@ -10,4 +11,5 @@ export enum GAME_STATUSES {
   RESUME = 'resume',
   FINISH = 'finish',
   RESTART = 'restart',
+  DESTROYED = 'destroyed',
 }

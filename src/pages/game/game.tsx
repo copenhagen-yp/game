@@ -70,12 +70,15 @@ export const Game = () => {
       window.removeEventListener('resize', handleResizeCanvasWrapper);
       document.removeEventListener('fullscreenchange', handleFullscreenChange);
       document.removeEventListener('visibilitychange', handleVisibilityChangeWrap);
+
+      handleGameDestroyRef.current();
     };
   }, []);
 
   useEffect(() => {
     if (playGround) {
       playGround.start();
+      dispatch(gameActions.resume());
     }
   }, [playGround]);
 
@@ -196,7 +199,18 @@ export const Game = () => {
     }
   };
 
+  const handleGameDestroy = () => {
+    dispatch(gameActions.destroy());
+    playGround.destroy();
+  };
+
+  const handleGameDestroyRef = useRef(handleGameDestroy);
+
   const handleVisibilityChangeRef = useRef(handleVisibilityChange);
+
+  useLayoutEffect(() => {
+    handleGameDestroyRef.current = handleGameDestroy;
+  }, [handleGameDestroy]);
 
   useLayoutEffect(() => {
     handleVisibilityChangeRef.current = handleVisibilityChange;

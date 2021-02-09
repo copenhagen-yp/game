@@ -15,3 +15,7 @@ export const finish = () => ({
 export const restart = () => ({
   type: GAME_ACTIONS.RESTART,
 });
+
+export const destroy = () => ({
+  type: GAME_ACTIONS.DESTROYED,
+});
