@@ -25,6 +25,7 @@ export enum API_URL {
   CHANGE_PASSWORD = 'user/password',
   SIGN_UP = 'auth/signup',
   LOGOUT = 'auth/logout',
+  OAUTH_SERVICE_ID = '/oauth/yandex/service-id',
 }
 
 export enum REQUEST_METHOD {

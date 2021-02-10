@@ -33,6 +33,10 @@ export const SignIn = () => {
     fields: fieldsValues
   } = useForm(requiredFields, successResult, API_URL.SIGN_IN);
 
+  const handleOauthClick = () => {
+    console.log('hi');
+  };
+
   return (
     <div className={styles.page}>
       <div className={styles.content}>
@@ -58,7 +62,10 @@ export const SignIn = () => {
             </Field>
           ))}
         </Form>
-
+        <Button
+          className={styles.oauthButton}
+          onClick={handleOauthClick}
+        >Авторизоваться с помощью Яндекса</Button>
         <Link to={routes.signUp.path}>
           <Button>
             Зарегистрироваться
