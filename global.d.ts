@@ -5,3 +5,6 @@ declare module '*.pcss' {
   const classNamesTypes: IClassNames;
   export = classNamesTypes;
 }
+
+declare module 'isomorphic-style-loader/StyleContext';
+declare module 'isomorphic-style-loader/withStyles';

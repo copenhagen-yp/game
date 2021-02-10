@@ -1,7 +1,7 @@
 import { UserReducer, ItemActionType } from './types';
 import { USER } from './constants';
 
-const defaultReducer: UserReducer = {
+export const defaultReducer: UserReducer = {
   status: null,
   userInfo: null,
   gameInfo: {

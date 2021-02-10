@@ -1,5 +1,6 @@
 import React from 'react';
 import cn from 'classnames';
+import withStyles from 'isomorphic-style-loader/withStyles';
 
 import { ToastProps } from 'react-toast-notifications';
 
@@ -7,7 +8,7 @@ import { Button } from '../../components';
 
 import styles from './toast.pcss';
 
-export const Toast = ({ appearance, children, onDismiss }: ToastProps) => {
+export const Toast = withStyles(styles)(({ appearance, children, onDismiss }: ToastProps) => {
   return (
     <div className={cn(styles.toast, styles[`toast_${appearance}`])}>
       {children}
@@ -22,4 +23,4 @@ export const Toast = ({ appearance, children, onDismiss }: ToastProps) => {
       </Button>
     </div>
   );
-};
+});

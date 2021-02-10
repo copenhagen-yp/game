@@ -1,9 +1,10 @@
 import React from 'react';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
 import { ToastProvider } from 'react-toast-notifications';
+import withStyles from 'isomorphic-style-loader/withStyles';
 import 'normalize.css';
 
-import './styles/common.pcss';
+import commonStyles from './styles/common.pcss';
 
 import { RouteWrapper } from './route-wrapper';
 import { routes } from './routes';
@@ -12,36 +13,34 @@ import { ErrorBoundary } from './error-boundary';
 import { Toast } from './components';
 import { UserInfoWrapper } from './user-info-wrapper';
 
-const App = () => {
+function App() {
   return (
     <ToastProvider
       components={{ Toast }}
       autoDismiss
     >
       <UserInfoWrapper>
-        <BrowserRouter>
-          <ErrorBoundary>
-            <Switch>
-              {Object.values(routes).map((route) => (
-                <RouteWrapper
-                  key={route.name}
-                  path={route.path}
-                  component={route.component}
-                  layout={route.layout}
-                  exact={route.exact}
-                  isPrivate={route.isPrivate}
-                />
-              ))
-              }
-              <Route path="*">
-                <NoMatch />
-              </Route>
-            </Switch>
-          </ErrorBoundary>
-        </BrowserRouter>
+        <ErrorBoundary>
+          <Switch>
+            {Object.values(routes).map((route) => (
+              <RouteWrapper
+                key={route.name}
+                path={route.path}
+                component={route.component}
+                layout={route.layout}
+                exact={route.exact}
+                isPrivate={route.isPrivate}
+              />
+            ))
+            }
+            <Route path="*">
+              <NoMatch />
+            </Route>
+          </Switch>
+        </ErrorBoundary>
       </UserInfoWrapper>
     </ToastProvider>
   );
-};
+}
 
-export default App;
+export default withStyles(commonStyles)(App);

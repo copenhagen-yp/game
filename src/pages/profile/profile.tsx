@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import withStyles from 'isomorphic-style-loader/withStyles';
 
 import { Field, Form, Input } from '../../components';
 import { API_URL, APP_TEXT, REQUEST_METHOD } from '../../constants';
@@ -54,7 +55,7 @@ const passwordFields: formFieldsType = [
 ];
 const requiredPasswordFields = ['oldPassword', 'newPassword'];
 
-export const Profile = () => {
+export const Profile = withStyles(styles)(() => {
   const { request: getUserInfoRequest } = useHttp();
   const { request: updateUserAvatarRequest } = useHttp();
 
@@ -170,4 +171,4 @@ export const Profile = () => {
       </div>
     </main>
   );
-};
+});

@@ -1,11 +1,12 @@
 import { Link } from 'react-router-dom';
 import React from 'react';
+import withStyles from 'isomorphic-style-loader/withStyles';
 
 import { routes } from './../../../routes';
 
 import styles from './navigation.pcss';
 
-export const Navigation = () => {
+export const Navigation = withStyles(styles)(() => {
   const menu = [
     {
       label: 'Home',
@@ -34,4 +35,4 @@ export const Navigation = () => {
       ))}
     </ul>
   );
-};
+});
