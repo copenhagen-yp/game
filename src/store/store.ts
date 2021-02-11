@@ -3,10 +3,14 @@ import thunk from 'redux-thunk';
 
 import { reducers } from './reducer';
 
-const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+let composeEnhancers = compose;
 
-export const configureStore = () => {
-  const store = createStore(reducers, composeEnhancers(applyMiddleware(thunk)));
+if (typeof window !== 'undefined' && (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) {
+  composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__;
+}
+
+export const configureStore = (preloadedState: any) => {
+  const store = createStore(reducers, preloadedState, composeEnhancers(applyMiddleware(thunk)));
 
   return store;
 };

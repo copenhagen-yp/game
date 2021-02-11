@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import withStyles from 'isomorphic-style-loader/withStyles';
 
 import { APP_TEXT, API_URL } from '../../constants';
 import { Field, Input, Form, Button } from '../../components';
@@ -42,7 +43,7 @@ const signUpFields = [
   },
 ];
 
-export const SignUp = () => {
+export const SignUp = withStyles(styles)(() => {
   const requiredFields = ['first_name', 'second_name', 'login', 'email', 'password', 'phone'];
   const successResult = routes.home.path;
   const { request: getServiceIdRequest } = useHttp();
@@ -100,4 +101,4 @@ export const SignUp = () => {
       </div>
     </div>
   );
-};
+});
