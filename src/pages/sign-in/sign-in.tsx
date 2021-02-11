@@ -71,7 +71,7 @@ export const SignIn = () => {
         <Button
           className={styles.oauthButton}
           onClick={handleOauthClick}
-        >Авторизоваться с помощью Яндекса</Button>
+        >Авторизоваться через Яндекс</Button>
         <Link to={routes.signUp.path}>
           <Button>
             Зарегистрироваться

@@ -10,8 +10,6 @@ import { oauthApi } from '../api/oauth';
 
 export const UserInfoWrapper: FC<userInfoWrapperProps> = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true);
-
-  // const { request: getServiceIdRequest } = useHttp();
   const { request } = useHttp();
   const dispatch = useDispatch();
 

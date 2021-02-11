@@ -3,8 +3,9 @@ import { Link } from 'react-router-dom';
 
 import { APP_TEXT, API_URL } from '../../constants';
 import { Field, Input, Form, Button } from '../../components';
-import { useForm } from '../../hooks';
+import { useForm, useHttp } from '../../hooks';
 import { routes } from '../../routes';
+import { generateOauthLink, oauthApi } from '../../api/oauth';
 
 import styles from '../sign-in-up.pcss';
 
@@ -44,6 +45,8 @@ const signUpFields = [
 export const SignUp = () => {
   const requiredFields = ['first_name', 'second_name', 'login', 'email', 'password', 'phone'];
   const successResult = routes.home.path;
+  const { request: getServiceIdRequest } = useHttp();
+  const { getServiceId } = oauthApi(getServiceIdRequest);
 
   const {
     handleSubmitSign,
@@ -52,6 +55,13 @@ export const SignUp = () => {
     error,
     fields: fieldsValues
   } = useForm(requiredFields, successResult, API_URL.SIGN_UP);
+
+  const handleOauthClick = () => {
+    getServiceId()
+      .then(({ service_id }) => {
+        document.location.href = generateOauthLink(service_id);
+      });
+  };
 
   return (
     <div className={styles.page}>
@@ -78,7 +88,10 @@ export const SignUp = () => {
             </Field>
           ))}
         </Form>
-
+        <Button
+          className={styles.oauthButton}
+          onClick={handleOauthClick}
+        >Зарегистрироваться через Яндекс</Button>
         <Link to={routes.signIn.path}>
           <Button>
             Войти
