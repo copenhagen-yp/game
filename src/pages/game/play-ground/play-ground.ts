@@ -67,7 +67,7 @@ export class PlayGround {
 
     this.image = new Image();
     this.image.src = '/images/bg_grass.jpg';
-  
+
     this.image.onload = () => {
       this.imageReady = true;
     };
@@ -81,6 +81,7 @@ export class PlayGround {
   }
 
   init() {
+    this.countPoint = 0;
     this.initCanvas();
     this.initMainCharacter();
     this.initEnemy();
