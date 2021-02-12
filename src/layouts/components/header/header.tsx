@@ -1,4 +1,4 @@
-import React from 'react';
+import React , { useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import withStyles from 'isomorphic-style-loader/withStyles';
@@ -19,12 +19,12 @@ export const Header = withStyles(styles)(() => {
 
   const user = useSelector(userSelectors.getCurrent);
 
-  const handleClickLogout = () => {
+  const handleClickLogout = useCallback(() => {
     request(API_URL.LOGOUT, { method: REQUEST_METHOD.POST })
       .then(() => {
         dispatch(userActions.logoutUser());
       });
-  };
+  }, []);
 
   return (
     <div className={styles.header}>

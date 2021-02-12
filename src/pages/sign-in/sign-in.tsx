@@ -32,7 +32,7 @@ export const SignIn = withStyles(styles)(() => {
     handleBlur,
     error,
     fields: fieldsValues
-  } = useForm(requiredFields, successResult, API_URL.SIGN_IN);
+  } = useForm({ requiredFields, successResult, url: API_URL.SIGN_IN });
 
   return (
     <div className={styles.page}>

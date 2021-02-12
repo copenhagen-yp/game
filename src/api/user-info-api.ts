@@ -1,12 +1,9 @@
 import { Options } from '../hooks/types';
 import { API_URL, REQUEST_METHOD } from '../constants';
+import { formFieldsType } from '../pages/profile/types';
 
-export const userInfoApi = (request: { (url:string, options?: Options): Promise<any> }) => {
-  const getInfo = () => {
-    return request(
-      API_URL.GET_USER_INFO,
-      { method: REQUEST_METHOD.GET });
-  };
+export const userInfoApi = (request: { (url:string, options?: Options): Promise<formFieldsType> }) => {
+  const getInfo = () => request(API_URL.GET_USER_INFO);
 
   const updateUserAvatar = (image: any) => {
     if (!image) {

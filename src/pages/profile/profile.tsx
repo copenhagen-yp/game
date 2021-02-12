@@ -66,7 +66,7 @@ export const Profile = withStyles(styles)(() => {
     error: errorProfile,
     fields: profileFieldsValues,
     setFields: setFieldsProfile,
-  } = useForm(requiredProfileFields, undefined, API_URL.EDIT_PROFILE, REQUEST_METHOD.PUT);
+  } = useForm({ requiredFields: requiredProfileFields, url: API_URL.EDIT_PROFILE, method: REQUEST_METHOD.PUT });
 
   const { getInfo } = userInfoApi(getUserInfoRequest);
   const { updateUserAvatar } = userInfoApi(updateUserAvatarRequest);
@@ -78,11 +78,11 @@ export const Profile = withStyles(styles)(() => {
     handleBlur: handleBlurPassword,
     error: passwordError,
     fields: passwordFieldsValues,
-  } = useForm(requiredPasswordFields, undefined, API_URL.CHANGE_PASSWORD, REQUEST_METHOD.PUT);
+  } = useForm({ requiredFields: requiredPasswordFields, url: API_URL.CHANGE_PASSWORD, method: REQUEST_METHOD.PUT });
 
   const handleChangeAvatar = (event: any) => {
     updateUserAvatar(event.target.files[0])
-      .then((userFieldValues) => {
+      .then((userFieldValues: any) => {
         if (userFieldValues.avatar) {
           setAvatarPath(`${API_URL.DOMAIN}${userFieldValues.avatar}`);
         }
@@ -91,7 +91,7 @@ export const Profile = withStyles(styles)(() => {
 
   useEffect(() => {
     getInfo()
-      .then((userFieldValues) => {
+      .then((userFieldValues: any) => {
         if (Object.prototype.toString.call(userFieldValues) !== '[object Object]') {
           return;
         }

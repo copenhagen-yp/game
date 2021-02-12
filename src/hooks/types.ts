@@ -18,3 +18,10 @@ export type TComment = {
     idForum: number,
     comment: string
 };
+
+export type UseFormProps = {
+    requiredFields: string[], 
+    successResult?: string, 
+    url?: string, 
+    method?: string 
+};

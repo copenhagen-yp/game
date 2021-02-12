@@ -25,7 +25,9 @@ export const UserInfoWrapper: FC<userInfoWrapperProps> = ({ children }) => {
         .then((resp) => {
           dispatch(userActions.setUserInfo(resp));
         })
-        .catch(() => dispatch(userActions.setUserInfo(null)))
+        .catch(() => {
+          dispatch(userActions.setUserInfo(null));
+        })
         .finally(() => {
           setIsLoading(false);
         });

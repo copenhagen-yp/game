@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import StyleContext from 'isomorphic-style-loader/StyleContext';
 
+import { ErrorBoundary } from './error-boundary';
 import { configureStore } from './store';
 import { registerSw } from './worker';
 import App from './app';
@@ -31,9 +32,11 @@ const insertCss = (...styles: any) => {
 
 ReactDOM.hydrate(
   <Provider store={store}>
-    <BrowserRouter>
-      <StyleContext.Provider value={{ insertCss }}>
-        <App />
-      </StyleContext.Provider>
-    </BrowserRouter>
+    <ErrorBoundary>
+      <BrowserRouter>
+        <StyleContext.Provider value={{ insertCss }}>
+          <App />
+        </StyleContext.Provider>
+      </BrowserRouter>
+    </ErrorBoundary>
   </Provider>, document.getElementById('root'));
