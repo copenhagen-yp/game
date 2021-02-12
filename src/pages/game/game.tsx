@@ -131,6 +131,7 @@ export const Game = withStyles(styles)(() => {
   const handleRestartClick = () => {
     setIsOpenFinishFailureModal(false);
     setIsOpenFinishSuccessModal(false);
+    dispatch(userActions.setPointUser(0));
     dispatch(gameActions.restart());
   };
 
