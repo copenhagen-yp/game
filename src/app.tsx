@@ -9,7 +9,6 @@ import commonStyles from './styles/common.pcss';
 import { RouteWrapper } from './route-wrapper';
 import { routes } from './routes';
 import { NoMatch } from './pages';
-import { ErrorBoundary } from './error-boundary';
 import { Toast } from './components';
 import { UserInfoWrapper } from './user-info-wrapper';
 
@@ -20,24 +19,22 @@ function App() {
       autoDismiss
     >
       <UserInfoWrapper>
-        <ErrorBoundary>
-          <Switch>
-            {Object.values(routes).map((route) => (
-              <RouteWrapper
-                key={route.name}
-                path={route.path}
-                component={route.component}
-                layout={route.layout}
-                exact={route.exact}
-                isPrivate={route.isPrivate}
-              />
-            ))
-            }
-            <Route path="*">
-              <NoMatch />
-            </Route>
-          </Switch>
-        </ErrorBoundary>
+        <Switch>
+          {Object.values(routes).map((route) => (
+            <RouteWrapper
+              key={route.name}
+              path={route.path}
+              component={route.component}
+              layout={route.layout}
+              exact={route.exact}
+              isPrivate={route.isPrivate}
+            />
+          ))
+          }
+          <Route path="*">
+            <NoMatch />
+          </Route>
+        </Switch>
       </UserInfoWrapper>
     </ToastProvider>
   );

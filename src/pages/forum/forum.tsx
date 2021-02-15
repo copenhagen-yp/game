@@ -10,7 +10,7 @@ import styles from './forum.pcss';
 
 export const Forum = withStyles(styles)(() => {
   const requiredFields = ['question_name', 'question_description'];
-  const { handleChange, handleBlur, fields, error } = useForm(requiredFields);
+  const { handleChange, handleBlur, fields, error } = useForm({ requiredFields });
   const { forums, handleSubmitQuestion } = useForum(fields);
 
   return (

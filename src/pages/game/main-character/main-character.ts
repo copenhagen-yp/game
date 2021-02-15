@@ -31,6 +31,8 @@ const SPRITE_CROP = {
   POINT_Y: 285,
 };
 
+const SPRITE_RATIO = 1.212;
+
 export class MainCharacter extends AnimatedSprite implements IMovableCharacter {
   public x: number;
   public y: number;
@@ -64,7 +66,7 @@ export class MainCharacter extends AnimatedSprite implements IMovableCharacter {
     this.canvas = context.canvas;
 
     this.width = 45;
-    this.height = this.width * 1.212;
+    this.height = this.width * SPRITE_RATIO;
 
     this.x = 0;
     this.y = 0;

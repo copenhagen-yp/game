@@ -52,7 +52,7 @@ export const SignUp = withStyles(styles)(() => {
     handleBlur,
     error,
     fields: fieldsValues
-  } = useForm(requiredFields, successResult, API_URL.SIGN_UP);
+  } = useForm({ requiredFields, successResult, url: API_URL.SIGN_UP });
 
   return (
     <div className={styles.page}>

@@ -8,7 +8,7 @@ import withStyles from 'isomorphic-style-loader/withStyles';
 
 export const Topic = withStyles(styles)(() => {
   const requiredFields = ['comment'];
-  const { handleChange, handleBlur, fields, error } = useForm(requiredFields);
+  const { handleChange, handleBlur, fields, error } = useForm({ requiredFields });
   const { currentForum, currentComments, handleSubmitComments } = useForum(fields);
 
   return (
