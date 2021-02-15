@@ -7,12 +7,10 @@ import { GAME_STATUSES } from '../../../store/game/constants';
 import { gameObjects, IPlayGround } from './types';
 
 const INTERVAL_MOTION = 1 / 60;
-const BACKGROUND_SCENE = new Image();
+
 
 const SAFE_ZONE_WIDTH = 150;
 const SAFE_ZONE_HEIGHT = 150;
-
-BACKGROUND_SCENE.src = '/images/bg_grass.jpg';
 
 const ARR_IMG_FOODS: string[] = ['/images/mushroom.png', '/images/raspberries.png'];
 const EXIT_IMAGE = '/images/exit.png';
@@ -40,6 +38,8 @@ export class PlayGround {
   private handleFinishFailure: () => void;
   private handleFinishSuccess: (countPoint: number) => void;
   private handleSetPoint: (point: number) => void;
+  private image: HTMLImageElement;
+  private imageReady = false;
 
   constructor( { canvas, context, handleFinishFailure,
     handleFinishSuccess, handleSetPoint } : IPlayGround) {
@@ -64,6 +64,14 @@ export class PlayGround {
     this.countPoint = 0;
     this.requestAnimationId = undefined;
     this.state = GAME_STATUSES.RESUME;
+
+    this.image = new Image();
+    this.image.src = '/images/bg_grass.jpg';
+
+    this.image.onload = () => {
+      this.imageReady = true;
+    };
+
   }
 
   start() {
@@ -73,6 +81,7 @@ export class PlayGround {
   }
 
   init() {
+    this.countPoint = 0;
     this.initCanvas();
     this.initMainCharacter();
     this.initEnemy();
@@ -269,8 +278,12 @@ export class PlayGround {
   }
 
   render = () => {
+    if (!this.imageReady) {
+      return;
+    }
+
     this.clearCanvas();
-    this.context.drawImage(BACKGROUND_SCENE, 0, 0, this.canvas.width, this.canvas.height);
+    this.context.drawImage(this.image, 0, 0, this.canvas.width, this.canvas.height);
     this.context.fillText(`Счет: ${this.countPoint}`, 10, 20);
     this.mainCharacter.draw();
     this.enemy?.forEach(item => item?.draw());

@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState, useLayoutEffect, useCallback } from
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { Modal } from '../../components';
+import withStyles from 'isomorphic-style-loader/withStyles';
 
 import { PlayGround } from './play-ground';
 import { gameActions, gameSelectors } from '../../store/game';
@@ -15,10 +16,16 @@ import { routes } from '../../routes';
 
 import styles from './game.pcss';
 
+declare let SSR: boolean;
+
 const CANVAS_WIDTH = 700;
 const CANVAS_HEIGHT = 500;
 
-export const Game = () => {
+export const Game = withStyles(styles)(() => {
+  if (SSR) {
+    return null;
+  }
+
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasWrapperRef = useRef<HTMLDivElement>(null);
@@ -124,6 +131,7 @@ export const Game = () => {
   const handleRestartClick = () => {
     setIsOpenFinishFailureModal(false);
     setIsOpenFinishSuccessModal(false);
+    dispatch(userActions.setPointUser(0));
     dispatch(gameActions.restart());
   };
 
@@ -284,4 +292,4 @@ export const Game = () => {
       </div>
     </main>
   );
-};
+});

@@ -1,6 +1,7 @@
-import React from 'react';
+import React , { useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
+import withStyles from 'isomorphic-style-loader/withStyles';
 
 import { routes } from '../../../routes';
 import styles from './header.pcss';
@@ -12,18 +13,18 @@ import { API_URL, REQUEST_METHOD } from '../../../constants';
 import * as userActions from '../../../store/user/actions';
 import { useHttp } from '../../../hooks';
 
-export const Header = () => {
+export const Header = withStyles(styles)(() => {
   const { request } = useHttp();
   const dispatch = useDispatch();
 
   const user = useSelector(userSelectors.getCurrent);
 
-  const handleClickLogout = () => {
+  const handleClickLogout = useCallback(() => {
     request(API_URL.LOGOUT, { method: REQUEST_METHOD.POST })
       .then(() => {
         dispatch(userActions.logoutUser());
       });
-  };
+  }, []);
 
   return (
     <div className={styles.header}>
@@ -36,4 +37,4 @@ export const Header = () => {
       <Link to={routes.profile.path}>Профиль {user?.first_name}</Link>
     </div>
   );
-};
+});

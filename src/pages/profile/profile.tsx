@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import withStyles from 'isomorphic-style-loader/withStyles';
 
 import { Field, Form, Input } from '../../components';
 import { API_URL, APP_TEXT, REQUEST_METHOD } from '../../constants';
@@ -54,7 +55,7 @@ const passwordFields: formFieldsType = [
 ];
 const requiredPasswordFields = ['oldPassword', 'newPassword'];
 
-export const Profile = () => {
+export const Profile = withStyles(styles)(() => {
   const { request: getUserInfoRequest } = useHttp();
   const { request: updateUserAvatarRequest } = useHttp();
 
@@ -65,7 +66,7 @@ export const Profile = () => {
     error: errorProfile,
     fields: profileFieldsValues,
     setFields: setFieldsProfile,
-  } = useForm(requiredProfileFields, undefined, API_URL.EDIT_PROFILE, REQUEST_METHOD.PUT);
+  } = useForm({ requiredFields: requiredProfileFields, url: API_URL.EDIT_PROFILE, method: REQUEST_METHOD.PUT });
 
   const { getInfo } = userInfoApi(getUserInfoRequest);
   const { updateUserAvatar } = userInfoApi(updateUserAvatarRequest);
@@ -77,11 +78,11 @@ export const Profile = () => {
     handleBlur: handleBlurPassword,
     error: passwordError,
     fields: passwordFieldsValues,
-  } = useForm(requiredPasswordFields, undefined, API_URL.CHANGE_PASSWORD, REQUEST_METHOD.PUT);
+  } = useForm({ requiredFields: requiredPasswordFields, url: API_URL.CHANGE_PASSWORD, method: REQUEST_METHOD.PUT });
 
   const handleChangeAvatar = (event: any) => {
     updateUserAvatar(event.target.files[0])
-      .then((userFieldValues) => {
+      .then((userFieldValues: any) => {
         if (userFieldValues.avatar) {
           setAvatarPath(`${API_URL.DOMAIN}${userFieldValues.avatar}`);
         }
@@ -90,7 +91,7 @@ export const Profile = () => {
 
   useEffect(() => {
     getInfo()
-      .then((userFieldValues) => {
+      .then((userFieldValues: any) => {
         if (Object.prototype.toString.call(userFieldValues) !== '[object Object]') {
           return;
         }
@@ -170,4 +171,4 @@ export const Profile = () => {
       </div>
     </main>
   );
-};
+});

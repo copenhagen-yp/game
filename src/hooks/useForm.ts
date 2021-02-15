@@ -3,13 +3,13 @@ import { useCallback, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
-import { Fields, Error } from './types';
+import { Fields, Error, UseFormProps } from './types';
 import { useHttp } from './useHttp';
 import * as userActions from '../store/user/actions';
 import { APP_REGULAR, APP_TEXT, REQUEST_METHOD } from '../constants';
 
 
-export const useForm = (requiredFields: string[], successResult?: string, url?: string, method?: string) => {
+export const useForm = ({ requiredFields, successResult, url, method }: UseFormProps) => {
   const { request } = useHttp();
   const [fields, setFields] = useState<Fields>({});
   const [error, setError] = useState<Error>(requiredFields.reduce((accumulate, nameField)=>({ ...accumulate, [nameField]: { value: false, text: '' } }),{}));

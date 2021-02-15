@@ -4,10 +4,11 @@ import { useForum, useForm } from '../../hooks';
 import { Input, Button, Field } from '../../components';
 import { APP_TEXT } from '../../constants';
 import styles from './forum.pcss';
+import withStyles from 'isomorphic-style-loader/withStyles';
 
-export const Topic = () => {
+export const Topic = withStyles(styles)(() => {
   const requiredFields = ['comment'];
-  const { handleChange, handleBlur, fields, error } = useForm(requiredFields);
+  const { handleChange, handleBlur, fields, error } = useForm({ requiredFields });
   const { currentForum, currentComments, handleSubmitComments } = useForum(fields);
 
   return (
@@ -35,4 +36,4 @@ export const Topic = () => {
       </form>
     </div>
   );
-};
+});

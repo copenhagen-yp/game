@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import withStyles from 'isomorphic-style-loader/withStyles';
 
 import { useForum, useForm } from '../../hooks';
 import { APP_TEXT } from '../../constants';
@@ -7,9 +8,9 @@ import { routes } from '../../routes';
 import { Field, Input, Form } from '../../components';
 import styles from './forum.pcss';
 
-export const Forum = () => {
+export const Forum = withStyles(styles)(() => {
   const requiredFields = ['question_name', 'question_description'];
-  const { handleChange, handleBlur, fields, error } = useForm(requiredFields);
+  const { handleChange, handleBlur, fields, error } = useForm({ requiredFields });
   const { forums, handleSubmitQuestion } = useForum(fields);
 
   return (
@@ -53,4 +54,4 @@ export const Forum = () => {
       </Form>
     </div>
   );
-};
+});
