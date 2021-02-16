@@ -25,7 +25,7 @@ function addParamToWorkbox() {
 const config = {
   name: 'client',
   entry: [
-    IS_DEV && 'react-hot-loader/patch',
+    IS_DEV && 'webpack-hot-middleware/client?path=http://localhost:4000/__webpack_hmr',
     path.join(SRC_DIR, 'index'),
   ],
   module: {
@@ -36,18 +36,22 @@ const config = {
     filename: '[name].js',
     publicPath: '/',
   },
+  devServer: {
+    hot: true
+  },
   resolve: {
     modules: ['src', 'node_modules'],
     extensions: ['*', '.js', '.jsx', '.json', '.ts', '.tsx'],
   },
   plugins: [
+    new webpack.HotModuleReplacementPlugin(),
     new WorkboxPlugin.GenerateSW(addParamToWorkbox()),
     new webpack.DefinePlugin({
       'SSR': JSON.stringify(false)
-    })    
+    })
   ],
-
-  devtool: 'source-map',
+  cache: true,
+  devtool: 'cheap-source-map',
 
   performance: {
     hints: IS_DEV ? false : 'warning',
