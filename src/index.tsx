@@ -33,12 +33,12 @@ const insertCss = (...styles: any) => {
 ReactDOM.hydrate(
   
   <Provider store={store}>
-    <BrowserRouter>
-      <StyleContext.Provider value={{ insertCss }}>
-        <ErrorBoundary>
+    <StyleContext.Provider value={{ insertCss }}>
+      <ErrorBoundary>
+        <BrowserRouter>
           <App />
-        </ErrorBoundary>
-      </StyleContext.Provider>
-    </BrowserRouter>
+        </BrowserRouter>
+      </ErrorBoundary>
+    </StyleContext.Provider>
   </Provider>
   , document.getElementById('root'));
