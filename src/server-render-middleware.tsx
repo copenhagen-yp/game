@@ -104,6 +104,14 @@ export const serverRenderMiddleware = async (req: Request, res: Response) => {
     `;
   };
 
-  res.send(getHtml(reactHtml, finalState));
+  if (context.url) {
+    res.writeHead(302, {
+      Location: context.url
+    });
+    res.end();
+  } else {
+    res.write(getHtml(reactHtml, finalState));
+    res.end();
+  }
 };
 
