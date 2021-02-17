@@ -6,7 +6,7 @@
   "scripts": {
     "start:webpack": "cross-env TS_NODE_PROJECT=\"tsconfig.node.json\" webpack --mode=development --watch",
     "start:server": "nodemon index.js --watch dist/server.js",
-    "start": "cross-env NODE_ENV=development DEBUG_USER_COOKIE=\"authCookie=70b2e79853c27f504dc20502300a0294a33b8445%3A1613421708; uuid=1654df81-ef20-4cf6-8065-e112293ae2f3\" npm-run-all --print-label --parallel start:*",
+    "start": "cross-env NODE_ENV=development DEBUG_USER_COOKIE=\"uuid=<fill in>; authCookie=<fill in>\" npm-run-all --print-label --parallel start:*",
     "build": "webpack --mode production",
     "pretty": "prettier --write .",
     "lint": "eslint --ext .tsx,.ts ./src",
