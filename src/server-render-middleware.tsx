@@ -9,17 +9,20 @@ import { Provider } from 'react-redux';
 import App from './app';
 import { configureStore } from './store';
 import { defaultReducer as userReducerState } from './store/user/reducer';
+import axios from 'axios';
+import { API_URL } from './constants';
 
-function fetchUserInfo(): Promise<any> {
+function fetchUserInfo(cookie: any): Promise<any> {
   return new Promise((resolve) => {
     https.get({
       hostname: 'ya-praktikum.tech',
       path: '/api/v2/auth/user',
       headers: {
-        'cookie': process.env.DEBUG_USER_COOKIE,
+        'cookie': cookie,
         'accept': 'application/json'
       }
     }, (res) => {
+      // console.log(res);
       let str = '';
 
       //another chunk of data has been received, so append it to `str`
@@ -31,6 +34,7 @@ function fetchUserInfo(): Promise<any> {
 
       //the whole response has been received, so we just print it out here
       res.on('end', function () {
+        // console.log(str);
         resolve(JSON.parse(str));
       });
 
@@ -46,25 +50,57 @@ export const serverRenderMiddleware = async (req: Request, res: Response) => {
   const css: any = new Set(); // CSS for all rendered React components
   const insertCss = (...styles: any) => styles.forEach((style: any) => css.add(style._getCss()));
 
-  let preloadedState: any;
+  let preloadedState = {
+    user: {
+      ...userReducerState,
+    }
+  };
 
-  try {
-    const userInfo = await fetchUserInfo();
-
-    // TODO: Обработка ошибок (в т.ч. cookie is not valid)
-
-    preloadedState = {
-      user: {
-        ...userReducerState,
-        userInfo,
+  if (req.query.code) {
+    axios({
+      method: 'post',
+      url: API_URL.API_DOMAIN + API_URL.OAUTH_CODE,
+      data: {
+        code: req.query.code,
       }
-    };
-  } catch (ex) {
-    console.error(ex);
+    })
+      .then(async (resp) => {
+        const auth_cookie = resp.headers['set-cookie']
+          .reduce((cookies: any, cookie: any) => {
+            const match_cookie = cookie.match(/(.*?)=(.*?);/);
+
+            cookies[match_cookie[1]] = match_cookie[2];
+
+            return cookies;
+          }, {});
+
+        const cookie_headers = `uuid=${auth_cookie.uuid}; authCookie=${auth_cookie.authCookie}`;
+
+        try {
+          const userInfo = await fetchUserInfo(cookie_headers);
+
+          // TODO: Обработка ошибок (в т.ч. cookie is not valid)
+
+          preloadedState = {
+            user: {
+              ...userReducerState,
+              userInfo,
+            }
+          };
+          console.log(preloadedState);
+        } catch (ex) {
+          console.error(ex);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   const store = configureStore(preloadedState);
   const finalState = store.getState();
+
+  console.log(finalState);
 
   const jsx = (
 
