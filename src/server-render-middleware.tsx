@@ -113,7 +113,5 @@ export const serverRenderMiddleware = async (req: Request, res: Response) => {
     res.write(getHtml(reactHtml, finalState));
     res.end();
   }
-
-
 };
 
