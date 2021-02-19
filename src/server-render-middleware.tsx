@@ -51,10 +51,17 @@ export const serverRenderMiddleware = async (req: Request, res: Response) => {
   if (req.query.auth_cookie) {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    const cookie_headers = `uuid=${req.query.auth_cookie.uuid}; authCookie=${req.query.auth_cookie.authCookie}`;
+    const headerCookie = `uuid=${req.query.auth_cookie.uuid}; authCookie=${req.query.auth_cookie.authCookie}`;
+
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    res.cookie('uuid', req.query.auth_cookie.uuid, { domain: '.ya-praktikum.tech', httpOnly: true });
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    res.cookie('authCookie', req.query.auth_cookie.authCookie, { domain: '.ya-praktikum.tech', httpOnly: true });
 
     try {
-      const userInfo = await fetchUserInfo(cookie_headers);
+      const userInfo = await fetchUserInfo(headerCookie);
 
       // TODO: Обработка ошибок (в т.ч. cookie is not valid)
 
