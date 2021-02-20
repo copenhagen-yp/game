@@ -252,7 +252,7 @@ export const Game = withStyles(styles)(() => {
         {containerRef.current && (
           <Modal
             isOpen={isOpenFinishFailureModal}
-            parentSelector={() => containerRef.current}
+            parentSelector={() => containerRef?.current || document.body}
           >
             <Button onClick={handleRestartClick}>
               Начать заново
@@ -262,7 +262,7 @@ export const Game = withStyles(styles)(() => {
         {containerRef.current && (
           <Modal
             isOpen={isOpenFinishSuccessModal}
-            parentSelector={() => containerRef.current}
+            parentSelector={() => containerRef?.current || document.body}
           >
             <p>Вы прошли! Вы собрали баллы: {point} </p>
             <Button onClick={handleRestartClick}>

@@ -42,6 +42,7 @@
     "@types/redux": "3.6.0",
     "@types/redux-logger": "3.0.8",
     "@types/webpack-node-externals": "2.5.0",
+    "@types/workbox-webpack-plugin": "5.1.5",
     "@typescript-eslint/eslint-plugin": "4.10.0",
     "@typescript-eslint/parser": "4.10.0",
     "autoprefixer": "10.1.0",
