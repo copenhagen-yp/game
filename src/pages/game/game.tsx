@@ -14,12 +14,16 @@ import { leaderboardApi } from '../../api';
 import { useHttp } from '../../hooks/useHttp';
 import { routes } from '../../routes';
 
+import { BASE_SIZE, LEVELS } from './constans';
+
 import styles from './game.pcss';
 
 declare let SSR: boolean;
 
-const CANVAS_WIDTH = 700;
-const CANVAS_HEIGHT = 500;
+const CANVAS_WIDTH = 16 * BASE_SIZE;
+const CANVAS_HEIGHT = 11 * BASE_SIZE;
+
+const CURRENT_LEVEL = 1;
 
 export const Game = withStyles(styles)(() => {
   if (SSR) {
@@ -55,6 +59,7 @@ export const Game = withStyles(styles)(() => {
           handleFinishFailure,
           handleFinishSuccess,
           handleSetPoint,
+          levelInfo: LEVELS[CURRENT_LEVEL - 1],
         });
 
         handleResizeCanvasWrapper();
@@ -252,7 +257,7 @@ export const Game = withStyles(styles)(() => {
         {containerRef.current && (
           <Modal
             isOpen={isOpenFinishFailureModal}
-            parentSelector={() => containerRef?.current || document.body}
+            parentSelector={() => containerRef.current || document.body}
           >
             <Button onClick={handleRestartClick}>
               Начать заново
@@ -262,7 +267,7 @@ export const Game = withStyles(styles)(() => {
         {containerRef.current && (
           <Modal
             isOpen={isOpenFinishSuccessModal}
-            parentSelector={() => containerRef?.current || document.body}
+            parentSelector={() => containerRef.current || document.body}
           >
             <p>Вы прошли! Вы собрали баллы: {point} </p>
             <Button onClick={handleRestartClick}>
