@@ -16,9 +16,15 @@ const fetchCookie = (req: Request) => {
 
 export const oauthMiddleware = async (req: Request, res: Response, next: NextFunction) => {
   if (req.query.code) {
-    const cookie = await fetchCookie(req);
+    let response;
 
-    req.query.auth_cookie = getCookie(cookie.headers['set-cookie']);
+    try {
+      response = await fetchCookie(req);
+
+      req.query.auth_cookie = getCookie(response.headers['set-cookie']);
+    } catch (err) {
+      next();
+    }
   }
 
   next();
