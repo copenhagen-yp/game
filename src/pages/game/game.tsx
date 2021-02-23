@@ -14,7 +14,7 @@ import { leaderboardApi } from '../../api';
 import { useHttp } from '../../hooks/useHttp';
 import { routes } from '../../routes';
 
-import { BASE_SIZE, LEVELS } from './constans';
+import { BASE_SIZE, LEVELS } from './constants';
 
 import styles from './game.pcss';
 

@@ -9,7 +9,7 @@ import { IPlayGround } from './types';
 import { LevelType, CellType } from '../types';
 
 import { checkCollision } from '../helpers';
-import { BASE_SIZE } from '../constans';
+import { BASE_SIZE } from '../constants';
 
 
 const INTERVAL_MOTION = 1 / 60;
@@ -153,7 +153,7 @@ export class PlayGround {
 
   initEnemy() {
     this.enemies = this.levelInfo.ENEMIES.map((cell: CellType) => {
-      const enemy = new Enemy(this.context, BASE_SIZE, BASE_SIZE / ENEMY_SPRITE_RATIO);
+      const enemy = new Enemy(this.context, BASE_SIZE / ENEMY_SPRITE_RATIO, BASE_SIZE);
 
       const x = cell.x * BASE_SIZE;
       const y = cell.y * BASE_SIZE;
@@ -169,7 +169,7 @@ export class PlayGround {
   }
 
   initMainCharacter() {
-    this.mainCharacter = new MainCharacter(this.context, BASE_SIZE, BASE_SIZE / MAIN_CHARACTER_SPRITE_RATIO);
+    this.mainCharacter = new MainCharacter(this.context, BASE_SIZE / MAIN_CHARACTER_SPRITE_RATIO, BASE_SIZE);
     this.mainCharacter.init();
 
     const startX = this.levelInfo.MAIN_CHARACTER.x * BASE_SIZE;

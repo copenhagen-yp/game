@@ -221,8 +221,6 @@ export class MainCharacter extends AnimatedSprite implements IMovableCharacter {
 
       this.setEndPosition(position.x, position.y);
 
-      this.fixCollisionWithWalls();
-
       this.determineSteps();
     }
 
@@ -235,18 +233,13 @@ export class MainCharacter extends AnimatedSprite implements IMovableCharacter {
       || (this.directionY === DIRECTIONS_MAP.DESCENDING && this.y > this.endY)) {
       this.y += this.stepY;
     }
+
+    this.fixCollisionWithWalls();
   }
 
   fixCollisionWithWalls = () => {
     this.walls.forEach((wall: IWall) => {
-      const obj = {
-        x: this.endX,
-        y: this.endY,
-        width: this.width,
-        height: this.height
-      };
-
-      const isCollision = checkCollision(obj, wall);
+      const isCollision = checkCollision(this, wall);
 
       if (isCollision) {
         if (this.leftKeyPressed) {
@@ -292,6 +285,11 @@ export class MainCharacter extends AnimatedSprite implements IMovableCharacter {
   };
 
   keyDownHandler = (event: any) => {
+    this.rightKeyPressed = false;
+    this.leftKeyPressed = false;
+    this.upKeyPressed = false;
+    this.downKeyPressed = false;
+
     if (event.keyCode === KEY_CODES.right) {
       this.rightKeyPressed = true;
     } else if (event.keyCode === KEY_CODES.left) {
