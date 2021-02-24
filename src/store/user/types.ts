@@ -9,6 +9,8 @@ export interface IUser {
   avatar?: string
 }
 
+export type Themes = 'dark' | 'light';
+
 export type TGameInfo = {
   point: number,
 };
@@ -20,11 +22,12 @@ export type TPayload = {
 };
 export interface ItemActionType {
   type?: string,
-  payload?: TPayload & TGameInfo,
+  payload?: TPayload & TGameInfo & Themes,
 }
 
 export type UserReducer = {
   status: LoadStatus | null,
+  theme: Themes;
   userInfo: IUser | null,
   gameInfo: TGameInfo
 };

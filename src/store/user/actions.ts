@@ -30,3 +30,10 @@ export const setPointUser = (point: number) => {
     }
   };
 };
+
+export const setTheme = (theme: string) => {
+  return {
+    type: USER.SET_THEME,
+    payload: theme
+  };
+};
