@@ -2,16 +2,26 @@ import path from 'path';
 import compression from 'compression';
 import express from 'express';
 import cookieParser from 'cookie-parser';
-import { serverRenderMiddleware } from './server-render-middleware';
 import mongoose from 'mongoose';
-import configDB from '../database';
+import { serverRenderMiddleware } from './server-render-middleware';
+import { testMongoDb } from './app/test-mongo-data';
 
 const app = express();
 
-mongoose.connect(configDB.url, {
-  useNewUrlParser: true,
-  useFindAndModify: false,
-});
+mongoose.connect(
+  'mongodb://mongo:27017/feedback-db',
+  {
+    useNewUrlParser: true,
+    useFindAndModify: false,
+  },
+  function (err) {
+    if (err) {
+      console.log('0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000');
+    }
+
+    testMongoDb();
+    console.log('999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999');
+  });
 
 app.use(cookieParser());
 
