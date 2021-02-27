@@ -17,7 +17,7 @@ services:
     container_name: postgres
     image: postgres:12
     ports:
-      - '5436:5432'
+      - "5436:5432"
     restart: always
     volumes:
       - ./postgres-initdb.sh:/docker-entrypoint-initdb.d/init.sh
@@ -31,3 +31,7 @@ services:
     image: mongo
     ports:
       - "27017:27017"
+    volumes:
+      - data-volume:/data/db
+volumes:
+  data-volume:
