@@ -64,7 +64,7 @@ export class Enemy extends AnimatedSprite implements IEnemy {
   }
 
   addPath () {
-    const result = [];
+    const result: { x: number, y: number}[] = [];
 
     const countX = Math.floor(this.canvas.width - this.width);
     const countY = Math.floor(this.canvas.height - this.height);
