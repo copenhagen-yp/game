@@ -55,10 +55,10 @@ export const serverRenderMiddleware = async (req: Request, res: Response) => {
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    res.cookie('uuid', req.query.auth_cookie.uuid, { domain: '.ya-praktikum.tech', httpOnly: true });
+    res.cookie('uuid', req.query.auth_cookie.uuid, { domain: '.ya-praktikum.tech', httpOnly: true, secure: true, sameSite: 'None' });
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    res.cookie('authCookie', req.query.auth_cookie.authCookie, { domain: '.ya-praktikum.tech', httpOnly: true });
+    res.cookie('authCookie', req.query.auth_cookie.authCookie, { domain: '.ya-praktikum.tech', httpOnly: true, secure: true, sameSite: 'None' });
 
     try {
       const userInfo = await fetchUserInfo(headerCookie);
