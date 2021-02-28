@@ -1,10 +1,10 @@
-import { UserReducer, ItemActionType } from './types';
+import { UserReducer, ItemActionType, Themes } from './types';
 import { USER } from './constants';
 
 export const defaultReducer: UserReducer = {
   status: null,
   userInfo: null,
-  theme: 'light',
+  theme: Themes.light,
   gameInfo: {
     point: 0
   },

@@ -9,7 +9,10 @@ export interface IUser {
   avatar?: string
 }
 
-export type Themes = 'dark' | 'light';
+export enum Themes {
+  dark = 'dark',
+  light = 'light'
+}
 
 export type TGameInfo = {
   point: number,
