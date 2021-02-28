@@ -1,7 +1,15 @@
-import { SignIn, SignUp, Home, Game, Leaderboard, Topic, Forum, Profile } from './pages';
+import { SignIn, SignUp, Home, Game, Leaderboard, Topic, Forum, Profile, Feedback } from './pages';
 import { PublicLayout, PrivateLayout } from './layouts';
 
 export const routes = {
+  feedback: {
+    name: 'feedback',
+    path: '/feedback',
+    component: Feedback,
+    layout: PrivateLayout,
+    exact: true,
+    isPrivate: true,
+  },
   forum: {
     name: 'topic',
     path: '/forum/:id',
