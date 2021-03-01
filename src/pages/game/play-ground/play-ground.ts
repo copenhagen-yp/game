@@ -195,9 +195,6 @@ export class PlayGround {
     if (this.checkMouseOnButton(mousePositionX, mousePositionY)) {
       handlePauseClick();
     }
-    // else {
-    //   this.mainCharacter.clickHandler(mousePositionX, mousePositionY);
-    // }
   }
 
   checkMouseOnButton (mousePositionX: number, mousePositionY: number) {

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useLayoutEffect, useCallback } from 'react';
+import React, { useEffect, useRef, useState, useLayoutEffect, useCallback, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { Modal } from '../../components';
@@ -155,7 +155,7 @@ export const Game = withStyles(styles)(() => {
           }
         });
     }
-  }, []);
+  }, [user]);
 
   const handleCanvasClick = (event: any) => {
     if (playGround) {
@@ -247,6 +247,10 @@ export const Game = withStyles(styles)(() => {
     }
   };
 
+  const parentRefModal = useMemo(()=> {
+    return containerRef.current || document.body;
+  }, [containerRef]);
+
   return (
     <main className={styles.game}>
       <h1>Game</h1>
@@ -254,32 +258,29 @@ export const Game = withStyles(styles)(() => {
         className={styles.container}
         ref={containerRef}
       >
-        {containerRef.current && (
-          <Modal
-            isOpen={isOpenFinishFailureModal}
-            parentSelector={() => containerRef.current || document.body}
-          >
-            <Button onClick={handleRestartClick}>
+        <Modal
+          isOpen={isOpenFinishFailureModal}
+          parentSelector={() => parentRefModal}
+        >
+          <Button onClick={handleRestartClick}>
               Начать заново
-            </Button>
-          </Modal>
-        )}
-        {containerRef.current && (
-          <Modal
-            isOpen={isOpenFinishSuccessModal}
-            parentSelector={() => containerRef.current || document.body}
-          >
-            <p>Вы прошли! Вы собрали баллы: {point} </p>
-            <Button onClick={handleRestartClick}>
+          </Button>
+        </Modal>
+
+        <Modal
+          isOpen={isOpenFinishSuccessModal}
+          parentSelector={() => parentRefModal}
+        >
+          <p>Вы прошли! Вы собрали баллы: {point} </p>
+          <Button onClick={handleRestartClick}>
               Пройти заново
-            </Button>
-            <Link to={routes.leaderboard.path}>
-              <Button>
+          </Button>
+          <Link to={routes.leaderboard.path}>
+            <Button>
                 Посмотреть рейтинг
-              </Button>
-            </Link>
-          </Modal>
-        )}
+            </Button>
+          </Link>
+        </Modal>
         <Button
           onClick={handleClickFullscreen}
         >
