@@ -6,6 +6,7 @@ import mongoose from 'mongoose';
 
 import { serverRenderMiddleware } from './server-render-middleware';
 import { testMongoDb } from './app/test-mongo-data';
+import feedback from './app/feedback';
 
 const app = express();
 
@@ -26,6 +27,8 @@ mongoose.connect(
   });
 
 app.use(cookieParser());
+
+app.use('/', feedback);
 
 app.use(compression())
   .use(express.static(path.resolve(__dirname, '../dist')))
