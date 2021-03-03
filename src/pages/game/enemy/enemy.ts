@@ -36,14 +36,14 @@ export class Enemy extends AnimatedSprite implements IEnemy {
 
   public radiusFindHero: number;
 
-  constructor (context: CanvasRenderingContext2D) {
+  constructor (context: CanvasRenderingContext2D, width: number, height: number) {
     super(ENEMY_IMAGE, 0, 0, SPRITE_CROP, MOVEMENT_DIRECTION_CODE, 3);
 
     this.context = context;
     this.canvas = context.canvas;
 
-    this.width = 60;
-    this.height = 60 * 1.12;
+    this.width = width;
+    this.height = height;
 
     this.x = 0;
     this.y = 0;

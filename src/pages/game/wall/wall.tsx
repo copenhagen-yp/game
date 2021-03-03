@@ -1,6 +1,6 @@
-import { IExit } from './types';
+import { IWall } from './types';
 
-export class Exit implements IExit {
+export class Wall implements IWall {
   private context: CanvasRenderingContext2D;
 
   public readonly width: number;
