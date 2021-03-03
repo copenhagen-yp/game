@@ -6,7 +6,6 @@ import fs from 'fs';
 import https from 'https';
 
 import { serverRenderMiddleware } from './server-render-middleware';
-import { oauthMiddleware } from './oauth-middleware';
 
 const app = express();
 
@@ -17,8 +16,7 @@ app.use(cookieParser());
 
 app.use(compression())
   .use(express.static(path.resolve(__dirname, '../dist')))
-  .use('/images', express.static(path.resolve(__dirname, '../src/images')))
-  .use(oauthMiddleware);
+  .use('/images', express.static(path.resolve(__dirname, '../src/images')));
 
 app.get('/*', serverRenderMiddleware);
 

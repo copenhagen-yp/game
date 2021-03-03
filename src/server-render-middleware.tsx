@@ -48,17 +48,8 @@ export const serverRenderMiddleware = async (req: Request, res: Response) => {
 
   let preloadedState: any;
 
-  if (req.query.auth_cookie) {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    const headerCookie = `uuid=${req.query.auth_cookie.uuid}; authCookie=${req.query.auth_cookie.authCookie}`;
-
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    res.cookie('uuid', req.query.auth_cookie.uuid, { domain: '.ya-praktikum.tech', httpOnly: true, secure: true, sameSite: 'None' });
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    res.cookie('authCookie', req.query.auth_cookie.authCookie, { domain: '.ya-praktikum.tech', httpOnly: true, secure: true, sameSite: 'None' });
+  if (req.cookies.authCookie && req.cookies.uuid) {
+    const headerCookie = `uuid=${req.cookies.uuid}; authCookie=${req.cookies.authCookie}`;
 
     try {
       const userInfo = await fetchUserInfo(headerCookie);
@@ -80,7 +71,6 @@ export const serverRenderMiddleware = async (req: Request, res: Response) => {
   const finalState = store.getState();
 
   const jsx = (
-
     <StyleContext.Provider value={{ insertCss }}>
       <StaticRouter context={context} location={location}>
         <Provider store={store}>

@@ -26,5 +26,5 @@ export const oauthApi = (request: { (url: string, options?: Options): Promise<an
 };
 
 export const generateOauthLink = (serviceId: string) => {
-  return `https://oauth.yandex.ru/authorize?response_type=code&client_id=${serviceId}&redirect_uri=${window.location.origin}`;
+  return `${API_URL.OAUTH_DOMAIN}?response_type=code&client_id=${serviceId}&redirect_uri=${window.location.origin}`;
 };
