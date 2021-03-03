@@ -5,7 +5,6 @@ import cookieParser from 'cookie-parser';
 import mongoose from 'mongoose';
 
 import { serverRenderMiddleware } from './server-render-middleware';
-import { testMongoDb } from './app/test-mongo-data';
 import feedback from './app/feedback';
 
 const app = express();
@@ -20,10 +19,6 @@ mongoose.connect(
     if (err) {
       throw err;
     }
-
-    console.log('Mongo successfully connected');
-
-    testMongoDb();
   });
 
 app.use(cookieParser());
