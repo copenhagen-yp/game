@@ -9,4 +9,17 @@ interface IMovableCharacter {
   move: (x: number, y: number) => void,
 }
 
-export { IMovableCharacter };
+type CellType = {
+  x: number,
+  y: number,
+}
+
+type LevelType = {
+  MAIN_CHARACTER: CellType,
+  EXIT: CellType,
+  FOODS: CellType[],
+  ENEMIES: CellType[],
+  WALLS: CellType[],
+}
+
+export { IMovableCharacter, LevelType, CellType };

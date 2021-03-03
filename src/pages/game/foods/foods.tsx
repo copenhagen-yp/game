@@ -11,11 +11,11 @@ export class Foods implements IFoods {
 
   private image: HTMLImageElement;
 
-  constructor (context: CanvasRenderingContext2D) {
+  constructor (context: CanvasRenderingContext2D, width: number, height: number) {
     this.context = context;
 
-    this.width = 35;
-    this.height = 35;
+    this.width = width;
+    this.height = height;
 
     this.x = 0;
     this.y = 0;
