@@ -2,18 +2,23 @@ import { MainCharacter } from '../main-character';
 import { Enemy, IEnemy } from '../enemy';
 import { Foods, IFoods } from '../foods';
 import { Exit, IExit } from '../exit';
+import { Wall, IWall } from '../wall';
 import { PauseButton } from '../pause-button';
 import { GAME_STATUSES } from '../../../store/game/constants';
-import { gameObjects, IPlayGround } from './types';
+import { IPlayGround } from './types';
+import { LevelType, CellType } from '../types';
+
+import { checkCollision } from '../helpers';
+import { BASE_SIZE } from '../constants';
+
 
 const INTERVAL_MOTION = 1 / 60;
-
-
-const SAFE_ZONE_WIDTH = 150;
-const SAFE_ZONE_HEIGHT = 150;
+const MAIN_CHARACTER_SPRITE_RATIO = 1.212;
+const ENEMY_SPRITE_RATIO = 1.12;
 
 const ARR_IMG_FOODS: string[] = ['/images/mushroom.png', '/images/raspberries.png'];
 const EXIT_IMAGE = '/images/exit.png';
+const WALL_IMAGE = '/images/wall.png';
 
 export class PlayGround {
   private canvas: any | null;
@@ -22,13 +27,12 @@ export class PlayGround {
   private mainCharacter: any | null;
   private countPoint: number;
 
-  private enemy: IEnemy[] | null;
-  private countEnemy: number;
+  private enemies: IEnemy[];
 
-  private foods: IFoods[] | null;
-  private countFoods: number;
+  private foods: IFoods[];
 
   private exit: IExit | null;
+  private walls: IWall[];
 
   private requestAnimationId: any | undefined;
   private lastRenderTime: number;
@@ -40,25 +44,26 @@ export class PlayGround {
   private handleSetPoint: (point: number) => void;
   private image: HTMLImageElement;
   private imageReady = false;
+  private levelInfo: LevelType;
 
   constructor( { canvas, context, handleFinishFailure,
-    handleFinishSuccess, handleSetPoint } : IPlayGround) {
+    handleFinishSuccess, handleSetPoint, levelInfo } : IPlayGround) {
     this.canvas = canvas;
     this.context = context;
     this.handleFinishFailure = handleFinishFailure;
     this.handleFinishSuccess = handleFinishSuccess;
     this.handleSetPoint = handleSetPoint;
+    this.levelInfo = levelInfo;
 
     this.lastRenderTime = 0;
     this.timeDelta = 0;
 
-    this.foods = null;
-    this.countFoods = 5;
+    this.foods = [];
 
-    this.enemy = null;
-    this.countEnemy = 2;
+    this.enemies = [];
 
     this.exit = null;
+    this.walls = [];
 
     this.mainCharacter = null;
     this.countPoint = 0;
@@ -82,6 +87,7 @@ export class PlayGround {
 
   init() {
     this.countPoint = 0;
+    this.initWalls();
     this.initCanvas();
     this.initMainCharacter();
     this.initEnemy();
@@ -109,49 +115,52 @@ export class PlayGround {
   }
 
   initFoods() {
-    this.foods = Array.from(Array(this.countFoods), () => {
-      const foods = new Foods(this.context);
+    this.foods = this.levelInfo.FOODS.map((cell: CellType) => {
+      const food = new Foods(this.context, BASE_SIZE - 15, BASE_SIZE - 15);
 
-      const startX = this.randomNumber(0, this.canvas.width - foods.width);
-      const startY = this.randomNumber(0, this.canvas.height - foods.height);
+      const x = cell.x * BASE_SIZE + (BASE_SIZE - food.width) / 2;
+      const y = cell.y * BASE_SIZE + (BASE_SIZE - food.height) / 2;
 
-      foods.init(ARR_IMG_FOODS[Math.floor(Math.random() * Math.floor(ARR_IMG_FOODS.length))], startX, startY);
+      food.init(ARR_IMG_FOODS[Math.floor(Math.random() * Math.floor(ARR_IMG_FOODS.length))], x, y);
 
-      return foods;
+      return food;
     });
   }
 
   initExit() {
-    this.exit = new Exit(this.context);
+    this.exit = new Exit(this.context, BASE_SIZE, BASE_SIZE);
 
-    const x = this.canvas.width - this.exit.width;
-    const y = this.canvas.height - this.exit.height;
+    const x = this.levelInfo.EXIT.x * BASE_SIZE;
+    const y = this.levelInfo.EXIT.y * BASE_SIZE;
 
     this.exit.init(EXIT_IMAGE, x, y);
     this.exit.draw();
   }
 
+  initWalls() {
+    this.levelInfo.WALLS.forEach((cell: CellType) => {
+      const wall = new Wall(this.context, BASE_SIZE, BASE_SIZE);
+
+      const x = cell.x * BASE_SIZE;
+      const y = cell.y * BASE_SIZE;
+
+      wall.init(WALL_IMAGE, x, y);
+      wall.draw();
+
+      this.walls.push(wall);
+    });
+  }
+
   initEnemy() {
-    const mainCharacterSafeZone = {
-      x: this.mainCharacter.x + this.mainCharacter.width / 2 - SAFE_ZONE_WIDTH / 2,
-      y: this.mainCharacter.y + this.mainCharacter.height / 2 - SAFE_ZONE_HEIGHT / 2,
-      width: SAFE_ZONE_WIDTH,
-      height: SAFE_ZONE_HEIGHT,
-    };
+    this.enemies = this.levelInfo.ENEMIES.map((cell: CellType) => {
+      const enemy = new Enemy(this.context, BASE_SIZE / ENEMY_SPRITE_RATIO, BASE_SIZE);
 
-    this.enemy = Array.from(Array(this.countEnemy), () => {
-      let startX;
-      let startY;
-      const enemy = new Enemy(this.context);
+      const x = cell.x * BASE_SIZE;
+      const y = cell.y * BASE_SIZE;
 
-      enemy?.init();
+      enemy.init();
 
-      do {
-        startX = Math.floor(Math.random() * this.canvas.width);
-        startY = Math.floor(Math.random() * this.canvas.height);
-
-        enemy.setPosition(startX, startY);
-      } while (this.checkCollision(mainCharacterSafeZone, enemy));
+      enemy.setPosition(x, y);
 
       enemy.draw();
 
@@ -160,13 +169,14 @@ export class PlayGround {
   }
 
   initMainCharacter() {
-    this.mainCharacter = new MainCharacter(this.context);
+    this.mainCharacter = new MainCharacter(this.context, BASE_SIZE / MAIN_CHARACTER_SPRITE_RATIO, BASE_SIZE);
     this.mainCharacter.init();
 
-    const startX = 0;
-    const startY = this.canvas.height / 2 - this.mainCharacter.height / 2;
+    const startX = this.levelInfo.MAIN_CHARACTER.x * BASE_SIZE;
+    const startY = this.levelInfo.MAIN_CHARACTER.y * BASE_SIZE;
 
     this.mainCharacter.setPosition(startX, startY);
+    this.mainCharacter.setWalls(this.walls);
     this.mainCharacter.draw();
   }
 
@@ -184,8 +194,6 @@ export class PlayGround {
 
     if (this.checkMouseOnButton(mousePositionX, mousePositionY)) {
       handlePauseClick();
-    } else {
-      this.mainCharacter.clickHandler(mousePositionX, mousePositionY);
     }
   }
 
@@ -202,36 +210,15 @@ export class PlayGround {
     this.lastRenderTime = performance.now();
   }
 
-  checkCollision (firstObject: gameObjects, secondObject: gameObjects) {
-    let collX = false;
-    let collY = false;
-
-    if (
-      (firstObject.x + firstObject.width >= secondObject.x) &&
-      (firstObject.x <= secondObject.x + secondObject.width)
-    ) {
-      collX = true;
-    }
-
-    if (
-      (firstObject.y + firstObject.height >= secondObject.y) &&
-      (firstObject.y <= secondObject.y + secondObject.height)
-    ) {
-      collY = true;
-    }
-
-    return collX && collY;
-  }
-
   checkCollisionWithEnemy (enemies: IEnemy[] | null) {
     return enemies?.some((enemy) => {
-      return this.checkCollision(enemy, this.mainCharacter);
+      return checkCollision(enemy, this.mainCharacter);
     });
   }
 
   checkCollisionWithFood (foods: IFoods[] | null) {
     foods?.forEach((food, index) => {
-      if (this.checkCollision(food, this.mainCharacter)) {
+      if (checkCollision(food, this.mainCharacter)) {
         foods.splice(index, 1);
         this.countPoint += 1;
         this.handleSetPoint(this.countPoint);
@@ -251,11 +238,11 @@ export class PlayGround {
   }
 
   loop = () => {
-    if (this.checkCollisionWithEnemy(this.enemy)) {
+    if (this.checkCollisionWithEnemy(this.enemies)) {
       this.handleFinishFailure();
     }
 
-    if (this.exit && this.checkCollision(this.exit, this.mainCharacter)) {
+    if (this.exit && checkCollision(this.exit, this.mainCharacter)) {
       this.handleFinishSuccess(this.countPoint);
 
       return;
@@ -268,7 +255,7 @@ export class PlayGround {
     while (this.timeDelta > INTERVAL_MOTION) {
       this.timeDelta -= INTERVAL_MOTION;
       this.mainCharacter.move();
-      this.enemy?.forEach(item => item?.update(this.mainCharacter));
+      this.enemies.forEach(item => item.update(this.mainCharacter));
       this.checkCollisionWithFood(this.foods);
     }
 
@@ -286,9 +273,10 @@ export class PlayGround {
     this.context.drawImage(this.image, 0, 0, this.canvas.width, this.canvas.height);
     this.context.fillText(`Счет: ${this.countPoint}`, 10, 20);
     this.mainCharacter.draw();
-    this.enemy?.forEach(item => item?.draw());
-    this.foods?.forEach(item => item?.draw());
+    this.enemies.forEach(item => item.draw());
+    this.foods.forEach(item => item.draw());
     this.exit?.draw();
+    this.walls.forEach(item => item.draw());
     this.pauseButton.draw(this.state);
   }
 }
