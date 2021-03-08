@@ -33,7 +33,7 @@ router.post('/feedback', (req, res) => {
       _id: new mongoose.Types.ObjectId(),
       title: req.body.title || 'unknown',
       body: req.body.body,
-      user: user._id,
+      userId: user._id,
     });
 
     comment.save(function(err) {
