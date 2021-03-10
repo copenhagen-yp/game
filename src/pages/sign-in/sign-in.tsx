@@ -4,7 +4,7 @@ import withStyles from 'isomorphic-style-loader/withStyles';
 
 import { APP_TEXT, API_URL } from '../../constants';
 import { Button, Field, Form, Input } from '../../components';
-import { useForm } from '../../hooks';
+import { useForm, useOauthButton } from '../../hooks';
 import { routes } from '../../routes';
 
 import styles from '../sign-in-up.pcss';
@@ -34,6 +34,10 @@ export const SignIn = withStyles(styles)(() => {
     fields: fieldsValues
   } = useForm({ requiredFields, successResult, url: API_URL.SIGN_IN });
 
+  const {
+    handleOauthClick
+  } = useOauthButton();
+
   return (
     <div className={styles.page}>
       <div className={styles.content}>
@@ -59,7 +63,10 @@ export const SignIn = withStyles(styles)(() => {
             </Field>
           ))}
         </Form>
-
+        <Button
+          className={styles.oauthButton}
+          onClick={handleOauthClick}
+        >Авторизоваться через Яндекс</Button>
         <Link to={routes.signUp.path}>
           <Button>
             Зарегистрироваться
