@@ -7,7 +7,7 @@ import fs from 'fs';
 import https from 'https';
 
 import { serverRenderMiddleware } from './server-render-middleware';
-import { testMongoDb } from './app/test-mongo-data';
+import feedback from './app/feedback';
 
 const app = express();
 
@@ -24,13 +24,11 @@ mongoose.connect(
     if (err) {
       throw err;
     }
-
-    console.log('Mongo successfully connected');
-
-    testMongoDb();
   });
 
 app.use(cookieParser());
+
+app.use('/', feedback);
 
 app.use(compression())
   .use(express.static(path.resolve(__dirname, '../dist')))
