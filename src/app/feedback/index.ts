@@ -1,8 +1,9 @@
 import mongoose from 'mongoose';
+import { Request, Response } from 'express';
 
 import { User, Feedback } from './models';
 
-export const saveFeedback = (req, res) => {
+export const saveFeedback = (req: Request, res: Response) => {
   if (!req.body.body) {
     res.statusCode = 400;
     res.send({ 'error': 'The feedback field is required' });
