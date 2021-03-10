@@ -1,14 +1,8 @@
-import express from 'express';
-import bodyParser from 'body-parser';
-
-import { User, Feedback } from '../models';
 import mongoose from 'mongoose';
 
-const router = express.Router();
+import { User, Feedback } from './models';
 
-router.use(bodyParser.json());
-
-router.post('/feedback', (req, res) => {
+export const saveFeedback = (req, res) => {
   if (!req.body.body) {
     res.statusCode = 400;
     res.send({ 'error': 'The feedback field is required' });
@@ -46,6 +40,4 @@ router.post('/feedback', (req, res) => {
   res.json({
     message: 'Ok'
   });
-});
-
-export default router;
+};
