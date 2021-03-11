@@ -5,6 +5,7 @@ import { Field } from './field';
 import { Form } from './form';
 import { Modal } from './modal';
 import { ButtonChangeThemes } from './button-change-themes';
+import { Textarea } from './textarea';
 
 export {
   Button,
@@ -14,4 +15,5 @@ export {
   Form,
   Modal,
   ButtonChangeThemes,
+  Textarea,
 };

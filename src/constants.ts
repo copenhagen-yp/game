@@ -16,6 +16,7 @@ export enum APP_TEXT {
 export enum API_URL {
   DOMAIN = 'https://ya-praktikum.tech',
   API_DOMAIN = 'https://ya-praktikum.tech/api/v2/',
+  OAUTH_DOMAIN = 'https://oauth.yandex.ru/authorize',
   SIGN_IN = 'auth/signin',
   LEADERBOARD_ALL = 'leaderboard/all',
   LEADERBOARD = 'leaderboard',
@@ -25,6 +26,9 @@ export enum API_URL {
   CHANGE_PASSWORD = 'user/password',
   SIGN_UP = 'auth/signup',
   LOGOUT = 'auth/logout',
+  OAUTH_SERVICE_ID = 'oauth/yandex/service-id',
+  OAUTH_CODE = 'oauth/yandex',
+  FEEDBACK = 'feedback',
 }
 
 export enum REQUEST_METHOD {

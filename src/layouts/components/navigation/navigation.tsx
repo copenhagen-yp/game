@@ -24,6 +24,10 @@ export const Navigation = withStyles(styles)(() => {
       label: 'Forums',
       path: routes.forums.path,
     },
+    {
+      label: 'Feedback',
+      path: routes.feedback.path,
+    },
   ];
 
   return (
