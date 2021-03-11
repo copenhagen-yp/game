@@ -7,7 +7,7 @@ import fs from 'fs';
 import https from 'https';
 
 import { serverRenderMiddleware } from './server-render-middleware';
-import feedback from './app/feedback';
+import { apiRouter } from './app/api-router';
 
 const app = express();
 
@@ -28,11 +28,13 @@ mongoose.connect(
 
 app.use(cookieParser());
 
-app.use('/', feedback);
+app.use(compression());
 
-app.use(compression())
-  .use(express.static(path.resolve(__dirname, '../dist')))
-  .use('/images', express.static(path.resolve(__dirname, '../src/images')));
+app.use(express.static(path.resolve(__dirname, '../dist')));
+
+app.use('/images', express.static(path.resolve(__dirname, '../src/images')));
+
+app.use('/api', apiRouter);
 
 app.get('/*', serverRenderMiddleware);
 
