@@ -8,8 +8,8 @@ const feedbackSchema = new mongoose.Schema({
     required: true,
   },
   userId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User'
+    type: Number,
+    required: true,
   },
   created: {
     type: Date,
