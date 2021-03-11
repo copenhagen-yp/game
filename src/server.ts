@@ -29,7 +29,7 @@ mongoose.connect(
 
 const sequelizeOptions: SequelizeOptions = {
   host: 'postgres',
-  port: 5436,
+  port: 5432,
   username: 'root',
   password: 'rootPassword',
   database: 'postgres-db',
