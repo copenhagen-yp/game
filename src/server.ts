@@ -5,6 +5,7 @@ import cookieParser from 'cookie-parser';
 import mongoose from 'mongoose';
 import fs from 'fs';
 import https from 'https';
+import { Sequelize, SequelizeOptions } from 'sequelize-typescript';
 
 import { serverRenderMiddleware } from './server-render-middleware';
 import { apiRouter } from './app/api-router';
@@ -25,6 +26,26 @@ mongoose.connect(
       throw err;
     }
   });
+
+const sequelizeOptions: SequelizeOptions = {
+  host: 'postgres',
+  port: 5436,
+  username: 'root',
+  password: 'rootPassword',
+  database: 'postgres-db',
+  dialect: 'postgres',
+};
+
+const sequelize = new Sequelize(sequelizeOptions);
+
+(async () => {
+  try {
+    await sequelize.authenticate();
+    console.log('Connection has been established successfully.');
+  } catch (error) {
+    console.error('Unable to connect to the database:', error);
+  }
+})();
 
 app.use(cookieParser());
 
