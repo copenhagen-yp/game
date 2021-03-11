@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-const { app } = require('./dist/server.js');
+const { server } = require('./dist/server.js');
 
-const port = process.env.PORT || 4000;
+const port = process.env.PORT || 5000;
 
-app.listen(port, () => {
+server.listen(port, () => {
   console.log('Application is started on localhost:', port);
 });

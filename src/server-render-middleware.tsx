@@ -10,13 +10,13 @@ import App from './app';
 import { configureStore } from './store';
 import { defaultReducer as userReducerState } from './store/user/reducer';
 
-function fetchUserInfo(): Promise<any> {
+function fetchUserInfo(cookie: string): Promise<any> {
   return new Promise((resolve) => {
     https.get({
       hostname: 'ya-praktikum.tech',
       path: '/api/v2/auth/user',
       headers: {
-        'cookie': process.env.DEBUG_USER_COOKIE,
+        'cookie': cookie,
         'accept': 'application/json'
       }
     }, (res) => {
@@ -48,26 +48,29 @@ export const serverRenderMiddleware = async (req: Request, res: Response) => {
 
   let preloadedState: any;
 
-  try {
-    const userInfo = await fetchUserInfo();
+  if (req.cookies.authCookie && req.cookies.uuid) {
+    const headerCookie = `uuid=${req.cookies.uuid}; authCookie=${req.cookies.authCookie}`;
 
-    // TODO: Обработка ошибок (в т.ч. cookie is not valid)
+    try {
+      const userInfo = await fetchUserInfo(headerCookie);
 
-    preloadedState = {
-      user: {
-        ...userReducerState,
-        userInfo,
-      }
-    };
-  } catch (ex) {
-    console.error(ex);
+      // TODO: Обработка ошибок (в т.ч. cookie is not valid)
+
+      preloadedState = {
+        user: {
+          ...userReducerState,
+          userInfo,
+        }
+      };
+    } catch (ex) {
+      console.error(ex);
+    }
   }
 
   const store = configureStore(preloadedState);
   const finalState = store.getState();
 
   const jsx = (
-
     <StyleContext.Provider value={{ insertCss }}>
       <StaticRouter context={context} location={location}>
         <Provider store={store}>
@@ -114,4 +117,3 @@ export const serverRenderMiddleware = async (req: Request, res: Response) => {
     res.end();
   }
 };
-

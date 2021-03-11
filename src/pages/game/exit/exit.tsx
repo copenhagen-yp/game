@@ -11,11 +11,11 @@ export class Exit implements IExit {
 
   private image: HTMLImageElement;
 
-  constructor (context: CanvasRenderingContext2D) {
+  constructor (context: CanvasRenderingContext2D, width: number, height: number) {
     this.context = context;
 
-    this.width = 50;
-    this.height = 50;
+    this.width = width;
+    this.height = height;
 
     this.x = 0;
     this.y = 0;

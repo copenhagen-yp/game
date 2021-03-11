@@ -11,3 +11,7 @@ export const getGameInfo = ({ user }: { user: UserReducer}) => {
 export const getGamePoint = ({ user }: { user: UserReducer}) => {
   return user.gameInfo.point;
 };
+
+export const getTheme = ({ user }: { user: UserReducer}) => {
+  return user.theme;
+};

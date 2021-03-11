@@ -1,9 +1,10 @@
-import { UserReducer, ItemActionType } from './types';
+import { UserReducer, ItemActionType, Themes } from './types';
 import { USER } from './constants';
 
 export const defaultReducer: UserReducer = {
   status: null,
   userInfo: null,
+  theme: Themes.light,
   gameInfo: {
     point: 0
   },
@@ -31,6 +32,11 @@ export const userReducer = (state: UserReducer = defaultReducer, { type, payload
       return {
         ...state,
         userInfo: null,
+      };
+    case USER.SET_THEME:
+      return {
+        ...state,
+        theme: payload || state.theme,
       };
     case USER.SET_POINT:
       return {

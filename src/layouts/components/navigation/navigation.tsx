@@ -34,7 +34,7 @@ export const Navigation = withStyles(styles)(() => {
     <ul className={styles.menu}>
       { menu.map((item: any) => (
         <li className={styles.item} key={item.path}>
-          <Link to={item.path}>{item.label}</Link>
+          <Link className={styles.link} to={item.path}>{item.label}</Link>
         </li>
       ))}
     </ul>

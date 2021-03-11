@@ -1,3 +1,5 @@
+import { LevelType } from '../types';
+
 export type gameObjects = {
   x: number,
   y: number,
@@ -11,4 +13,5 @@ export type IPlayGround = {
   handleFinishFailure: () => void,
   handleFinishSuccess: (countPoint: number) => void,
   handleSetPoint: (point: number) => void,
+  levelInfo: LevelType,
 };
