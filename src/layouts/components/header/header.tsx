@@ -8,7 +8,7 @@ import styles from './header.pcss';
 import { Navigation } from '../navigation';
 
 import * as userSelectors from '../../../store/user/selectors';
-import { Button } from '../../../components';
+import { Button, ButtonChangeThemes } from '../../../components';
 import { API_URL, REQUEST_METHOD } from '../../../constants';
 import * as userActions from '../../../store/user/actions';
 import { useHttp } from '../../../hooks';
@@ -28,13 +28,15 @@ export const Header = withStyles(styles)(() => {
 
   return (
     <div className={styles.header}>
-      <a href={routes.home.path}>Лого</a>
+      <a className={styles.link} href={routes.home.path}>Лого</a>
       <Navigation />
       <Button onClick={handleClickLogout}>
         Выйти
       </Button>
 
-      <Link to={routes.profile.path}>Профиль {user?.first_name}</Link>
+      <Link className={styles.link} to={routes.profile.path}>Профиль {user?.first_name}</Link>
+
+      <ButtonChangeThemes />
     </div>
   );
 });

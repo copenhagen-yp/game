@@ -9,6 +9,11 @@ export interface IUser {
   avatar?: string
 }
 
+export enum Themes {
+  dark = 'dark',
+  light = 'light'
+}
+
 export type TGameInfo = {
   point: number,
 };
@@ -20,11 +25,12 @@ export type TPayload = {
 };
 export interface ItemActionType {
   type?: string,
-  payload?: TPayload & TGameInfo,
+  payload?: TPayload & TGameInfo & Themes,
 }
 
 export type UserReducer = {
   status: LoadStatus | null,
+  theme: Themes;
   userInfo: IUser | null,
   gameInfo: TGameInfo
 };

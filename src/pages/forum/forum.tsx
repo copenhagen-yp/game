@@ -19,8 +19,8 @@ export const Forum = withStyles(styles)(() => {
         {
           forums.map(item => {
             return (
-              <Link key={item.id} to={`${routes.forums.path}/${item.id}`}>
-                <li className={styles.forum__item}>
+              <Link className={styles.forum__item} key={item.id} to={`${routes.forums.path}/${item.id}`}>
+                <li>
                   <h3>{item.name}</h3>
                   <p>{item.description}</p>
                 </li>
