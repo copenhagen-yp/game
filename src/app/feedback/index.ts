@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import { Request, Response } from 'express';
 
-import { User, Feedback } from './models';
+import { Feedback } from './models';
 
 export const saveFeedback = (req: Request, res: Response) => {
   if (!req.body.body) {
@@ -11,34 +11,25 @@ export const saveFeedback = (req: Request, res: Response) => {
     return;
   }
 
-  const user = new User({
+  if (!req.body.userId) {
+    res.statusCode = 400;
+    res.send({ 'error': 'userId is required' });
+
+    return;
+  }
+
+  const comment = new Feedback({
     _id: new mongoose.Types.ObjectId(),
-    name: {
-      firstName: req.body.first_name || 'unknown',
-      lastName: req.body.last_name || 'unknown',
-    },
+    title: req.body.title || 'unknown',
+    body: req.body.body,
+    userId: req.body.userId,
   });
 
-  user.save(function(err) {
+  comment.save(function(err) {
     if (err) {
       throw err;
     }
-
-    const comment = new Feedback({
-      _id: new mongoose.Types.ObjectId(),
-      title: req.body.title || 'unknown',
-      body: req.body.body,
-      userId: user._id,
-    });
-
-    comment.save(function(err) {
-      if (err) {
-        throw err;
-      }
-    });
   });
 
-  res.json({
-    message: 'Ok'
-  });
+  res.send('Ok');
 };
