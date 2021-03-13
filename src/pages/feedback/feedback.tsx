@@ -2,52 +2,40 @@ import React from 'react';
 import withStyles from 'isomorphic-style-loader/withStyles';
 
 import { APP_TEXT, API_URL } from '../../constants';
-import { Field, Form, Input, Textarea } from '../../components';
+import { Field, Form, Textarea } from '../../components';
 import { useForm } from '../../hooks';
 
 import styles from '../sign-in-up.pcss';
 
 export const Feedback = withStyles(styles)(() => {
-  const requiredFields = ['name', 'massage'];
+  const requiredFields = ['message'];
 
   const {
-    handleSubmit,
+    handleSubmitFeedback,
     handleChange,
     handleBlur,
     error,
     fields: fieldsValues
-  } = useForm({ requiredFields, url: API_URL.FEEDBACK });
+  } = useForm({ requiredFields, url: API_URL.FEEDBACK }, '/');
 
   return (
     <div className={styles.page}>
       <div className={styles.content}>
         <Form
-          onSubmit={handleSubmit}
+          onSubmit={handleSubmitFeedback}
           submitButtonText={APP_TEXT.BTN_SEND}
           title={'Обратная связь'}
         >
           <Field
-            label={'Имя'}
-            error={error['name']}
-          >
-            <Input
-              name={'name'}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              error={error['name']}
-              value={fieldsValues['name'] || ''}
-            />
-          </Field>
-          <Field
             label={'Сообщение'}
-            error={error['massage']}
+            error={error['message']}
           >
             <Textarea
-              name={'massage'}
+              name={'message'}
               onChange={handleChange}
               onBlur={handleBlur}
-              error={error['massage']}
-              value={fieldsValues['massage'] || ''}
+              error={error['message']}
+              value={fieldsValues['message'] || ''}
             />
           </Field>
         </Form>

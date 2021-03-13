@@ -4,16 +4,16 @@ import { Request, Response } from 'express';
 import { Feedback } from './models';
 
 export const saveFeedback = (req: Request, res: Response) => {
-  if (!req.body.body) {
+  if (!req.body.message) {
     res.statusCode = 400;
-    res.send({ 'error': 'The feedback field is required' });
+    res.send('The feedback field is required');
 
     return;
   }
 
   if (!req.body.userId) {
     res.statusCode = 400;
-    res.send({ 'error': 'userId is required' });
+    res.send('userId is required');
 
     return;
   }
@@ -21,7 +21,7 @@ export const saveFeedback = (req: Request, res: Response) => {
   const comment = new Feedback({
     _id: new mongoose.Types.ObjectId(),
     title: req.body.title || 'unknown',
-    body: req.body.body,
+    message: req.body.message,
     userId: req.body.userId,
   });
 
