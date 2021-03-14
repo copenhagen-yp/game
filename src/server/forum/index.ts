@@ -56,12 +56,29 @@ const createTopic = async (req: Request, res: Response) => {
     ]);
 };
 
-// Берёт и отдаёт все топики
+// Отдаёт все топики
 const getTopics = (req: Request, res: Response) => {
-  // Тут пока хз как авторов брать, будет понятнее когда будут модели
   Topic.findAll()
-    .then(data => {
-      res.send(data);
+    .then(async data => {
+      const dataWithAuthors = await data.map((currentTopic) => {
+        const result = currentTopic;
+
+        return Author.findByPk(currentTopic.authorId)
+          .then((author) => {
+
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            result.authorFirstName = author?.firstName;
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            result.authorLastName = author?.lastName;
+
+            return result;
+          });
+      });
+
+      console.log(dataWithAuthors);
+      res.send(dataWithAuthors);
     })
     .catch(err => {
       res.status(500).send(
@@ -69,10 +86,9 @@ const getTopics = (req: Request, res: Response) => {
       );
     });
 };
-//
-// // Берёт конкретный топик
+
+// Берёт конкретный топик
 // const getTopic = (req: Request, res: Response) => {
-//   // Пока так же нет получения автора
 //   const topicId = req.params.id;
 //
 //   Topic.findByPk(topicId)
@@ -118,8 +134,8 @@ const getTopics = (req: Request, res: Response) => {
 //       );
 //     });
 // };
-//
-// // Отдаёт сообщения для конкретного топика
+
+// Отдаёт сообщения для конкретного топика
 // const getMessages = (req: Request, res: Response) => {
 //   const topicId = req.params.id;
 //
