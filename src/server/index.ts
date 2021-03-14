@@ -5,10 +5,12 @@ import cookieParser from 'cookie-parser';
 import mongoose from 'mongoose';
 import fs from 'fs';
 import https from 'https';
-import { Sequelize, SequelizeOptions } from 'sequelize-typescript';
 
 import { serverRenderMiddleware } from './server-render-middleware';
 import { apiRouter } from './app/api-router';
+import { sequelize } from './sequelize';
+// import { Theme } from './models/theme';
+// import { Themes } from './store/user/types';
 
 const app = express();
 
@@ -27,16 +29,6 @@ mongoose.connect(
     }
   });
 
-const sequelizeOptions: SequelizeOptions = {
-  host: 'postgres',
-  port: 5432,
-  username: 'root',
-  password: 'rootPassword',
-  database: 'postgres-db',
-  dialect: 'postgres',
-};
-
-const sequelize = new Sequelize(sequelizeOptions);
 
 (async () => {
   try {
@@ -45,6 +37,30 @@ const sequelize = new Sequelize(sequelizeOptions);
   } catch (error) {
     console.error('Unable to connect to the database:', error);
   }
+})();
+
+(async () => {
+  await sequelize.sync();
+  // await Theme.destroy({
+  //   where: {}
+  // });
+
+  // !!! Это ещё полностью не доделано, но надо раскомментировать и запустить один раз, чтобы заполнить таблицу, потом опять закомментировать
+
+  // const themes = await Theme.bulkCreate([
+  //   {
+  //     name: Themes.light,
+  //   },
+  //   {
+  //     name: Themes.dark,
+  //   },
+  // ]);
+
+  // console.log('DDDDD', themes);
+
+  // const all = await Theme.findAll({});
+  //
+  // console.log('all', all);
 })();
 
 app.use(cookieParser());
