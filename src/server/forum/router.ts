@@ -1,11 +1,11 @@
 import { Router } from 'express';
 
-import { createTopic, getTopics, createMessage, getMessages, getTopic } from './';
+import { createTopic, getTopics/*, createMessage, getMessages, getTopic*/ } from './';
 
 export const forumRouter = (apiRouter: Router) => {
-  apiRouter.post('/forum/topics', createTopic);
-  apiRouter.get('/forum/topics', getTopics);
-  apiRouter.get('/forum/topics/:id', getTopic);
-  apiRouter.post('/forum/topics/:id/messages', createMessage);
-  apiRouter.get('/forum/topics/:id/messages', getMessages);
+  apiRouter.post('/forum/topic', createTopic);
+  apiRouter.get('/forum/topic', getTopics);
+  // apiRouter.get('/forum/topic/:id', getTopic);
+  // apiRouter.post('/forum/topic/:id/message', createMessage);
+  // apiRouter.get('/forum/topic/:id/message', getMessages);
 };
