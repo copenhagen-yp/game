@@ -1,6 +1,6 @@
 import { Model, DataType } from 'sequelize-typescript';
 
-import { sequelize } from '../sequelize';
+import { sequelize } from '../../sequelize';
 
 class ThemeUser extends Model {
   public id!: number;

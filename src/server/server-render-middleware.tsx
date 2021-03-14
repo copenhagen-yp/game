@@ -8,8 +8,8 @@ import { Provider } from 'react-redux';
 import App from '../app';
 import { configureStore } from '../store';
 import { defaultReducer as userReducerState } from '../store/user/reducer';
-import { ThemeUser } from './models/themeUser';
-import { Theme } from './models/theme';
+import { ThemeUser } from './theme/models/themeUser';
+import { Theme } from './theme/models/theme';
 import { Themes } from '../store/user/types';
 import { fetchUserInfo } from './fetchUserInfo';
 

@@ -7,7 +7,7 @@ import fs from 'fs';
 import https from 'https';
 
 import { serverRenderMiddleware } from './server-render-middleware';
-import { apiRouter } from './app/api-router';
+import { apiRouter } from './api-router';
 import { sequelize } from './sequelize';
 // import { Theme } from './models/theme';
 // import { Themes } from './store/user/types';
