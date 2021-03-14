@@ -20,7 +20,6 @@ export const saveFeedback = (req: Request, res: Response) => {
 
   const comment = new Feedback({
     _id: new mongoose.Types.ObjectId(),
-    title: req.body.title || 'unknown',
     message: req.body.message,
     userId: req.body.userId,
   });
