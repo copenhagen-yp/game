@@ -6,10 +6,26 @@ import mongoose from 'mongoose';
 import fs from 'fs';
 import https from 'https';
 
+import webpack from 'webpack';
+import webpackConfig from '../webpack/client.config';
+
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+const webpackCompiler = webpack(webpackConfig);
+
+import webpackDevMiddleware from 'webpack-dev-middleware';
+import webpackHotMiddleware from 'webpack-hot-middleware';
+
 import { serverRenderMiddleware } from './server-render-middleware';
 import { apiRouter } from './app/api-router';
 
 const app = express();
+
+app.use(webpackDevMiddleware(webpackCompiler, {
+  publicPath: webpackConfig.output.publicPath,
+}));
+
+app.use(webpackHotMiddleware(webpackCompiler));
 
 const key = fs.readFileSync('./certs/key.pem');
 const cert = fs.readFileSync('./certs/cert.pem');

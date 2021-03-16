@@ -26,6 +26,7 @@ const config = {
   name: 'client',
   entry: [
     IS_DEV && 'react-hot-loader/patch',
+    IS_DEV && 'webpack-hot-middleware/client?quiet=true',
     path.join(SRC_DIR, 'index'),
   ],
   module: {
@@ -41,10 +42,11 @@ const config = {
     extensions: ['*', '.js', '.jsx', '.json', '.ts', '.tsx'],
   },
   plugins: [
+    new webpack.HotModuleReplacementPlugin(),
     new WorkboxPlugin.GenerateSW(addParamToWorkbox()),
     new webpack.DefinePlugin({
       'SSR': JSON.stringify(false)
-    })    
+    })
   ],
 
   devtool: 'source-map',
