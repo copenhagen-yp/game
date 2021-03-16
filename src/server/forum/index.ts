@@ -59,18 +59,26 @@ const getTopics = async (req: Request, res: Response) => {
 };
 
 // Берёт конкретный топик
-// const getTopic = (req: Request, res: Response) => {
-//   const topicId = req.params.id;
-//
-//   Topic.findByPk(topicId)
-//     .then(data => {
-//       res.send(data);
-//     })
-//     .catch(() => {
-//       res.status(500).send('Error retrieving Topic with id ' + topicId);
-//     });
-// };
-//
+const getTopic = async (req: Request, res: Response) => {
+  const topicId = req.params.id;
+
+  try {
+    const topicData = await Topic.findByPk(
+      topicId,
+      {
+        include: [{
+          model: Author,
+          attributes: ['firstName', 'lastName'],
+        }]
+      }
+    );
+
+    res.send(topicData);
+  } catch (err) {
+    res.status(500).send(err.message || 'Error retrieving Topic with id ' + topicId);
+  }
+};
+
 // // Создаёт сообщение в конкретном топике
 // const createMessage = (req: Request, res: Response) => {
 //   if (!req.body.message) {
@@ -126,5 +134,5 @@ export {
   getTopics,
   // createMessage,
   // getMessages,
-  // getTopic,
+  getTopic,
 };
