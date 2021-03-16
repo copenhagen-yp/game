@@ -21,59 +21,41 @@ const createTopic = async (req: Request, res: Response) => {
     title: req.body.title,
   };
 
-  Topic.create(topic)
-    .then(topicData => {
-      Author.findByPk(req.body.userId)
-        .then((authorData) => {
-          if (authorData) {
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            topicData.setAuthor(authorData)
-              .then((data) => {
-                res.json({
-                  topic: data,
-                  link: `/forum/${data.id}`,
-                });
-              });
-          } else {
-            Author.create(author)
-              .then(authorData => {
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
-                topicData.setAuthor(authorData)
-                  .then((data) => {
-                    res.json({
-                      topic: data,
-                      link: `/forum/${data.id}`,
-                    });
-                  });
-              });
-          }
-        });
-    })
-    .catch(err => {
-      res.status(500).send(
-        err.message || 'Some error occurred while creating topic.'
-      );
+  try {
+    const topicData = await Topic.create(topic);
+    let authorData = await Author.findByPk(req.body.userId);
+
+    if (!authorData) {
+      authorData = await Author.create(author);
+    }
+
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const finalData = await topicData.setAuthor(authorData);
+
+    res.json({
+      topic: finalData,
+      link: `/forum/${finalData.id}`,
     });
+  } catch (err) {
+    res.status(500).send(err.message || 'Some error occurred while creating topic.');
+  }
 };
 
 // Отдаёт все топики
-const getTopics = (req: Request, res: Response) => {
-  Topic.findAll({
-    include: [{
-      model: Author,
-      attributes: ['firstName', 'lastName']  // включаем столбец name из таблицы teams
-    }]
-  })
-    .then(async data => {
-      res.send(data);
-    })
-    .catch(err => {
-      res.status(500).send(
-        err.message || 'Some error occurred while retrieving topics.'
-      );
+const getTopics = async (req: Request, res: Response) => {
+  try {
+    const topicData = await Topic.findAll({
+      include: [{
+        model: Author,
+        attributes: ['firstName', 'lastName'],
+      }]
     });
+
+    res.send(topicData);
+  } catch (err) {
+    res.status(500).send(err.message || 'Some error occurred while retrieving topics.');
+  }
 };
 
 // Берёт конкретный топик
