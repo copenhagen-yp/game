@@ -19,66 +19,55 @@ const createTopic = async (req: Request, res: Response) => {
 
   const topic = {
     title: req.body.title,
-    authorId: author.id,
   };
 
-  Author.findByPk(req.body.userId)
-    .then((data) => {
-      if (data) {
-        Topic.create(topic)
-          .then(() => {
-            res.send('Ok');
-          })
-          .catch(err => [
-            res.status(500).send(
-              err.message || 'Some error occurred while creating topic.'
-            )
-          ]);
-      } else {
-        Author.create(author)
-          .then(() => {
-            Topic.create(topic)
-              .then(() => {
-                res.send('Ok');
+  Topic.create(topic)
+    .then(topicData => {
+      Author.findByPk(req.body.userId)
+        .then((authorData) => {
+          if (authorData) {
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            topicData.setAuthor(authorData)
+              .then((data) => {
+                res.json({
+                  topic: data,
+                  link: `/forum/${data.id}`,
+                });
               });
-          })
-          .catch(err => [
-            res.status(500).send(
-              err.message || 'Some error occurred while creating topic.'
-            )
-          ]);
-      }
+          } else {
+            Author.create(author)
+              .then(authorData => {
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+                topicData.setAuthor(authorData)
+                  .then((data) => {
+                    res.json({
+                      topic: data,
+                      link: `/forum/${data.id}`,
+                    });
+                  });
+              });
+          }
+        });
     })
-    .catch(err => [
+    .catch(err => {
       res.status(500).send(
         err.message || 'Some error occurred while creating topic.'
-      )
-    ]);
+      );
+    });
 };
 
 // Отдаёт все топики
 const getTopics = (req: Request, res: Response) => {
-  Topic.findAll()
+  Topic.findAll({
+    include: [{
+      model: Author,
+      attributes: ['firstName', 'lastName']  // включаем столбец name из таблицы teams
+    }]
+  })
     .then(async data => {
-      const dataWithAuthors = await data.map((currentTopic) => {
-        const result = currentTopic;
-
-        return Author.findByPk(currentTopic.authorId)
-          .then((author) => {
-
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            result.authorFirstName = author?.firstName;
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            result.authorLastName = author?.lastName;
-
-            return result;
-          });
-      });
-
-      console.log(dataWithAuthors);
-      res.send(dataWithAuthors);
+      res.send(data);
     })
     .catch(err => {
       res.status(500).send(

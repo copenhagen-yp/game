@@ -9,6 +9,8 @@ import https from 'https';
 import { serverRenderMiddleware } from './server-render-middleware';
 import { apiRouter } from './api-router';
 import { sequelize } from './sequelize';
+import { Topic, Author } from './forum/models';
+
 // import { Theme } from './theme/models/theme';
 // import { Themes } from '../store/user/types';
 
@@ -40,6 +42,9 @@ mongoose.connect(
 })();
 
 (async () => {
+  Author.hasMany(Topic);
+  Topic.belongsTo(Author);
+
   await sequelize.sync();
   // await Theme.destroy({
   //   where: {}

@@ -24,5 +24,5 @@ Author.init(
 );
 
 export {
-  Author
+  Author,
 };
