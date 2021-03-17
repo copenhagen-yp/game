@@ -9,7 +9,7 @@ import https from 'https';
 import { serverRenderMiddleware } from './server-render-middleware';
 import { apiRouter } from './api-router';
 import { sequelize } from './sequelize';
-import { Topic, Author } from './forum/models';
+import { Topic, Author, Message } from './forum/models';
 
 // import { Theme } from './theme/models/theme';
 // import { Themes } from '../store/user/types';
@@ -45,27 +45,13 @@ mongoose.connect(
   Author.hasMany(Topic);
   Topic.belongsTo(Author);
 
+  Author.hasMany(Message);
+  Message.belongsTo(Author);
+
+  Topic.hasMany(Message);
+  Message.belongsTo(Topic);
+
   await sequelize.sync();
-  // await Theme.destroy({
-  //   where: {}
-  // });
-
-  // !!! Это ещё полностью не доделано, но надо раскомментировать и запустить один раз, чтобы заполнить таблицу, потом опять закомментировать
-
-  // const themes = await Theme.bulkCreate([
-  //   {
-  //     name: Themes.light,
-  //   },
-  //   {
-  //     name: Themes.dark,
-  //   },
-  // ]);
-
-  // console.log('DDDDD', themes);
-
-  // const all = await Theme.findAll({});
-  //
-  // console.log('all', all);
 })();
 
 app.use(cookieParser());

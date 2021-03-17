@@ -2,17 +2,18 @@ import { Model, DataType } from 'sequelize-typescript';
 import { HasManyAddAssociationMixin } from 'sequelize';
 
 import { sequelize } from '../../sequelize';
-import { Author } from './author';
+import { Author, Topic } from './';
 
-class Topic extends Model {
+class Message extends Model {
   public id!: number;
-  public title!: string;
+  public message!: string;
   public setAuthor!: HasManyAddAssociationMixin<Author, number>;
+  public setTopic!: HasManyAddAssociationMixin<Topic, number>;
 }
 
-Topic.init(
+Message.init(
   {
-    title: DataType.STRING,
+    message: DataType.STRING,
     id: {
       type: DataType.INTEGER,
       autoIncrement: true,
@@ -21,10 +22,10 @@ Topic.init(
   },
   {
     sequelize,
-    tableName: 'topic',
+    tableName: 'message',
   }
 );
 
 export {
-  Topic,
+  Message,
 };
