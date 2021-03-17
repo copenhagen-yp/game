@@ -1,19 +1,19 @@
 import { Model, DataType } from 'sequelize-typescript';
+import { HasManyAddAssociationMixin, HasOneGetAssociationMixin } from 'sequelize';
+
+import { Theme } from '../../theme/model/theme';
 
 import { sequelize } from '../../sequelize';
 
 class ThemeUser extends Model {
   public id!: number;
-  public themeId!: number;
   public userId!: number;
+  public setTheme!: HasManyAddAssociationMixin<Theme, number>;
+  public getTheme!: HasOneGetAssociationMixin<Theme>;
 }
 
 ThemeUser.init(
   {
-    themeId: {
-      type: DataType.INTEGER,
-      allowNull: false,
-    },
     userId: {
       type: DataType.INTEGER,
       allowNull: false,

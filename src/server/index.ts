@@ -9,8 +9,8 @@ import https from 'https';
 import { serverRenderMiddleware } from './server-render-middleware';
 import { apiRouter } from './api-router';
 import { sequelize } from './sequelize';
-// import { Theme } from './models/theme';
-// import { Themes } from './store/user/types';
+import { ThemeUser } from './themeUser/model/themeUser';
+import { Theme } from './theme/model/theme';
 
 const app = express();
 
@@ -40,27 +40,10 @@ mongoose.connect(
 })();
 
 (async () => {
+  await Theme.hasMany(ThemeUser);
+  await ThemeUser.belongsTo(Theme);
+
   await sequelize.sync();
-  // await Theme.destroy({
-  //   where: {}
-  // });
-
-  // !!! Это ещё полностью не доделано, но надо раскомментировать и запустить один раз, чтобы заполнить таблицу, потом опять закомментировать
-
-  // const themes = await Theme.bulkCreate([
-  //   {
-  //     name: Themes.light,
-  //   },
-  //   {
-  //     name: Themes.dark,
-  //   },
-  // ]);
-
-  // console.log('DDDDD', themes);
-
-  // const all = await Theme.findAll({});
-  //
-  // console.log('all', all);
 })();
 
 app.use(cookieParser());

@@ -13,6 +13,12 @@ Theme.init(
       type: DataType.STRING,
       allowNull: false,
     },
+    id: {
+      type: DataType.INTEGER,
+      autoIncrement: true,
+      unique: true,
+      primaryKey: true,
+    }
   }, {
     sequelize,
     updatedAt: false,
