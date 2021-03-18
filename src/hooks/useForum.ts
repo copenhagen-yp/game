@@ -1,14 +1,9 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 
 import { TForum, TComment, Fields } from './types';
 import { useHttp } from 'hooks/useHttp';
 import { forumApi } from 'api';
-
-// const defaultForums = [
-//   { id: 1, name: 'Forum1', description: 'description Forum1' },
-//   { id: 2, name: 'Forum2', description: 'description Forum2' }
-// ];
 
 const defaultComments = [
   { id: 1, idForum: 1, comment: 'Комментарий1' },
@@ -25,7 +20,8 @@ export const useForum = (fieldsValue?: Fields) => {
   const [currentComments, setCurrentComments] = useState<TComment[]>([]);
   const { id } = useParams<{[index: string]: string}>();
   const { request } = useHttp('/');
-  const { getTopics } = forumApi(request);
+  const { getTopics, createTopic } = forumApi(request);
+  const history = useHistory();
 
   const currentTopic = useMemo(() => {
     let forum;
@@ -33,7 +29,6 @@ export const useForum = (fieldsValue?: Fields) => {
     if (topics) {
       forum = topics.find(element => element.id === +id);
     }
-
 
     return forum;
   }, [id, topics]);
@@ -51,24 +46,17 @@ export const useForum = (fieldsValue?: Fields) => {
     }
   }, [comments]);
 
-  // const handleSubmitTopic = useCallback((e) => {
-  //   e.preventDefault();
-  //   e.target.reset();
-  //
-  //   if (fieldsValue) {
-  //     setTopics(prevState => {
-  //       const newForum = {
-  //         id: prevState.length + 1,
-  //         name: fieldsValue.name,
-  //         description: fieldsValue.description,
-  //       };
-  //
-  //       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  //       // @ts-ignore
-  //       return prevState.concat(newForum);
-  //     });
-  //   }
-  // }, [fieldsValue]);
+  const handleSubmitTopic = useCallback((e) => {
+    e.preventDefault();
+    e.target.reset();
+
+    createTopic(fieldsValue)
+      .then(res => {
+        if (res && res.link) {
+          history.push(res.link);
+        }
+      });
+  }, [fieldsValue]);
 
   const handleSubmitComments = useCallback((e) => {
     e.preventDefault();
@@ -93,7 +81,7 @@ export const useForum = (fieldsValue?: Fields) => {
     currentTopic,
     comments,
     currentComments,
-    // handleSubmitTopic,
+    handleSubmitTopic,
     handleSubmitComments
   };
 };

@@ -4,11 +4,24 @@ import { Options } from '../hooks/types';
 export const forumApi = (request: { (url: string, options?: Options): Promise<any> }) => {
   const getTopics = () => {
     return request(
-      API_URL.GET_TOPICS,
+      API_URL.FORUM_TOPIC,
       {
-        method: REQUEST_METHOD.GET
+        method: REQUEST_METHOD.GET,
       });
   };
 
-  return { getTopics };
+  const createTopic = (topicData) => {
+    return request(
+      API_URL.FORUM_TOPIC,
+      {
+        body: JSON.stringify(topicData),
+        method: REQUEST_METHOD.POST,
+      }
+    );
+  };
+
+  return {
+    getTopics,
+    createTopic,
+  };
 };

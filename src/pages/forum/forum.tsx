@@ -1,5 +1,6 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import withStyles from 'isomorphic-style-loader/withStyles';
 
 import { useForum, useForm } from '../../hooks';
@@ -7,11 +8,21 @@ import { APP_TEXT } from '../../constants';
 import { routes } from '../../routes';
 import { Field, Input, Form } from '../../components';
 import styles from './forum.pcss';
+import { userSelectors } from '../../store/user';
 
 export const Forum = withStyles(styles)(() => {
-  const requiredFields = ['question_name', 'question_description'];
-  const { handleChange, handleBlur, fields, error } = useForm({ requiredFields });
-  const { topics, /*handleSubmitTopic*/ } = useForum(fields);
+  const requiredFields = ['title'];
+  const { handleChange, handleBlur, fields, error, setFields } = useForm({ requiredFields });
+  const { topics, handleSubmitTopic } = useForum(fields);
+  const user = useSelector(userSelectors.getCurrent);
+
+  useEffect(() => {
+    setFields({
+      firstName: user?.first_name || '',
+      lastName: user?.second_name || '',
+      userId: String(user?.id) || '',
+    });
+  }, []);
 
   return (
     <div className={styles.container}>
@@ -32,26 +43,19 @@ export const Forum = withStyles(styles)(() => {
         }
       </ul>
       <Form
-        onSubmit={handleBlur}
+        onSubmit={handleSubmitTopic}
         wrapperClassName={styles.forum__form}
         title={APP_TEXT.FORUM_TITLE}
         submitButtonText={APP_TEXT.BTN_SEND}
       >
-        <Field label="Тема" error={error.name}>
+        <Field label="Тема" error={error.title}>
           <Input
-            name="name"
+            name="title"
             type="text"
-            error={error.name}
+            error={error.title}
             onChange={handleChange}
-            onBlur={handleBlur} />
-        </Field>
-        <Field label="Описание" error={error.description}>
-          <Input
-            name="description"
-            type="text"
-            error={error.description}
-            onChange={handleChange}
-            onBlur={handleBlur} />
+            onBlur={handleBlur}
+          />
         </Field>
       </Form>
     </div>
