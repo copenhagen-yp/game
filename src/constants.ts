@@ -13,6 +13,10 @@ export enum APP_TEXT {
   FORUM_TITLE = 'Задать вопрос',
 }
 
+export const API_DOMAIN_SERVER = {
+  development: `https://local.ya-praktikum.tech:${5000}/`, // ??? [process.env.PORT]);
+};
+
 export enum API_URL {
   DOMAIN = 'https://ya-praktikum.tech',
   API_DOMAIN = 'https://ya-praktikum.tech/api/v2/',
@@ -29,6 +33,7 @@ export enum API_URL {
   OAUTH_SERVICE_ID = 'oauth/yandex/service-id',
   OAUTH_CODE = 'oauth/yandex',
   FEEDBACK = 'api/feedback',
+  THEME = 'api/theme',
 }
 
 export enum REQUEST_METHOD {
