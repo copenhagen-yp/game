@@ -12,7 +12,7 @@ export const ButtonChangeThemes = withStyles(styles)(() => {
   const dispatch = useDispatch();
   const theme = useSelector(userSelectors.getTheme);
 
-  const { request } = useHttp(API_DOMAIN_SERVER.development); // ??? [process.env.NODE_ENV]);
+  const { request } = useHttp(API_DOMAIN_SERVER);
   const { setTheme } = themeApi(request);
 
   const handleChangeTheme = (theme) => {

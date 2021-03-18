@@ -41,10 +41,11 @@ const config = {
     extensions: ['*', '.js', '.jsx', '.json', '.ts', '.tsx'],
   },
   plugins: [
+    new webpack.EnvironmentPlugin(['API_DOMAIN_SERVER']),
     new WorkboxPlugin.GenerateSW(addParamToWorkbox()),
     new webpack.DefinePlugin({
       'SSR': JSON.stringify(false)
-    })    
+    })
   ],
 
   devtool: 'source-map',
