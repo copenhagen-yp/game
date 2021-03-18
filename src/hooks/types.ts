@@ -20,8 +20,8 @@ export type TComment = {
 };
 
 export type UseFormProps = {
-    requiredFields: string[], 
-    successResult?: string, 
-    url?: string, 
-    method?: string 
+    requiredFields: string[],
+    successResult?: string,
+    url?: string,
+    method?: string
 };

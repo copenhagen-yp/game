@@ -29,13 +29,11 @@ const createTopic = async (req: Request, res: Response) => {
       authorData = await Author.create(author);
     }
 
-    const topicWithAuthor = await topicData.setAuthor(authorData);
+    await topicData.setAuthor(authorData);
 
     res.json({
-      topic: topicWithAuthor,
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      link: `/forum/${topicWithAuthor.id}`,
+      topic: topicData,
+      link: `/forum/${topicData.id}`,
     });
   } catch (err) {
     res.status(500).send(err.message || 'Some error occurred while creating topic.');
@@ -58,7 +56,7 @@ const getTopics = async (req: Request, res: Response) => {
   }
 };
 
-// Берёт конкретный топик
+// Отдаёт конкретный топик
 const getTopic = async (req: Request, res: Response) => {
   const topicId = req.params.id;
 

@@ -11,26 +11,28 @@ import styles from './forum.pcss';
 export const Forum = withStyles(styles)(() => {
   const requiredFields = ['question_name', 'question_description'];
   const { handleChange, handleBlur, fields, error } = useForm({ requiredFields });
-  const { forums, handleSubmitQuestion } = useForum(fields);
+  const { topics, /*handleSubmitTopic*/ } = useForum(fields);
 
   return (
     <div className={styles.container}>
       <ul className={styles.forum}>
         {
-          forums.map(item => {
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          topics.length ? topics.map(item => {
             return (
-              <Link className={styles.forum__item} key={item.id} to={`${routes.forums.path}/${item.id}`}>
+              <Link className={styles.forum__item} key={item.id} to={`${routes.topics.path}/${item.id}`}>
                 <li>
-                  <h3>{item.name}</h3>
-                  <p>{item.description}</p>
+                  <h3>{item.title}</h3>
+                  <p>{item.Author.firstName} {item.Author.lastName}</p>
                 </li>
               </Link>
             );
-          })
+          }) : <p>Нет ни одного топика</p>
         }
       </ul>
       <Form
-        onSubmit={handleSubmitQuestion}
+        onSubmit={handleBlur}
         wrapperClassName={styles.forum__form}
         title={APP_TEXT.FORUM_TITLE}
         submitButtonText={APP_TEXT.BTN_SEND}

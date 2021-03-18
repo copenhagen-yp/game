@@ -2,11 +2,13 @@ import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { TForum, TComment, Fields } from './types';
+import { useHttp } from 'hooks/useHttp';
+import { forumApi } from 'api';
 
-const defaultForums = [
-  { id: 1, name: 'Forum1', description: 'description Forum1' },
-  { id: 2, name: 'Forum2', description: 'description Forum2' }
-];
+// const defaultForums = [
+//   { id: 1, name: 'Forum1', description: 'description Forum1' },
+//   { id: 2, name: 'Forum2', description: 'description Forum2' }
+// ];
 
 const defaultComments = [
   { id: 1, idForum: 1, comment: 'Комментарий1' },
@@ -18,16 +20,30 @@ const defaultComments = [
 ];
 
 export const useForum = (fieldsValue?: Fields) => {
-  const [forums, setForums] = useState<TForum[]>(defaultForums);
+  const [topics, setTopics] = useState<TForum[] | []>([]);
   const [comments, setComments] = useState<TComment[]>(defaultComments);
   const [currentComments, setCurrentComments] = useState<TComment[]>([]);
   const { id } = useParams<{[index: string]: string}>();
+  const { request } = useHttp('/');
+  const { getTopics } = forumApi(request);
 
-  const currentForum = useMemo(() => {
-    const forum = forums.find(element => element.id === +id);
+  const currentTopic = useMemo(() => {
+    let forum;
+
+    if (topics) {
+      forum = topics.find(element => element.id === +id);
+    }
+
 
     return forum;
-  }, [id, forums]);
+  }, [id, topics]);
+
+  useEffect(() => {
+    getTopics()
+      .then((res) => {
+        setTopics(res);
+      });
+  }, []);
 
   useEffect(() => {
     if (id) {
@@ -35,22 +51,24 @@ export const useForum = (fieldsValue?: Fields) => {
     }
   }, [comments]);
 
-  const handleSubmitQuestion = useCallback((e) => {
-    e.preventDefault();
-    e.target.reset();
-
-    if (fieldsValue) {
-      setForums(prevState => {
-        const newForum = {
-          id: prevState.length + 1,
-          name: fieldsValue.name,
-          description: fieldsValue.description,
-        };
-
-        return prevState.concat(newForum);
-      });
-    }
-  }, [fieldsValue]);
+  // const handleSubmitTopic = useCallback((e) => {
+  //   e.preventDefault();
+  //   e.target.reset();
+  //
+  //   if (fieldsValue) {
+  //     setTopics(prevState => {
+  //       const newForum = {
+  //         id: prevState.length + 1,
+  //         name: fieldsValue.name,
+  //         description: fieldsValue.description,
+  //       };
+  //
+  //       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  //       // @ts-ignore
+  //       return prevState.concat(newForum);
+  //     });
+  //   }
+  // }, [fieldsValue]);
 
   const handleSubmitComments = useCallback((e) => {
     e.preventDefault();
@@ -71,11 +89,11 @@ export const useForum = (fieldsValue?: Fields) => {
   }, [fieldsValue]);
 
   return {
-    forums,
-    currentForum,
+    topics,
+    currentTopic,
     comments,
     currentComments,
-    handleSubmitQuestion,
+    // handleSubmitTopic,
     handleSubmitComments
   };
 };

@@ -9,12 +9,12 @@ import withStyles from 'isomorphic-style-loader/withStyles';
 export const Topic = withStyles(styles)(() => {
   const requiredFields = ['comment'];
   const { handleChange, handleBlur, fields, error } = useForm({ requiredFields });
-  const { currentForum, currentComments, handleSubmitComments } = useForum(fields);
+  const { currentTopic, currentComments, handleSubmitComments } = useForum(fields);
 
   return (
     <div className={styles.container}>
-      <h3>{currentForum?.name}</h3>
-      <p>{currentForum?.description}</p>
+      <h3>{currentTopic?.name}</h3>
+      <p>{currentTopic?.description}</p>
       <ul>
         {currentComments.map(item => {
           return (

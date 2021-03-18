@@ -18,7 +18,7 @@ export const routes = {
     exact: true,
     isPrivate: true,
   },
-  forums: {
+  topics: {
     name: 'forum',
     path: '/forum',
     component: Forum,
