@@ -29,18 +29,14 @@ export const Forum = withStyles(styles)(() => {
     <div className={styles.container}>
       <ul className={styles.forum}>
         {
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          topics.length ? topics.map(item => {
-            return (
-              <Link className={styles.forum__item} key={item.id} to={`${routes.topics.path}/${item.id}`}>
-                <li className={styles.list}>
-                  <h3 className={cn(styles.title, styles.ellipsis)}>{item.title}</h3>
-                  <p className={styles.author}>{item.Author.firstName} {item.Author.lastName}</p>
-                </li>
-              </Link>
-            );
-          }) : <p>Нет ни одного топика</p>
+          topics.length ? topics.map((item) => (
+            <Link className={styles.forum__item} key={item.id} to={`${routes.topics.path}/${item.id}`}>
+              <li className={styles.list}>
+                <h3 className={cn(styles.title, styles.ellipsis)}>{item.title}</h3>
+                <p className={styles.author}>{item.Author.firstName} {item.Author.lastName}</p>
+              </li>
+            </Link>
+          )) : <p>Нет ни одного топика</p>
         }
       </ul>
       <Form
