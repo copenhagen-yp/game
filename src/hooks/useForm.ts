@@ -1,18 +1,22 @@
-import { API_URL } from './../constants';
 import { useCallback, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useToasts } from 'react-toast-notifications';
 
 import { Fields, Error, UseFormProps } from './types';
 import { useHttp } from './useHttp';
 import * as userActions from '../store/user/actions';
+import { userSelectors } from '../store/user';
 import { APP_REGULAR, APP_TEXT, REQUEST_METHOD } from '../constants';
+import { API_URL } from './../constants';
 
 
-export const useForm = ({ requiredFields, successResult, url, method }: UseFormProps) => {
-  const { request } = useHttp();
+export const useForm = ({ requiredFields, successResult, url, method }: UseFormProps, domain?: string) => {
+  const { request } = useHttp(domain);
+  const { addToast } = useToasts();
   const [fields, setFields] = useState<Fields>({});
   const [error, setError] = useState<Error>(requiredFields.reduce((accumulate, nameField)=>({ ...accumulate, [nameField]: { value: false, text: '' } }),{}));
+  const user = useSelector(userSelectors.getCurrent);
 
   const history = useHistory();
   const dispatch = useDispatch();
@@ -81,6 +85,35 @@ export const useForm = ({ requiredFields, successResult, url, method }: UseFormP
     }
   },[fields]);
 
+  const handleSubmitFeedback = useCallback((e) => {
+    e.preventDefault();
+    const countError = Object.values(error).filter(err => err.value === true);
+    const validFieldValues = Object.values(fields).filter((field) => !!field);
+
+    if (validFieldValues.length >= Object.keys(error).length && !countError.length && url) {
+
+      request(url, { body: JSON.stringify({ ...fields, userId: user?.id }), method: method || REQUEST_METHOD.POST })
+        .then(() => {
+          addToast('Спасибо за обратную связь', { appearance: 'success' });
+          setFields(prevState =>
+            Object.keys(prevState).reduce((accum, key) => ({ ...accum, [key]: '' }), {})
+          );
+        });
+    } else {
+      const form = e.target.elements;
+
+      for (const key in form) {
+        if (Object.prototype.hasOwnProperty.call(form, key)) {
+          const element = form[key];
+
+          if (element.name && !element.value) {
+            setError((prevProps: any) => ({ ...prevProps, [element.name]: { value: true, text: '' } }));
+          }
+        }
+      }
+    }
+  },[fields]);
+
   const handleChange = useCallback((e) => {
     if (error[e.target.name]) {
       setError((prevProps: any) => ({ ...prevProps, [e.target.name]: { value: false, text: '' } }));
@@ -108,6 +141,7 @@ export const useForm = ({ requiredFields, successResult, url, method }: UseFormP
     handleBlur,
     fields,
     error,
-    setFields
+    setFields,
+    handleSubmitFeedback,
   };
 };

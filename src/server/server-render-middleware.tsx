@@ -8,8 +8,8 @@ import { Provider } from 'react-redux';
 import App from '../app';
 import { configureStore } from '../store';
 import { defaultReducer as userReducerState } from '../store/user/reducer';
-import { ThemeUser } from './theme/models/themeUser';
-import { Theme } from './theme/models/theme';
+import { ThemeUser } from './themeUser/model/themeUser';
+import { Theme } from './theme/model/theme';
 import { Themes } from '../store/user/types';
 import { fetchUserInfo } from './fetchUserInfo';
 
@@ -30,7 +30,6 @@ export const serverRenderMiddleware = async (req: Request, res: Response) => {
       // TODO: Обработка ошибок (в т.ч. cookie is not valid)
 
       if (userInfo.id) {
-
         let themeUser = await ThemeUser.findOne({
           where: { userId: userInfo.id },
         });
@@ -42,15 +41,12 @@ export const serverRenderMiddleware = async (req: Request, res: Response) => {
         if (!themeUser && baseTheme) {
           themeUser = await ThemeUser.create({
             userId: userInfo.id,
-            themeId: baseTheme.id,
           });
+
+          await themeUser?.setTheme(baseTheme);
         }
 
-        const currentTheme = await  Theme.findOne({
-          where: {
-            id: themeUser?.themeId,
-          }
-        });
+        const currentTheme = await themeUser?.getTheme();
 
         userInfo.theme = currentTheme?.name || Themes.light;
       }

@@ -9,10 +9,9 @@ import https from 'https';
 import { serverRenderMiddleware } from './server-render-middleware';
 import { apiRouter } from './api-router';
 import { sequelize } from './sequelize';
+import { ThemeUser } from './themeUser/model/themeUser';
+import { Theme } from './theme/model/theme';
 import { Topic, Author, Message } from './forum/models';
-
-// import { Theme } from './theme/models/theme';
-// import { Themes } from '../store/user/types';
 
 const app = express();
 
@@ -42,14 +41,17 @@ mongoose.connect(
 })();
 
 (async () => {
-  Author.hasMany(Topic);
-  Topic.belongsTo(Author);
+  await Theme.hasMany(ThemeUser);
+  await ThemeUser.belongsTo(Theme);
 
-  Author.hasMany(Message);
-  Message.belongsTo(Author);
+  await Author.hasMany(Topic);
+  await Topic.belongsTo(Author);
 
-  Topic.hasMany(Message);
-  Message.belongsTo(Topic);
+  await Author.hasMany(Message);
+  await Message.belongsTo(Author);
+
+  await Topic.hasMany(Message);
+  await Message.belongsTo(Topic);
 
   await sequelize.sync();
 })();

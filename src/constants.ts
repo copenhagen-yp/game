@@ -28,7 +28,7 @@ export enum API_URL {
   LOGOUT = 'auth/logout',
   OAUTH_SERVICE_ID = 'oauth/yandex/service-id',
   OAUTH_CODE = 'oauth/yandex',
-  FEEDBACK = 'feedback',
+  FEEDBACK = 'api/feedback',
 }
 
 export enum REQUEST_METHOD {

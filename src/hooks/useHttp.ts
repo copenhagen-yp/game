@@ -4,7 +4,7 @@ import { useToasts } from 'react-toast-notifications';
 import { API_URL } from '../constants';
 import { Options } from './types';
 
-export const useHttp = () => {
+export const useHttp = (domain?: string) => {
   const [errors, setErrors] = useState<string[]>([]);
   const { addToast } = useToasts();
 
@@ -17,7 +17,7 @@ export const useHttp = () => {
       }
 
       try {
-        const response = await fetch(`${API_URL.API_DOMAIN}${url}`, { ...options, credentials: 'include', headers });
+        const response = await fetch(`${domain || API_URL.API_DOMAIN}${url}`, { ...options, credentials: 'include', headers });
         let data;
 
         const contentType = response.headers.get('content-type');
