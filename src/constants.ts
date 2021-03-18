@@ -29,7 +29,7 @@ export enum API_URL {
   OAUTH_SERVICE_ID = 'oauth/yandex/service-id',
   OAUTH_CODE = 'oauth/yandex',
   FEEDBACK = 'api/feedback',
-  FORUM_TOPIC = 'api/forum/topic',
+  FORUM = 'api/forum/topic',
 }
 
 export enum REQUEST_METHOD {

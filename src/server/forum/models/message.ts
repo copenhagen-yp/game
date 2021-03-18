@@ -13,7 +13,7 @@ class Message extends Model {
 
 Message.init(
   {
-    message: DataType.STRING,
+    message: DataType.STRING(5000),
     id: {
       type: DataType.INTEGER,
       autoIncrement: true,

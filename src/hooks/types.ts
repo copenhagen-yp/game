@@ -16,7 +16,11 @@ export type TForum = {
 export type TComment = {
     id: number,
     idForum: number,
-    comment: string
+    message: string,
+    Author: {
+      firstName,
+      lastName,
+    }
 };
 
 export type UseFormProps = {

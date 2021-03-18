@@ -12,7 +12,7 @@ class Topic extends Model {
 
 Topic.init(
   {
-    title: DataType.STRING,
+    title: DataType.STRING(1000),
     id: {
       type: DataType.INTEGER,
       autoIncrement: true,
