@@ -41,7 +41,9 @@ const config = {
     extensions: ['*', '.js', '.jsx', '.json', '.ts', '.tsx'],
   },
   plugins: [
-    new webpack.EnvironmentPlugin(['API_DOMAIN_SERVER']),
+    new webpack.EnvironmentPlugin({
+      API_DOMAIN_SERVER: 'https://local.ya-praktikum.tech:5000/',
+    }),
     new WorkboxPlugin.GenerateSW(addParamToWorkbox()),
     new webpack.DefinePlugin({
       'SSR': JSON.stringify(false)
