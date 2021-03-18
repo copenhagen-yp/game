@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { userActions, userSelectors, userTypes } from '../../store/user';
 import { useHttp } from '../../hooks/useHttp';
-import { API_DOMAIN_SERVER } from '../../constants';
 import { themeApi } from '../../api';
 import styles from './button-change-themes.pcss';
 
@@ -12,7 +11,7 @@ export const ButtonChangeThemes = withStyles(styles)(() => {
   const dispatch = useDispatch();
   const theme = useSelector(userSelectors.getTheme);
 
-  const { request } = useHttp(API_DOMAIN_SERVER);
+  const { request } = useHttp('/');
   const { setTheme } = themeApi(request);
 
   const handleChangeTheme = (theme) => {

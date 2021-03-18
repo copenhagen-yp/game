@@ -13,8 +13,6 @@ export enum APP_TEXT {
   FORUM_TITLE = 'Задать вопрос',
 }
 
-export const API_DOMAIN_SERVER = process.env.API_DOMAIN_SERVER;
-
 export enum API_URL {
   DOMAIN = 'https://ya-praktikum.tech',
   API_DOMAIN = 'https://ya-praktikum.tech/api/v2/',
