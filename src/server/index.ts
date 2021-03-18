@@ -7,7 +7,10 @@ import fs from 'fs';
 import https from 'https';
 
 import { serverRenderMiddleware } from './server-render-middleware';
-import { apiRouter } from './app/api-router';
+import { apiRouter } from './api-router';
+import { sequelize } from './sequelize';
+import { ThemeUser } from './themeUser/model/themeUser';
+import { Theme } from './theme/model/theme';
 
 const app = express();
 
@@ -25,6 +28,23 @@ mongoose.connect(
       throw err;
     }
   });
+
+
+(async () => {
+  try {
+    await sequelize.authenticate();
+    console.log('Connection has been established successfully.');
+  } catch (error) {
+    console.error('Unable to connect to the database:', error);
+  }
+})();
+
+(async () => {
+  await Theme.hasMany(ThemeUser);
+  await ThemeUser.belongsTo(Theme);
+
+  await sequelize.sync();
+})();
 
 app.use(cookieParser());
 

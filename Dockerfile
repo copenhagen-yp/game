@@ -7,4 +7,4 @@ RUN npm ci
 
 COPY . ./
 
-CMD npm run start
+CMD npm run db:migration && npm run db:seeds && npm run start

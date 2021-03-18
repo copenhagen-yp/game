@@ -1,3 +1,8 @@
+export enum Themes {
+  dark = 'dark',
+  light = 'light'
+}
+
 export interface IUser {
   id?: number,
   first_name?: string,
@@ -6,12 +11,8 @@ export interface IUser {
   login?: string,
   email?: string,
   phone?: string,
-  avatar?: string
-}
-
-export enum Themes {
-  dark = 'dark',
-  light = 'light'
+  avatar?: string,
+  theme?: Themes.light | Themes.dark,
 }
 
 export type TGameInfo = {

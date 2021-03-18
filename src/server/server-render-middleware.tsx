@@ -3,42 +3,15 @@ import StyleContext from 'isomorphic-style-loader/StyleContext';
 import { StaticRouter } from 'react-router-dom';
 import { StaticRouterContext } from 'react-router';
 import { renderToString } from 'react-dom/server';
-import { https } from 'follow-redirects';
 import { Request, Response } from 'express';
 import { Provider } from 'react-redux';
-import App from './app';
-import { configureStore } from './store';
-import { defaultReducer as userReducerState } from './store/user/reducer';
-
-function fetchUserInfo(cookie: string): Promise<any> {
-  return new Promise((resolve) => {
-    https.get({
-      hostname: 'ya-praktikum.tech',
-      path: '/api/v2/auth/user',
-      headers: {
-        'cookie': cookie,
-        'accept': 'application/json'
-      }
-    }, (res) => {
-      let str = '';
-
-      //another chunk of data has been received, so append it to `str`
-      res.on('data', function (chunk) {
-        str += chunk;
-      });
-
-      res.on('error', (err) => { console.error(err); });
-
-      //the whole response has been received, so we just print it out here
-      res.on('end', function () {
-        resolve(JSON.parse(str));
-      });
-
-    }).on('error', err => {
-      console.error(err);
-    });
-  });
-}
+import App from '../app';
+import { configureStore } from '../store';
+import { defaultReducer as userReducerState } from '../store/user/reducer';
+import { ThemeUser } from './themeUser/model/themeUser';
+import { Theme } from './theme/model/theme';
+import { Themes } from '../store/user/types';
+import { fetchUserInfo } from './fetchUserInfo';
 
 export const serverRenderMiddleware = async (req: Request, res: Response) => {
   const location = req.url;
@@ -56,11 +29,33 @@ export const serverRenderMiddleware = async (req: Request, res: Response) => {
 
       // TODO: Обработка ошибок (в т.ч. cookie is not valid)
 
+      if (userInfo.id) {
+        let themeUser = await ThemeUser.findOne({
+          where: { userId: userInfo.id },
+        });
+
+        const baseTheme = await Theme.findOne({
+          where: { name: Themes.light },
+        });
+
+        if (!themeUser && baseTheme) {
+          themeUser = await ThemeUser.create({
+            userId: userInfo.id,
+          });
+
+          await themeUser?.setTheme(baseTheme);
+        }
+
+        const currentTheme = await themeUser?.getTheme();
+
+        userInfo.theme = currentTheme?.name || Themes.light;
+      }
+
       preloadedState = {
         user: {
           ...userReducerState,
           userInfo,
-        }
+        },
       };
     } catch (ex) {
       console.error(ex);
@@ -85,23 +80,23 @@ export const serverRenderMiddleware = async (req: Request, res: Response) => {
 
     return `
     <!DOCTYPE html>
-    <html lang="en">
+    <html lang='en'>
     <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <link rel="shortcut icon" type="image/png" href="/images/favicon.jpg">
+        <meta charset='UTF-8'>
+        <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+        <meta http-equiv='X-UA-Compatible' content='ie=edge'>
+        <link rel='shortcut icon' type='image/png' href='/images/favicon.jpg'>
         <title>Game - SSR</title>
         <style>${[...Array.from(css)].join('')}</style>
     </head>
     <body>
-        <div id="root" style="height: 100%">${reactHtml}</div>
+        <div id='root' style='height: 100%'>${reactHtml}</div>
         <script>
         // WARNING: See the following for security issues around embedding JSON in HTML:
         // https://redux.js.org/recipes/server-rendering/#security-considerations
         window.__PRELOADED_STATE__ = ${JSON.stringify(preloadedState).replace(/</g, '\\u003c')}
       </script>
-        <script src="/main.js"></script>
+        <script src='/main.js'></script>
     </body>
     </html>
     `;
@@ -109,7 +104,7 @@ export const serverRenderMiddleware = async (req: Request, res: Response) => {
 
   if (context.url) {
     res.writeHead(302, {
-      Location: context.url
+      Location: context.url,
     });
     res.end();
   } else {
