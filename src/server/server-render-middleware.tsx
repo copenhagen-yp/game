@@ -29,6 +29,8 @@ export const serverRenderMiddleware = async (req: Request, res: Response) => {
 
       // TODO: Обработка ошибок (в т.ч. cookie is not valid)
 
+      let themeName: string = Themes.light;
+
       if (userInfo.id) {
         let themeUser = await ThemeUser.findOne({
           where: { userId: userInfo.id },
@@ -48,13 +50,14 @@ export const serverRenderMiddleware = async (req: Request, res: Response) => {
 
         const currentTheme = await themeUser?.getTheme();
 
-        userInfo.theme = currentTheme?.name || Themes.light;
+        themeName = currentTheme?.name || Themes.light;
       }
 
       preloadedState = {
         user: {
           ...userReducerState,
           userInfo,
+          theme: themeName,
         },
       };
     } catch (ex) {
