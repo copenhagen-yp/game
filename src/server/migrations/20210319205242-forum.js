@@ -23,7 +23,7 @@ module.exports = {
       AuthorId: {
         type: Sequelize.INTEGER,
         references: {
-          model: 'Author',
+          model: 'author',
           key: 'id',
         }
       },
@@ -42,14 +42,14 @@ module.exports = {
       AuthorId: {
         type: Sequelize.INTEGER,
         references: {
-          model: 'Author',
+          model: 'author',
           key: 'id',
         }
       },
       TopicId: {
         type: Sequelize.INTEGER,
         references: {
-          model: 'Topic',
+          model: 'topic',
           key: 'id',
         }
       },
