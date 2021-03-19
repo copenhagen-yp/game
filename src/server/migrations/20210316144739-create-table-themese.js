@@ -34,5 +34,6 @@ module.exports = {
 
   down: async (queryInterface) => {
     await queryInterface.dropTable('themes');
+    await queryInterface.dropTable('themesUsers');
   }
 };
