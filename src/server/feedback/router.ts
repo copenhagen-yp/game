@@ -1,10 +1,7 @@
 import { Router } from 'express';
-import bodyParser from 'body-parser';
 
-import { saveFeedback } from '../feedback';
+import { saveFeedback } from './';
 
 export const feedbackRouter = (apiRouter: Router) => {
-  apiRouter.use(bodyParser.json());
-
   apiRouter.post('/feedback', saveFeedback);
 };

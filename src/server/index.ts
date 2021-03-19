@@ -12,6 +12,7 @@ import { apiRouter } from './api-router';
 import { sequelize } from './sequelize';
 import { ThemeUser } from './themeUser/model/themeUser';
 import { Theme } from './theme/model/theme';
+import { Topic, Author, Message } from './forum/models';
 
 const app = express();
 
@@ -47,6 +48,15 @@ mongoose.connect(
 (async () => {
   await Theme.hasMany(ThemeUser);
   await ThemeUser.belongsTo(Theme);
+
+  await Author.hasMany(Topic);
+  await Topic.belongsTo(Author);
+
+  await Author.hasMany(Message);
+  await Message.belongsTo(Author);
+
+  await Topic.hasMany(Message);
+  await Message.belongsTo(Topic);
 
   await sequelize.sync();
 })();

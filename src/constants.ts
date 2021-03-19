@@ -10,7 +10,7 @@ export enum APP_TEXT {
   ERROR_EMAIL = 'Не корректный email',
   COMMENT_TITLE = 'Оставить комментарий',
   BTN_SEND = 'Отправить',
-  FORUM_TITLE = 'Задать вопрос',
+  FORUM_TITLE = 'Создать топик',
 }
 
 export enum API_URL {
@@ -30,6 +30,7 @@ export enum API_URL {
   OAUTH_CODE = 'oauth/yandex',
   FEEDBACK = 'api/feedback',
   THEME = 'api/theme',
+  FORUM = 'api/forum/topic',
 }
 
 export enum REQUEST_METHOD {

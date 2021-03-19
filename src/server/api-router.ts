@@ -1,7 +1,9 @@
 import { Router, Request, Response, NextFunction } from 'express';
+import bodyParser from 'body-parser';
+
 import { feedbackRouter } from './feedback/router';
 import { themeRouter } from './theme/router';
-import bodyParser from 'body-parser';
+import { forumRouter } from './forum/router';
 
 export const apiRouter: Router = Router();
 
@@ -18,3 +20,4 @@ apiRouter.use(bodyParser.json());
 
 feedbackRouter(apiRouter);
 themeRouter(apiRouter);
+forumRouter(apiRouter);
