@@ -43,4 +43,4 @@ const config = {
   optimization: { nodeEnv: false },
 };
 
-export default config;
+module.exports = config;
