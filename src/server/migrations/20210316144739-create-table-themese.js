@@ -14,9 +14,25 @@ module.exports = {
         type: Sequelize.STRING
       },
     });
+
+    await queryInterface.createTable('themesUsers', {
+      userId: {
+        allowNull: false,
+        primaryKey: true,
+        type: Sequelize.INTEGER,
+        unique: true,
+      },
+      ThemeId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'themes',
+          key: 'id',
+        }
+      },
+    });
   },
 
-  down: async (queryInterface, Sequelize) => {
+  down: async (queryInterface) => {
     await queryInterface.dropTable('themes');
   }
 };
