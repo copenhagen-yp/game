@@ -1,7 +1,5 @@
 'use strict';
 
-import {DataType} from 'sequelize-typescript';
-
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable('author', {
