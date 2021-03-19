@@ -5,6 +5,7 @@ import cookieParser from 'cookie-parser';
 import mongoose from 'mongoose';
 import fs from 'fs';
 import https from 'https';
+import http from 'http';
 
 import { serverRenderMiddleware } from './server-render-middleware';
 import { apiRouter } from './api-router';
@@ -14,11 +15,15 @@ import { Theme } from './theme/model/theme';
 
 const app = express();
 
-const key = fs.readFileSync('./certs/key.pem');
-const cert = fs.readFileSync('./certs/cert.pem');
+let key, cert;
+
+if (process.env.HTTPS_ENABLED === '1') {
+  key = fs.readFileSync('./certs/key.pem');
+  cert = fs.readFileSync('./certs/cert.pem');
+}
 
 mongoose.connect(
-  'mongodb://mongo:27017/feedback-db',
+  `mongodb://${process.env.MONGO_HOST}:27017/feedback-db`,
   {
     useNewUrlParser: true,
     useFindAndModify: false,
@@ -58,6 +63,6 @@ app.use('/api', apiRouter);
 
 app.get('/*', serverRenderMiddleware);
 
-const server = https.createServer({ key: key, cert: cert }, app);
+const server = process.env.HTTPS_ENABLED === '1' ? https.createServer({ key: key, cert: cert }, app) : http.createServer(app);
 
 export { server };
