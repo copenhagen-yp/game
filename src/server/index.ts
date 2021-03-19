@@ -8,6 +8,11 @@ import https from 'https';
 import http from 'http';
 import { expressCspHeader, INLINE, SELF } from 'express-csp-header';
 
+import webpack, { Configuration } from 'webpack';
+
+import webpackDevMiddleware from 'webpack-dev-middleware';
+import webpackHotMiddleware from 'webpack-hot-middleware';
+
 import { serverRenderMiddleware } from './server-render-middleware';
 import { apiRouter } from './api-router';
 import { sequelize } from './sequelize';
@@ -15,7 +20,14 @@ import { ThemeUser } from './themeUser/model/themeUser';
 import { Theme } from './theme/model/theme';
 import { Topic, Author, Message } from './forum/models';
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const webpackConfig: Configuration = require('../../webpack/client.config');
+const webpackCompiler = webpack(webpackConfig);
+
 const app = express();
+
+app.use(webpackDevMiddleware(webpackCompiler, { publicPath: '/', serverSideRender: true }));
+app.use(webpackHotMiddleware(webpackCompiler));
 
 let key, cert;
 
