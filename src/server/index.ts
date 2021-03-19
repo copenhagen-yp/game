@@ -6,6 +6,7 @@ import mongoose from 'mongoose';
 import fs from 'fs';
 import https from 'https';
 import http from 'http';
+import { expressCspHeader, INLINE, SELF } from 'express-csp-header';
 
 import { serverRenderMiddleware } from './server-render-middleware';
 import { apiRouter } from './api-router';
@@ -61,6 +62,15 @@ mongoose.connect(
   await sequelize.sync();
 })();
 
+app.use(expressCspHeader({
+  directives: {
+    'script-src': [SELF, INLINE],
+    'style-src': [SELF, INLINE],
+    'worker-src': [SELF],
+    'block-all-mixed-content': true
+  }
+}));
+
 app.use(cookieParser());
 
 app.use(compression());
@@ -72,6 +82,7 @@ app.use('/images', express.static(path.resolve(__dirname, '../src/images')));
 app.use('/api', apiRouter);
 
 app.get('/*', serverRenderMiddleware);
+
 
 const server = process.env.HTTPS_ENABLED === '1' ? https.createServer({ key: key, cert: cert }, app) : http.createServer(app);
 
