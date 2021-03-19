@@ -29,5 +29,6 @@ jobs:
         with:
           image: game
           registry: ghcr.io
+          dockerfile: Dockerfile.prod
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
