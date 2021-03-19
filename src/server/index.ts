@@ -83,7 +83,6 @@ app.use('/api', apiRouter);
 
 app.get('/*', serverRenderMiddleware);
 
-
 const server = process.env.HTTPS_ENABLED === '1' ? https.createServer({ key: key, cert: cert }, app) : http.createServer(app);
 
 export { server };
