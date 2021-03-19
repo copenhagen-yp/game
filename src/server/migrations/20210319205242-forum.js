@@ -30,9 +30,9 @@ module.exports = {
     });
 
     await queryInterface.createTable('message', {
-      message: DataType.STRING(5000),
+      message: Sequelize.STRING(5000),
       id: {
-        type: DataType.INTEGER,
+        type: Sequelize.INTEGER,
         autoIncrement: true,
         primaryKey: true,
         allowNull: false,
