@@ -51,6 +51,7 @@
     "cross-env": "7.0.3",
     "css-loader": "5.0.1",
     "eslint": "7.16.0",
+    "express-csp-header": "4.0.0",
     "html-webpack-plugin": "4.5.0",
     "husky": "4.3.6",
     "identity-obj-proxy": "3.0.0",
