@@ -66,7 +66,9 @@ mongoose.connect(
   await Topic.hasMany(Message);
   await Message.belongsTo(Topic);
 
-  await sequelize.sync();
+  if (process.env.NODE_ENV === 'development') {
+    await sequelize.sync();
+  }
 })();
 
 app.use(expressCspHeader({

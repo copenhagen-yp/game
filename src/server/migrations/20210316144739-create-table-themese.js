@@ -16,6 +16,13 @@ module.exports = {
     });
 
     await queryInterface.createTable('themesUsers', {
+      id: {
+        allowNull: false,
+        autoIncrement: true,
+        primaryKey: true,
+        type: Sequelize.INTEGER,
+        unique: true,
+      },
       userId: {
         allowNull: false,
         primaryKey: true,
