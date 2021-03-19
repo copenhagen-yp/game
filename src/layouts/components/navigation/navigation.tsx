@@ -22,7 +22,7 @@ export const Navigation = withStyles(styles)(() => {
     },
     {
       label: 'Forums',
-      path: routes.forums.path,
+      path: routes.topics.path,
     },
     {
       label: 'Feedback',

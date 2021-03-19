@@ -44,7 +44,7 @@ const config = {
     new WorkboxPlugin.GenerateSW(addParamToWorkbox()),
     new webpack.DefinePlugin({
       'SSR': JSON.stringify(false)
-    })    
+    })
   ],
 
   devtool: 'source-map',
