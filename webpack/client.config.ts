@@ -1,4 +1,4 @@
-import webpack, { Configuration } from 'webpack';
+import webpack, { Configuration, Resolve } from 'webpack';
 import path from 'path';
 import WorkboxPlugin from 'workbox-webpack-plugin';
 
@@ -23,7 +23,7 @@ function addParamToWorkbox() {
 }
 
 let entry = [path.join(SRC_DIR, 'index')];
-const resolve = {
+const resolve: Resolve = {
   modules: ['src', 'node_modules'],
   extensions: ['*', '.js', '.jsx', '.json', '.ts', '.tsx'],
 };
@@ -37,7 +37,7 @@ if (IS_DEV) {
 
 const config: Configuration = {
   name: 'client',
-  mode: 'development',
+  mode: IS_DEV ? 'development' : 'production',
   context: __dirname,
   entry,
   module: {
