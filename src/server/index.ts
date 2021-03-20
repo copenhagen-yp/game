@@ -57,10 +57,11 @@ mongoose.connect(
   await ThemeUser.belongsTo(Theme, { as: 'theme' });
 
   await Topic.belongsTo(Author, { as: 'author' });
-
+  
   await Message.belongsTo(Author, { as: 'author' });
-
-  await Message.belongsTo(Topic, { as: 'topic' });
+  
+  await Message.belongsTo(Topic, { as: 'topic', foreignKey: 'topicId' });
+  await Topic.hasMany(Message, { as: 'conversation', foreignKey: 'topicId' });
 
   if (process.env.NODE_ENV === 'development') {
     await sequelize.sync();

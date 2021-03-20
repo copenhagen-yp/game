@@ -33,7 +33,7 @@ export const Forum = withStyles(styles)(() => {
             <Link className={styles.forum__item} key={item.id} to={`${routes.topics.path}/${item.id}`}>
               <li className={styles.list}>
                 <h3 className={cn(styles.title, styles.ellipsis)}>{item.title}</h3>
-                <p className={styles.author}>{item.Author.firstName} {item.Author.lastName}</p>
+                <p className={styles.author}>{item.author.firstName} {item.author.lastName}</p>
               </li>
             </Link>
           )) : <p>Нет ни одного топика</p>

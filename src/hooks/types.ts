@@ -11,7 +11,7 @@ export type TForum = {
   id: number;
   title: string;
   description?: string;
-  Author: {
+  author: {
     firstName;
     lastName;
   };
@@ -21,7 +21,7 @@ export type TComment = {
   id: number;
   idForum: number;
   message: string;
-  Author: {
+  author: {
     firstName;
     lastName;
   };

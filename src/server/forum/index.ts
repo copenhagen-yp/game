@@ -73,7 +73,7 @@ const getTopic = async (req: Request, res: Response) => {
           },
           {
             model: Message,
-            as: 'message',
+            as: 'conversation',
             include: [{
               model: Author,
               as: 'author',
