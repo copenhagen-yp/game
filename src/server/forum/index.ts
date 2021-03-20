@@ -46,6 +46,7 @@ const getTopics = async (req: Request, res: Response) => {
     const topicData = await Topic.findAll({
       include: [{
         model: Author,
+        as: 'author',
         attributes: ['firstName', 'lastName'],
       }]
     });
@@ -67,12 +68,15 @@ const getTopic = async (req: Request, res: Response) => {
         include: [
           {
             model: Author,
+            as: 'author',
             attributes: ['firstName', 'lastName'],
           },
           {
             model: Message,
+            as: 'message',
             include: [{
               model: Author,
+              as: 'author',
               attributes: ['firstName', 'lastName'],
             }]
           },

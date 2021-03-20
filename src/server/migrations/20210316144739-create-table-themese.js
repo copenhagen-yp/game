@@ -29,7 +29,7 @@ module.exports = {
         type: Sequelize.INTEGER,
         unique: true,
       },
-      ThemeId: {
+      themeId: {
         type: Sequelize.INTEGER,
         references: {
           model: 'theme',

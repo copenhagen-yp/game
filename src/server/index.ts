@@ -54,17 +54,13 @@ mongoose.connect(
 })();
 
 (async () => {
-  await Theme.hasMany(ThemeUser);
-  await ThemeUser.belongsTo(Theme);
+  await ThemeUser.belongsTo(Theme, { as: 'theme' });
 
-  await Author.hasMany(Topic);
-  await Topic.belongsTo(Author);
+  await Topic.belongsTo(Author, { as: 'author' });
 
-  await Author.hasMany(Message);
-  await Message.belongsTo(Author);
+  await Message.belongsTo(Author, { as: 'author' });
 
-  await Topic.hasMany(Message);
-  await Message.belongsTo(Topic);
+  await Message.belongsTo(Topic, { as: 'topic' });
 
   if (process.env.NODE_ENV === 'development') {
     await sequelize.sync();

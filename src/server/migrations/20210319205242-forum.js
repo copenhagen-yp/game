@@ -28,7 +28,7 @@ module.exports = {
         allowNull: false,
       },
       title: Sequelize.STRING(1000),
-      AuthorId: {
+      authorId: {
         type: Sequelize.INTEGER,
         references: {
           model: 'author',
@@ -61,14 +61,14 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE
       },
-      AuthorId: {
+      authorId: {
         type: Sequelize.INTEGER,
         references: {
           model: 'author',
           key: 'id',
         }
       },
-      TopicId: {
+      topicId: {
         type: Sequelize.INTEGER,
         references: {
           model: 'topic',
