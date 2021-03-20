@@ -10,6 +10,14 @@ module.exports = {
         primaryKey: true,
         allowNull: false,
       },
+      createdAt: {
+        allowNull: false,
+        type: Sequelize.DATE
+      },
+      updatedAt: {
+        allowNull: false,
+        type: Sequelize.DATE
+      },
     });
 
     await queryInterface.createTable('topic', {
@@ -27,6 +35,14 @@ module.exports = {
           key: 'id',
         }
       },
+      createdAt: {
+        allowNull: false,
+        type: Sequelize.DATE
+      },
+      updatedAt: {
+        allowNull: false,
+        type: Sequelize.DATE
+      },
     });
 
     await queryInterface.createTable('message', {
@@ -37,8 +53,14 @@ module.exports = {
         primaryKey: true,
         allowNull: false,
       },
-      firstName: Sequelize.STRING,
-      lastName: Sequelize.STRING,
+      createdAt: {
+        allowNull: false,
+        type: Sequelize.DATE
+      },
+      updatedAt: {
+        allowNull: false,
+        type: Sequelize.DATE
+      },
       AuthorId: {
         type: Sequelize.INTEGER,
         references: {

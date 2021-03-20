@@ -2,7 +2,7 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('themes', {
+    await queryInterface.createTable('theme', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -15,7 +15,7 @@ module.exports = {
       },
     });
 
-    await queryInterface.createTable('themesUsers', {
+    await queryInterface.createTable('themeUser', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -32,7 +32,7 @@ module.exports = {
       ThemeId: {
         type: Sequelize.INTEGER,
         references: {
-          model: 'themes',
+          model: 'theme',
           key: 'id',
         }
       },
@@ -40,7 +40,7 @@ module.exports = {
   },
 
   down: async (queryInterface) => {
-    await queryInterface.dropTable('themes');
-    await queryInterface.dropTable('themesUsers');
+    await queryInterface.dropTable('theme');
+    await queryInterface.dropTable('themeUser');
   }
 };

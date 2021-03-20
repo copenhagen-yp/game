@@ -2,19 +2,17 @@
 
 module.exports = {
   up: async (queryInterface) => {
-    await queryInterface.bulkInsert('themes', [
+    await queryInterface.bulkInsert('theme', [
       {
-        id: 1,
         name: 'light',
       },
       {
-        id: 2,
         name: 'dark'
       }
     ], {});
   },
 
   down: async (queryInterface) => {
-    await queryInterface.bulkDelete('themes', null, {});
+    await queryInterface.bulkDelete('theme', null, {});
   },
 };

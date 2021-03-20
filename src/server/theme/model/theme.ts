@@ -23,7 +23,7 @@ Theme.init(
     sequelize,
     updatedAt: false,
     createdAt: false,
-    tableName: 'themes',
+    tableName: 'theme',
   },
 );
 
