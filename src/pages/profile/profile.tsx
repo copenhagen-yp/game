@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import withStyles from 'isomorphic-style-loader/withStyles';
 
 import { Field, Form, Input } from '../../components';
 import { API_URL, APP_TEXT, REQUEST_METHOD } from '../../constants';
@@ -54,11 +55,9 @@ const passwordFields: formFieldsType = [
 ];
 const requiredPasswordFields = ['oldPassword', 'newPassword'];
 
-export const Profile = () => {
-  const { request: putUserInfoRequest } = useHttp(API_URL.EDIT_PROFILE, REQUEST_METHOD.PUT);
-  const { request: getUserInfoRequest } = useHttp(API_URL.GET_USER_INFO, REQUEST_METHOD.GET);
-  const { request: updateUserAvatarRequest } = useHttp(API_URL.UPDATE_AVATAR, REQUEST_METHOD.PUT, true);
-  const { request: changePasswordRequest } = useHttp(API_URL.CHANGE_PASSWORD, REQUEST_METHOD.PUT);
+export const Profile = withStyles(styles)(() => {
+  const { request: getUserInfoRequest } = useHttp();
+  const { request: updateUserAvatarRequest } = useHttp();
 
   const {
     handleSubmit: handleSubmitProfile,
@@ -67,7 +66,7 @@ export const Profile = () => {
     error: errorProfile,
     fields: profileFieldsValues,
     setFields: setFieldsProfile,
-  } = useForm(putUserInfoRequest, requiredProfileFields);
+  } = useForm({ requiredFields: requiredProfileFields, url: API_URL.EDIT_PROFILE, method: REQUEST_METHOD.PUT });
 
   const { getInfo } = userInfoApi(getUserInfoRequest);
   const { updateUserAvatar } = userInfoApi(updateUserAvatarRequest);
@@ -79,11 +78,11 @@ export const Profile = () => {
     handleBlur: handleBlurPassword,
     error: passwordError,
     fields: passwordFieldsValues,
-  } = useForm(changePasswordRequest, requiredPasswordFields);
+  } = useForm({ requiredFields: requiredPasswordFields, url: API_URL.CHANGE_PASSWORD, method: REQUEST_METHOD.PUT });
 
   const handleChangeAvatar = (event: any) => {
     updateUserAvatar(event.target.files[0])
-      .then((userFieldValues) => {
+      .then((userFieldValues: any) => {
         if (userFieldValues.avatar) {
           setAvatarPath(`${API_URL.DOMAIN}${userFieldValues.avatar}`);
         }
@@ -92,7 +91,7 @@ export const Profile = () => {
 
   useEffect(() => {
     getInfo()
-      .then((userFieldValues) => {
+      .then((userFieldValues: any) => {
         if (Object.prototype.toString.call(userFieldValues) !== '[object Object]') {
           return;
         }
@@ -105,7 +104,7 @@ export const Profile = () => {
           .reduce((acc, key) => (requiredProfileFields.includes(key) ? { ...acc, [key]: userFieldValues[key] } : acc), {});
 
         setFieldsProfile((prevState: any) => ({ ...prevState, ...currentFieldValues }));
-      })
+      });
   }, []);
 
   return (
@@ -114,7 +113,7 @@ export const Profile = () => {
         <Form
           wrapperClassName={styles.profile__formWrapper}
           formClassName={styles.profile__form}
-          handleSubmit={handleSubmitProfile}
+          onSubmit={handleSubmitProfile}
           submitButtonText={APP_TEXT.PROFILE_SUBMIT_BUTTON_TEXT}
           title={APP_TEXT.PROFILE_FORM_TITLE}
         >
@@ -146,7 +145,7 @@ export const Profile = () => {
           <Form
             wrapperClassName={styles.profile__formWrapper}
             formClassName={styles.profile__form}
-            handleSubmit={handleSubmitPassword}
+            onSubmit={handleSubmitPassword}
             submitButtonText={APP_TEXT.PROFILE_SUBMIT_BUTTON_TEXT}
             title={APP_TEXT.PASSWORD_FORM_TITLE}
           >
@@ -172,4 +171,4 @@ export const Profile = () => {
       </div>
     </main>
   );
-}
+});

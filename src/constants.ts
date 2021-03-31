@@ -10,19 +10,27 @@ export enum APP_TEXT {
   ERROR_EMAIL = 'Не корректный email',
   COMMENT_TITLE = 'Оставить комментарий',
   BTN_SEND = 'Отправить',
-  FORUM_TITLE = 'Задать вопрос',
+  FORUM_TITLE = 'Создать топик',
 }
 
 export enum API_URL {
   DOMAIN = 'https://ya-praktikum.tech',
   API_DOMAIN = 'https://ya-praktikum.tech/api/v2/',
+  OAUTH_DOMAIN = 'https://oauth.yandex.ru/authorize',
   SIGN_IN = 'auth/signin',
   LEADERBOARD_ALL = 'leaderboard/all',
+  LEADERBOARD = 'leaderboard',
   EDIT_PROFILE = 'user/profile',
   GET_USER_INFO = 'auth/user',
   UPDATE_AVATAR = 'user/profile/avatar',
   CHANGE_PASSWORD = 'user/password',
   SIGN_UP = 'auth/signup',
+  LOGOUT = 'auth/logout',
+  OAUTH_SERVICE_ID = 'oauth/yandex/service-id',
+  OAUTH_CODE = 'oauth/yandex',
+  FEEDBACK = 'api/feedback',
+  THEME = 'api/theme',
+  FORUM = 'api/forum/topic',
 }
 
 export enum REQUEST_METHOD {

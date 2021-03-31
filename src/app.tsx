@@ -1,24 +1,29 @@
 import React from 'react';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import { ToastProvider } from 'react-toast-notifications';
+import withStyles from 'isomorphic-style-loader/withStyles';
 import 'normalize.css';
 
-import './styles/common.pcss';
+import commonStyles from './styles/common.pcss';
 
 import { RouteWrapper } from './route-wrapper';
-import { Toast } from './components';
 import { routes } from './routes';
 import { NoMatch } from './pages';
-import { ErrorBoundary } from './error-boundary';
+import { Toast } from './components';
+import { UserInfoWrapper } from './user-info-wrapper';
+import { userSelectors } from './store/user';
 
-const App = () => {
+function App() {
+  const theme = useSelector(userSelectors.getTheme);
+  
   return (
-    <ToastProvider
-      components={{ Toast }}
-      autoDismiss
-    >
-      <BrowserRouter>
-        <ErrorBoundary>
+    <div className={commonStyles[theme]}>
+      <ToastProvider
+        components={{ Toast }}
+        autoDismiss
+      >
+        <UserInfoWrapper>
           <Switch>
             {Object.values(routes).map((route) => (
               <RouteWrapper
@@ -27,6 +32,7 @@ const App = () => {
                 component={route.component}
                 layout={route.layout}
                 exact={route.exact}
+                isPrivate={route.isPrivate}
               />
             ))
             }
@@ -34,10 +40,10 @@ const App = () => {
               <NoMatch />
             </Route>
           </Switch>
-        </ErrorBoundary>
-      </BrowserRouter>
-    </ToastProvider>
+        </UserInfoWrapper>
+      </ToastProvider>
+    </div>
   );
-};
+}
 
-export default App;
+export default withStyles(commonStyles)(App);

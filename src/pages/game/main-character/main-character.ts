@@ -1,20 +1,42 @@
+import { AnimatedSprite } from '../animated-sprite';
+import { IMovableCharacter } from '../../game';
+import { IWall } from '../wall';
+
+import { checkCollision } from '../helpers';
+
 const KEY_CODES = {
   up: 38,
   down: 40,
   left: 37,
-  right: 39
-}
+  right: 39,
+};
 
-const STEP = 6;
+const STEP = 5;
 
 const DIRECTIONS_MAP = {
-  ASCENDING : 1,
+  ASCENDING: 1,
   DESCENDING: -1,
 };
 
-export class MainCharacter {
-  private x: number;
-  private y: number;
+const MOVEMENT_DIRECTION_CODE = {
+  DOWN: 0,
+  UP: 1,
+  LEFT: 2,
+  RIGHT: 3,
+};
+
+const CHARACTER_IMAGE = '/images/boy.png';
+
+const SPRITE_CROP = {
+  WIDTH: 234,
+  HEIGHT: 283,
+  POINT_X: 241,
+  POINT_Y: 285,
+};
+
+export class MainCharacter extends AnimatedSprite implements IMovableCharacter {
+  public x: number;
+  public y: number;
 
   private endX: number;
   private endY: number;
@@ -27,25 +49,26 @@ export class MainCharacter {
 
   private speedPerFrame: number;
 
-  private context: any;
+  private context: CanvasRenderingContext2D;
   private canvas: any;
-  private canvasBoundingRect: any;
 
-  private width: number;
-  private height: number;
+  public width: number;
+  public height: number;
 
   private rightKeyPressed: boolean;
   private leftKeyPressed: boolean;
   private upKeyPressed: boolean;
   private downKeyPressed: boolean;
+  private walls: IWall[];
 
-  constructor (context: any) {
+  constructor(context: CanvasRenderingContext2D,  width: number, height: number) {
+    super(CHARACTER_IMAGE, 0, 0, SPRITE_CROP, MOVEMENT_DIRECTION_CODE, 4);
+
     this.context = context;
     this.canvas = context.canvas;
-    this.canvasBoundingRect = this.canvas.getBoundingClientRect();
 
-    this.width = 50;
-    this.height = 50;
+    this.width = width;
+    this.height = height;
 
     this.x = 0;
     this.y = 0;
@@ -65,9 +88,11 @@ export class MainCharacter {
     this.leftKeyPressed = false;
     this.upKeyPressed = false;
     this.downKeyPressed = false;
+
+    this.walls = [];
   }
 
-  init () {
+  init() {
     this.x = 0;
     this.y = 0;
 
@@ -91,26 +116,27 @@ export class MainCharacter {
     window.addEventListener('keyup', this.keyUpHandler, false);
   }
 
-  draw () {
-    this.context.fillStyle = 'red';
-    this.context.fillRect(this.x, this.y, this.width, this.height);
-    this.context.save();
-    this.context.restore();
+  draw() {
+    super.drawSprite(this.context, this.x, this.y, this.width, this.height);
   }
 
-  setPosition (x: number, y: number) {
+  setWalls(walls: IWall[]) {
+    this.walls = walls;
+  }
+
+  setPosition(x: number, y: number) {
     this.x = x;
     this.y = y;
 
     this.setEndPosition(x, y);
   }
 
-  setEndPosition (x: number, y: number) {
+  setEndPosition(x: number, y: number) {
     this.endX = x;
     this.endY = y;
   }
 
-  determineSteps () {
+  determineSteps() {
     const direction = this.getDirection();
 
     this.directionX = direction.x;
@@ -122,7 +148,7 @@ export class MainCharacter {
     this.stepY = this.directionY * speeds.y;
   }
 
-  getDirection () {
+  getDirection() {
     const directionX = (this.endX - this.x) < 0
       ? DIRECTIONS_MAP.DESCENDING
       : DIRECTIONS_MAP.ASCENDING;
@@ -133,11 +159,11 @@ export class MainCharacter {
 
     return {
       x: directionX,
-      y: directionY
+      y: directionY,
     };
   }
 
-  getSpeedsRerFrame () {
+  getSpeedsRerFrame() {
     const distanceX = Math.abs(this.endX - this.x);
     const distanceY = Math.abs(this.endY - this.y);
 
@@ -151,16 +177,16 @@ export class MainCharacter {
 
     return {
       x: speedX,
-      y: speedY
-    }
+      y: speedY,
+    };
   }
 
-  stopMove () {
+  stopMove() {
     this.endX = this.x;
     this.endY = this.y;
   }
 
-  normalizePosition (x: number, y: number) {
+  normalizePosition(x: number, y: number) {
     if (x < 0) {
       x = this.canvas.x;
     } else if (x > this.canvas.width - this.width) {
@@ -176,19 +202,16 @@ export class MainCharacter {
     return { x, y };
   }
 
-  move () {
-    // Key press handler
+  move() {
     if (this.rightKeyPressed || this.leftKeyPressed || this.upKeyPressed || this.downKeyPressed) {
-      let x = this.endX;
-      let y = this.endY;
+      let x = this.x;
+      let y = this.y;
 
       if (this.rightKeyPressed) {
         x += STEP;
       } else if (this.leftKeyPressed) {
         x -= STEP;
-      }
-
-      if (this.upKeyPressed) {
+      } else if (this.upKeyPressed) {
         y -= STEP;
       } else if (this.downKeyPressed) {
         y += STEP;
@@ -201,7 +224,6 @@ export class MainCharacter {
       this.determineSteps();
     }
 
-    // Click Handler
     if ((this.directionX === DIRECTIONS_MAP.ASCENDING && this.x < this.endX)
       || (this.directionX === DIRECTIONS_MAP.DESCENDING && this.x > this.endX)) {
       this.x += this.stepX;
@@ -211,19 +233,63 @@ export class MainCharacter {
       || (this.directionY === DIRECTIONS_MAP.DESCENDING && this.y > this.endY)) {
       this.y += this.stepY;
     }
+
+    this.fixCollisionWithWalls();
   }
 
-  clickHandler = (event: any) => {
-    const x = event.clientX - this.canvasBoundingRect.left - this.width / 2;
-    const y = event.clientY - this.canvasBoundingRect.top - this.height / 2;
+  fixCollisionWithWalls = () => {
+    this.walls.forEach((wall: IWall) => {
+      const isCollision = checkCollision(this, wall);
+
+      if (isCollision) {
+        if (this.leftKeyPressed) {
+          const x = wall.x + wall.width;
+
+          this.endX = x;
+          this.x = x;
+        }
+
+        if (this.rightKeyPressed) {
+          const x = wall.x - this.width;
+
+          this.endX = x;
+          this.x = x;
+        }
+
+        if (this.upKeyPressed) {
+          const y = wall.y + wall.height;
+
+          this.endY = y;
+          this.y = y;
+        }
+
+        if (this.downKeyPressed) {
+          const y = wall.y - this.height;
+
+          this.endY = y;
+          this.y = y;
+        }
+      }
+    });
+  }
+
+  clickHandler = (mousePositionX: number, mousePositionY: number) => {
+    // ToDo: need change
+    const x = mousePositionX - this.width / 2;
+    const y = mousePositionY - this.height / 2;
 
     const position = this.normalizePosition(x, y);
 
     this.setEndPosition(position.x, position.y);
     this.determineSteps();
-  }
+  };
 
   keyDownHandler = (event: any) => {
+    this.rightKeyPressed = false;
+    this.leftKeyPressed = false;
+    this.upKeyPressed = false;
+    this.downKeyPressed = false;
+
     if (event.keyCode === KEY_CODES.right) {
       this.rightKeyPressed = true;
     } else if (event.keyCode === KEY_CODES.left) {
@@ -233,7 +299,7 @@ export class MainCharacter {
     } else if (event.keyCode === KEY_CODES.down) {
       this.downKeyPressed = true;
     }
-  }
+  };
 
   keyUpHandler = (event: any) => {
     if (event.keyCode === KEY_CODES.right) {
@@ -241,13 +307,13 @@ export class MainCharacter {
     } else if (event.keyCode === KEY_CODES.left) {
       this.leftKeyPressed = false;
     } else if (event.keyCode === KEY_CODES.up) {
-      this.upKeyPressed = false
+      this.upKeyPressed = false;
     } else if (event.keyCode === KEY_CODES.down) {
-      this.downKeyPressed = false
+      this.downKeyPressed = false;
     }
-  }
+  };
 
-  destroy () {
+  destroy() {
     window.removeEventListener('keydown', this.keyDownHandler, false);
     window.removeEventListener('keyup', this.keyUpHandler, false);
   }

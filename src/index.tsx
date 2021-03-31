@@ -1,6 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import App from './app';
+import Root from './root';
+import { registerSw } from './worker';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+registerSw();
+
+ReactDOM.hydrate(
+  <Root />,
+  document.getElementById('root')
+);

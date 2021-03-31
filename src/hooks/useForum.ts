@@ -1,78 +1,70 @@
 import { useState, useEffect, useCallback } from 'react';
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
+
 import { TForum, TComment, Fields } from './types';
-
-const defaultForums = [
-  { id: 1, name: 'Forum1', description: 'description Forum1' }, 
-  { id: 2, name: 'Forum2', description: 'description Forum2' }
-];
-
-const defaultComments = [
-  { id: 1, idForum: 1, comment: 'Комментарий1' },
-  { id: 2, idForum: 1, comment: 'Комментарий2' },
-  { id: 3, idForum: 2, comment: 'Комментарий34' },
-  { id: 4, idForum: 2, comment: 'Комментарий31' },
-  { id: 5, idForum: 1, comment: 'Комментарий30' },
-  { id: 6, idForum: 2, comment: 'Комментарий33' }
-];
+import { useHttp } from 'hooks/useHttp';
+import { forumApi } from 'api';
 
 export const useForum = (fieldsValue?: Fields) => {
-  const [forums, setForums] = useState<TForum[]>(defaultForums);
-  const [comments, setComments] = useState<TComment[]>(defaultComments);
+  const [topics, setTopics] = useState<TForum[]>([]);
   const [currentComments, setCurrentComments] = useState<TComment[]>([]);
-  const [currentForum, setCurrentForum] = useState<TForum | null>(null);
-  const { id } = useParams<{[index: string]: string}>();
+  const [currentTopic, setCurrentTopic] = useState('');
+  const [messagesNeedUpdate, setMessagesNeedUdate] = useState([]);
+  const { id } = useParams<{ [index: string]: string }>();
+  const { request } = useHttp('/');
+  const { getTopics, createTopic, getTopic, createMessage } = forumApi(request);
+  const history = useHistory();
+
+  useEffect(() => {
+    if (!id) {
+      getTopics().then(res => {
+        setTopics(res);
+      });
+    }
+  }, []);
 
   useEffect(() => {
     if (id) {
-      setCurrentComments(comments.filter(element => element.idForum === +id));
-      const forum  = forums.filter(element => element.id === +id);
-
-      if (forum.length) {
-        setCurrentForum(forum[0]);
-      }
+      getTopic(id).then(res => {
+        if (res) {
+          setCurrentComments(res.conversation);
+          setCurrentTopic(res.title);
+        }
+      });
     }
-  }, [comments, forums]);
+  }, [messagesNeedUpdate]);
 
-  const handleSubmitQuestion = useCallback((e) => {
-    e.preventDefault();
-    e.target.reset();
+  const handleSubmitTopic = useCallback(
+    e => {
+      e.preventDefault();
+      e.target.reset();
 
-    if (fieldsValue) {
-      setForums(prevState => 
-        [...prevState, 
-          { 
-            id: prevState.length + 1, 
-            name: fieldsValue.name, 
-            description: fieldsValue.description 
-          }] 
-      );
-    }
-    
-  }, [fieldsValue]);
+      createTopic(fieldsValue).then(res => {
+        if (res && res.link) {
+          history.push(res.link);
+        }
+      });
+    },
+    [fieldsValue]
+  );
 
-  const handleSubmitComments = useCallback((e) => {
-    e.preventDefault();
-    e.target.reset();
-    
-    if (fieldsValue && id) {
-      setComments(prevState => 
-        [...prevState,
-          { id: prevState.length + 1,
-            idForum: +id,
-            comment: fieldsValue.comment
-          }]
-      );
-    }
-    
-  }, [fieldsValue]);
+  const handleSubmitComments = useCallback(
+    e => {
+      e.preventDefault();
+      e.target.reset();
+
+      createMessage(id, fieldsValue).then(() => {
+        setMessagesNeedUdate([]);
+      });
+    },
+    [fieldsValue]
+  );
 
   return {
-    forums,
-    currentForum,
-    comments,
+    topics,
+    currentTopic,
     currentComments,
-    handleSubmitQuestion,
-    handleSubmitComments
+    handleSubmitTopic,
+    handleSubmitComments,
   };
 };

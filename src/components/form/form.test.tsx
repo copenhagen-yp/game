@@ -1,6 +1,6 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
-import { Form } from './form'
+import { Form } from './form';
 import { Field, Input } from './../../components';
 
 const fields = [
@@ -20,9 +20,8 @@ test('Form renders correctly', () => {
   const tree = renderer
     .create(
       <Form
-        handleSubmit={() => {
-          console.log();
-        }}
+        // eslint-disable-next-line
+        onSubmit={() => {}}
         submitButtonText='Сохранить'
         title='Авторизация'
       >

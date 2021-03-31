@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import withStyles from 'isomorphic-style-loader/withStyles';
 
 import { routes } from '../../routes';
 
@@ -7,7 +8,7 @@ import { Button } from '../../components';
 
 import styles from './no-match.pcss';
 
-export const NoMatch = () => {
+export const NoMatch = withStyles(styles)(() => {
   const location = useLocation();
 
   return (
@@ -28,4 +29,4 @@ export const NoMatch = () => {
       </div>
     </div>
   );
-}
+});

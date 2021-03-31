@@ -6,4 +6,10 @@ export type RouteWrapperType = {
   layout: ComponentType<RouteProps>,
   path: string,
   exact?: boolean,
+  isPrivate: boolean,
+}
+
+export type withAccessType = {
+  component: ComponentType<RouteProps>,
+  isPrivate: boolean,
 }

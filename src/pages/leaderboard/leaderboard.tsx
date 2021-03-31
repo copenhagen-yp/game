@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react';
+import withStyles from 'isomorphic-style-loader/withStyles';
 
 import { GetLeadersResponseType } from './types';
 import { useHttp } from '../../hooks/useHttp';
-import { API_URL, REQUEST_METHOD } from '../../constants';
 import { leaderboardApi } from '../../api';
 import cn from 'classnames';
 import styles from './leaderboard.pcss';
 
-export const Leaderboard = () => {
+export const Leaderboard = withStyles(styles)(() => {
   const [playersData, setPlayersData] = useState<GetLeadersResponseType>([]);
   const [loading, setLoading] = useState(true);
-  const { request } = useHttp(API_URL.LEADERBOARD_ALL, REQUEST_METHOD.POST);
+  const { request } = useHttp();
   const { getLeaderboard } = leaderboardApi(request);
 
   useEffect(function () {
@@ -20,7 +20,7 @@ export const Leaderboard = () => {
           setPlayersData(res);
           setLoading(false);
         }
-      })
+      });
   }, []);
 
   return (
@@ -51,4 +51,4 @@ export const Leaderboard = () => {
       </div>
     </main>
   );
-}
+});
