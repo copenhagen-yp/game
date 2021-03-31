@@ -27,7 +27,7 @@ export const useForum = (fieldsValue?: Fields) => {
     if (id) {
       getTopic(id).then(res => {
         if (res) {
-          setCurrentComments(res.Messages);
+          setCurrentComments(res.conversation);
           setCurrentTopic(res.title);
         }
       });

@@ -1,14 +1,15 @@
 import path from 'path';
 import nodeExternals from 'webpack-node-externals';
-import webpack from 'webpack';
+import webpack, { Configuration } from 'webpack';
 
 import { IS_DEV, DIST_DIR, SRC_DIR } from './env';
 import fileLoader from './loaders/file';
 import cssLoader from './loaders/css';
 import jsLoader from './loaders/js';
 
-const config = {
+const config: Configuration = {
   name: 'server',
+  mode: IS_DEV ? 'development' : 'production',
   target: 'node',
   node: { __dirname: false },
   entry: path.join(SRC_DIR, 'server'),
@@ -43,4 +44,4 @@ const config = {
   optimization: { nodeEnv: false },
 };
 
-export default config;
+module.exports = config;

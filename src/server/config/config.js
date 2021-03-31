@@ -15,4 +15,4 @@ module.exports = {
     'database': process.env.POSTGRES_DATABASE,
     'dialect': 'postgres'
   }
-}
+};

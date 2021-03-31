@@ -1,8 +1,8 @@
 'use strict';
 
 module.exports = {
-  up: async (queryInterface, Sequelize) => {
-    await queryInterface.bulkInsert('themes', [
+  up: async (queryInterface) => {
+    await queryInterface.bulkInsert('theme', [
       {
         name: 'light',
       },
@@ -12,7 +12,7 @@ module.exports = {
     ], {});
   },
 
-  down: async (queryInterface, Sequelize) => {
-    await queryInterface.bulkDelete('themes', null, {});
+  down: async (queryInterface) => {
+    await queryInterface.bulkDelete('theme', null, {});
   },
 };

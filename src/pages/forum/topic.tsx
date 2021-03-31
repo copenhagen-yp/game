@@ -31,7 +31,7 @@ export const Topic = withStyles(styles)(() => {
           return (
             <li key={item.id} className={styles.list}>
               <p className={cn(styles.title, styles.ellipsis)}>{item.message}</p>
-              <p className={cn(styles.messageAuthor, styles.ellipsis)}>{item.Author.firstName} {item.Author.lastName}</p>
+              <p className={cn(styles.messageAuthor, styles.ellipsis)}>{item.author.firstName} {item.author.lastName}</p>
             </li>
           );
         })}

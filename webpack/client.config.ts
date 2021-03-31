@@ -1,4 +1,4 @@
-import webpack from 'webpack';
+import webpack, { Configuration, Resolve } from 'webpack';
 import path from 'path';
 import WorkboxPlugin from 'workbox-webpack-plugin';
 
@@ -22,25 +22,34 @@ function addParamToWorkbox() {
   };
 }
 
-const config = {
+let entry = [path.join(SRC_DIR, 'index')];
+const resolve: Resolve = {
+  modules: ['src', 'node_modules'],
+  extensions: ['*', '.js', '.jsx', '.json', '.ts', '.tsx'],
+};
+
+if (IS_DEV) {
+  entry = ['webpack-hot-middleware/client', 'react-hot-loader/patch', ...entry];
+  resolve.alias = {
+    'react-dom': '@hot-loader/react-dom',
+  };
+}
+
+const config: Configuration = {
   name: 'client',
-  entry: [
-    IS_DEV && 'react-hot-loader/patch',
-    path.join(SRC_DIR, 'index'),
-  ],
+  mode: IS_DEV ? 'development' : 'production',
+  context: __dirname,
+  entry,
   module: {
     rules: [fileLoader.client, cssLoader.client, jsLoader.client],
   },
   output: {
     path: DIST_DIR,
-    filename: '[name].js',
     publicPath: '/',
   },
-  resolve: {
-    modules: ['src', 'node_modules'],
-    extensions: ['*', '.js', '.jsx', '.json', '.ts', '.tsx'],
-  },
+  resolve,
   plugins: [
+    new webpack.HotModuleReplacementPlugin(),
     new WorkboxPlugin.GenerateSW(addParamToWorkbox()),
     new webpack.DefinePlugin({
       'SSR': JSON.stringify(false)
@@ -49,9 +58,13 @@ const config = {
 
   devtool: 'source-map',
 
+  devServer: {
+    hot: true,
+  },
+
   performance: {
     hints: IS_DEV ? false : 'warning',
   },
 };
 
-export default config;
+module.exports = config;

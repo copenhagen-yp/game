@@ -5,6 +5,7 @@ node_modules
 .editorconfig
 .gitignore
 Dockerfile
+Dockerfile.prod
 README.md
 .vscode
 .idea

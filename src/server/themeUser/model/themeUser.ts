@@ -6,7 +6,7 @@ import { Theme } from '../../theme/model/theme';
 import { sequelize } from '../../sequelize';
 
 class ThemeUser extends Model {
-  public id!: number;
+  public themeId!: number;
   public userId!: number;
   public setTheme!: HasManyAddAssociationMixin<Theme, number>;
   public getTheme!: HasOneGetAssociationMixin<Theme>;
@@ -22,7 +22,7 @@ ThemeUser.init(
     sequelize,
     updatedAt: false,
     createdAt: false,
-    tableName: 'themesUsers',
+    tableName: 'themeUser',
   },
 );
 

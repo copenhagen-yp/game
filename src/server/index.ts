@@ -17,6 +17,13 @@ import { Topic, Author, Message } from './forum/models';
 
 const app = express();
 
+if (process.env.NODE_ENV === 'development') {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const addDevMiddlewares = require('./dev-middlewares');
+
+  addDevMiddlewares(app);
+}
+
 let key, cert;
 
 if (process.env.HTTPS_ENABLED === '1') {
@@ -47,19 +54,18 @@ mongoose.connect(
 })();
 
 (async () => {
-  await Theme.hasMany(ThemeUser);
-  await ThemeUser.belongsTo(Theme);
+  await ThemeUser.belongsTo(Theme, { as: 'theme' });
 
-  await Author.hasMany(Topic);
-  await Topic.belongsTo(Author);
+  await Topic.belongsTo(Author, { as: 'author' });
+  
+  await Message.belongsTo(Author, { as: 'author' });
+  
+  await Message.belongsTo(Topic, { as: 'topic', foreignKey: 'topicId' });
+  await Topic.hasMany(Message, { as: 'conversation', foreignKey: 'topicId' });
 
-  await Author.hasMany(Message);
-  await Message.belongsTo(Author);
-
-  await Topic.hasMany(Message);
-  await Message.belongsTo(Topic);
-
-  await sequelize.sync();
+  if (process.env.NODE_ENV === 'development') {
+    await sequelize.sync();
+  }
 })();
 
 app.use(expressCspHeader({
